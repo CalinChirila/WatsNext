@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WatsNext</string>
+    <string name="empty_state_message">There are no events in the list. To add an event, click the Add Event button at the bottom of the screen</string>
+</resources>
