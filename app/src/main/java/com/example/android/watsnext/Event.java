@@ -104,10 +104,13 @@ public class Event {
         long currentTimeInMillis = calendar.getTimeInMillis();
         long timeBeforeEvent = mEventDate - currentTimeInMillis;
         if(timeBeforeEvent <= MILLIS_IN_A_DAY){
+            // Display the word TODAY
             formattedDate = context.getResources().getString(R.string.today);
         } else if (timeBeforeEvent > MILLIS_IN_A_DAY && timeBeforeEvent <= MILLIS_IN_TWO_DAYS){
+            // Display the word TOMORROW
             formattedDate = context.getResources().getString(R.string.tomorrow);
         } else {
+            // Display the date
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             formattedDate = dateFormat.format(mEventDate);
         }
