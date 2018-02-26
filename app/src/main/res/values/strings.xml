@@ -3,4 +3,5 @@
     <string name="empty_state_message">There are no events in the list. To add an event, click the Add Event button at the bottom of the screen</string>
     <string name="today">TODAY</string>
     <string name="tomorrow">TOMORROW</string>
+    <string name="delete_all_events">Delete All Events</string>
 </resources>

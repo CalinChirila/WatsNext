@@ -22,7 +22,8 @@ public class EventContentProvider extends ContentProvider {
 
     private EventDbHelper mDbHelper;
     private Context mContext;
-    private ContentResolver mContentResolver = mContext.getContentResolver();
+    private ContentResolver mContentResolver;
+
 
     // Codes for the URI matcher
     private static final int EVENTS = 100;
@@ -47,6 +48,7 @@ public class EventContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mContext = getContext();
+        mContentResolver = mContext.getContentResolver();
         mDbHelper = new EventDbHelper(mContext);
         return true;
     }
