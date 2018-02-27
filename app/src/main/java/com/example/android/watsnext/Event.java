@@ -1,10 +1,6 @@
 package com.example.android.watsnext;
 
-import android.content.Context;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Calin-Cristian Chirila on 2/26/2018.
@@ -35,8 +31,7 @@ public class Event {
     // Since we don't have to display reminder time, we can store it as timeInMillis
     private long mReminderTime;
 
-    public static final long MILLIS_IN_A_DAY = 86400000;
-    public static final long MILLIS_IN_TWO_DAYS = MILLIS_IN_A_DAY * 2;
+
 
     // The constructor. Only mandatory fields are date and event type
     public Event(int eventType, long eventDate){
@@ -97,30 +92,8 @@ public class Event {
     public long getReminderTime(){return mReminderTime;}
 
 
-    // A simple formatter to convert DATE from millis into a readable string
-    public static String convertDateToString(Context context){
-        String formattedDate;
-        Calendar calendar = Calendar.getInstance();
-        long currentTimeInMillis = calendar.getTimeInMillis();
-        long timeBeforeEvent = mEventDate - currentTimeInMillis;
-        if(timeBeforeEvent <= MILLIS_IN_A_DAY){
-            // Display the word TODAY
-            formattedDate = context.getResources().getString(R.string.today);
-        } else if (timeBeforeEvent > MILLIS_IN_A_DAY && timeBeforeEvent <= MILLIS_IN_TWO_DAYS){
-            // Display the word TOMORROW
-            formattedDate = context.getResources().getString(R.string.tomorrow);
-        } else {
-            // Display the date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            formattedDate = dateFormat.format(mEventDate);
-        }
-        return formattedDate;
-    }
 
-    // A simple formatter to convert TIME from millis into a readable string
-    public static String convertTimeToString(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
-        return timeFormat.format(mEventTime);
-    }
+
+
 
 }

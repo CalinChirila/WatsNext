@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">WatsNext</string>
+    <string name="app_name" translatable="false">WatsNext</string>
     <string name="empty_state_message">There are no events in the list. To add an event, click the Add Event button at the bottom of the screen</string>
     <string name="today">TODAY</string>
     <string name="tomorrow">TOMORROW</string>
     <string name="delete_all_events">Delete All Events</string>
+    <string name="event_reminder_icon_content_description">Event Reminder Icon</string>
+    <string name="event_type_other">Other</string>
+    <string name="event_type_appointment">Appointment</string>
+    <string name="event_type_meeting">Meeting</string>
+    <string name="event_type_social">Social Event</string>
 </resources>

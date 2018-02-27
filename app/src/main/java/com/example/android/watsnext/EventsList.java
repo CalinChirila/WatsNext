@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,8 @@ public class EventsList extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.fab_add_event)
     FloatingActionButton mAddEventButton;
+    @BindView(R.id.rv_events_list)
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,16 @@ public class EventsList extends AppCompatActivity {
             }
         });
 
+
+        // Query the database as soon as the app opens. TODO: put the query in an Async Loader
+        Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, null);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        EventsAdapter adapter = new EventsAdapter();
+        adapter.setEventsData(this, cursor);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(adapter);
+
+
     }
 
     /**
@@ -53,11 +67,18 @@ public class EventsList extends AppCompatActivity {
      * TODO: must delete before release
      */
     private void addDummyData(){
-        int eventType = 1;
+        int eventType = 2;
         long eventDate = 765132478;
+        String eventText = "Black Panther Movie";
+        long eventTime = 912738519;
+        int reminderType = 2;
+
         ContentValues values = new ContentValues();
         values.put(EventsEntry.COLUMN_EVENT_TYPE, eventType);
         values.put(EventsEntry.COLUMN_EVENT_DATE, eventDate);
+        values.put(EventsEntry.COLUMN_EVENT_TEXT, eventText);
+        values.put(EventsEntry.COLUMN_EVENT_TIME, eventTime);
+        values.put(EventsEntry.COLUMN_EVENT_REMINDER, reminderType);
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
 
@@ -84,3 +105,4 @@ public class EventsList extends AppCompatActivity {
 //TODO: FAB should add fake events to the database
 //TODO: Add option to delete entire db from main screen
 //TODO: Add empty state view
+//TODO: Improve the visuals
