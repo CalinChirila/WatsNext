@@ -4,13 +4,13 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="true">
-        <activity android:name=".EventsList">
+        android:theme="@style/AppTheme">
+        <activity android:name=".EventsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,9 +18,12 @@
             </intent-filter>
         </activity>
 
-        <provider android:name=".data.EventContentProvider"
+        <provider
+            android:name=".data.EventContentProvider"
             android:authorities="com.example.android.watsnext.data"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity android:name=".AddEventActivity"></activity>
     </application>
 
 </manifest>

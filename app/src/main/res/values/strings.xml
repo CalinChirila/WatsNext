@@ -9,4 +9,6 @@
     <string name="event_type_appointment">Appointment</string>
     <string name="event_type_meeting">Meeting</string>
     <string name="event_type_social">Social Event</string>
+    <string name="event_details_header">Event Details</string>
+    <string name="event_text_hint">Event text</string>
 </resources>

@@ -12,15 +12,19 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/tv_item_event_time"
         app:layout_constraintHorizontal_bias="0.225"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_event_date"
-        tools:text="Social Event" />
+        tools:text="Social Event"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
 
     <TextView
         android:id="@+id/tv_item_event_text"
         android:layout_width="wrap_content"
+        android:textColor="@android:color/white"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
@@ -48,6 +52,7 @@
     <TextView
         android:id="@+id/tv_item_event_time"
         android:layout_width="wrap_content"
+        android:textColor="@android:color/white"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="32dp"
@@ -67,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:textColor="@android:color/white"
         android:layout_marginTop="8dp"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
