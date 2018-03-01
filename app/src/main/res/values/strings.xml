@@ -11,4 +11,5 @@
     <string name="event_type_social">Social Event</string>
     <string name="event_details_header">Event Details</string>
     <string name="event_text_hint">Event text</string>
+    <string name="spinner_hint">Event Type</string>
 </resources>
