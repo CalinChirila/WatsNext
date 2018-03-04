@@ -40,7 +40,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
         mEventsCursor.moveToPosition(position);
 
         // Set the event type text
-        String eventTypeString = convertEventTypeToString(mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+        String eventTypeString = convertEventTypeToString(mContext, mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
         holder.mEventTypeTextView.setText(eventTypeString);
 
         // Set the event text
@@ -156,23 +156,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
     /**
      * Helper method that converts event types into strings
      */
-    private String convertEventTypeToString(int type){
+    public static String convertEventTypeToString(Context context, int type){
         String eventType;
         switch(type){
             case 0:
-                eventType = mContext.getResources().getString(R.string.event_type_other);
+                eventType = context.getResources().getString(R.string.event_type_other);
                 break;
             case 1:
-                eventType = mContext.getResources().getString(R.string.event_type_appointment);
+                eventType = context.getResources().getString(R.string.event_type_appointment);
                 break;
             case 2:
-                eventType = mContext.getResources().getString(R.string.event_type_meeting);
+                eventType = context.getResources().getString(R.string.event_type_meeting);
                 break;
             case 3:
-                eventType = mContext.getResources().getString(R.string.event_type_social);
+                eventType = context.getResources().getString(R.string.event_type_social);
                 break;
             default:
-                eventType = mContext.getResources().getString(R.string.event_type_other);
+                eventType = context.getResources().getString(R.string.event_type_other);
                 break;
         }
 

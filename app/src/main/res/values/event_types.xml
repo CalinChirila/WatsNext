@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="event_types">
-        <item>@string/spinner_hint</item>
         <item>@string/event_type_other</item>
         <item>@string/event_type_appointment</item>
         <item>@string/event_type_meeting</item>

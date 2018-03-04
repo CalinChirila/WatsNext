@@ -12,8 +12,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/statusBarHeight"
-        >
+        android:layout_marginTop="@dimen/statusBarHeight">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -35,10 +34,10 @@
             android:id="@+id/tv_event_details_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:text="@string/event_details_header"
             android:textAlignment="center"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,24 +52,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_event_details_header" />
 
-        <Spinner
-            android:id="@+id/spinner_event_type"
+        <include
+            android:id="@+id/include2"
+            layout="@layout/layout_event_types"
             android:layout_width="@dimen/spinner_width"
-            android:overlap
-            android:layout_height="@dimen/spinner_height"
-            android:popupBackground="@android:color/transparent"
-            android:background="@drawable/rounded_corner"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="@dimen/spinner_margin"
-            app:layout_constraintBottom_toBottomOf="@+id/et_event_text"
-            app:layout_constraintEnd_toStartOf="@+id/et_event_text"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_event_details_header" />
+            app:layout_constraintTop_toTopOf="@+id/view_event_details_header_separator" />
 
         <EditText
             android:id="@+id/et_event_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/event_text_hint"
