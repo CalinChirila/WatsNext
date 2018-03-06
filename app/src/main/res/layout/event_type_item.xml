@@ -6,7 +6,7 @@
     android:layout_width="@dimen/spinner_width"
     android:layout_gravity="center"
     android:layout_height="@dimen/spinner_height"
-    tools:context=".AddEventActivity">
+    tools:context=".Activities.AddEventActivity">
 
     <TextView
         android:id="@+id/tv_event_type"

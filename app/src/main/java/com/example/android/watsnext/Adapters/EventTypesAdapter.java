@@ -1,4 +1,4 @@
-package com.example.android.watsnext;
+package com.example.android.watsnext.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +9,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.example.android.watsnext.R;
+import com.example.android.watsnext.Utils.EventUtils;
+
 /**
- * Created by thewh on 3/4/2018.
+ * Created by Calin-Cristian Chirila on 3/4/2018.
  */
 
 public class EventTypesAdapter extends RecyclerView.Adapter<EventTypesAdapter.EventTypesViewHolder> {
@@ -29,7 +32,15 @@ public class EventTypesAdapter extends RecyclerView.Adapter<EventTypesAdapter.Ev
 
     private Context mContext;
 
-    //TODO: get the movie catalog app from github. add on click methods to this. when item is clicked, hide rv and set text to selected event
+    private final EventTypeClickHandler mEventTypeClickHandler;
+
+    public interface EventTypeClickHandler{
+        void onEventTypeClick(int position);
+    }
+
+    public EventTypesAdapter (EventTypeClickHandler handler){
+        mEventTypeClickHandler = handler;
+    }
 
     @Override
     public EventTypesAdapter.EventTypesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,7 +52,7 @@ public class EventTypesAdapter extends RecyclerView.Adapter<EventTypesAdapter.Ev
     @Override
     public void onBindViewHolder(EventTypesAdapter.EventTypesViewHolder holder, int position) {
         // Set string values for each event type
-        String eventType = EventsAdapter.convertEventTypeToString(mContext, mEventTypes[position]);
+        String eventType = EventUtils.convertEventTypeToString(mContext, mEventTypes[position]);
         holder.mEventTypeTextView.setText(eventType);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.event_types_animation);
         animation.setDuration((position + 1) * 200);
@@ -53,13 +64,19 @@ public class EventTypesAdapter extends RecyclerView.Adapter<EventTypesAdapter.Ev
         return mEventTypes.length;
     }
 
-    public class EventTypesViewHolder extends RecyclerView.ViewHolder {
+    public class EventTypesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView mEventTypeTextView;
         public EventTypesViewHolder(View itemView) {
             super(itemView);
             mEventTypeTextView = itemView.findViewById(R.id.tv_event_type);
 
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mEventTypeClickHandler.onEventTypeClick(mEventTypes[getAdapterPosition()]);
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/materialbackground"
     android:fitsSystemWindows="false"
-    tools:context="com.example.android.watsnext.AddEventActivity">
+    tools:context="com.example.android.watsnext.Activities.AddEventActivity">
 
 
     <android.support.constraint.ConstraintLayout
@@ -66,11 +66,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:textColor="@android:color/white"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/event_text_hint"
             android:inputType="textPersonName"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_event_details_header" />
 
@@ -81,7 +82,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:src="@drawable/ic_done"
+            app:srcCompat="@drawable/ic_done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

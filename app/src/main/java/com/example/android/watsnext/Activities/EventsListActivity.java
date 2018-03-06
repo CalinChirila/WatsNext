@@ -1,4 +1,4 @@
-package com.example.android.watsnext;
+package com.example.android.watsnext.Activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.watsnext.Adapters.EventsAdapter;
+import com.example.android.watsnext.R;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import butterknife.BindView;
