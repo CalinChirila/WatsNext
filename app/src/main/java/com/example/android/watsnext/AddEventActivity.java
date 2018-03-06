@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +19,8 @@ public class AddEventActivity extends AppCompatActivity {
     RecyclerView mEventTypesRecyclerView;
     @BindView(R.id.button_show_event_types)
     Button mShowEventsButton;
+    @BindView(R.id.iv_event_type_expand_arrow)
+    ImageView mEventTypeExpandArrow;
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
@@ -38,11 +41,9 @@ public class AddEventActivity extends AppCompatActivity {
         mEventTypesRecyclerView.setHasFixedSize(true);
         mEventTypesRecyclerView.setLayoutManager(layoutManager);
 
-
-
         /**
          * When the Event Type button is clicked:
-         * 1. Make the recycler view visible
+         * 1. Make the recycler view visible / invisible
          * 2. Start the animation of the list items
          */
         mShowEventsButton.setOnClickListener(new View.OnClickListener(){
@@ -52,10 +53,14 @@ public class AddEventActivity extends AppCompatActivity {
                     mEventTypesRecyclerView.setVisibility(View.VISIBLE);
                     mEventTypesRecyclerView.setAdapter(mEventTypesAdapter);
                     eventTypesAreVisible = true;
+                    mEventTypeExpandArrow.animate().rotationBy(180).setDuration(300).start();
 
                 } else {
+
                     mEventTypesRecyclerView.setVisibility(View.GONE);
                     eventTypesAreVisible = false;
+                    mEventTypeExpandArrow.animate().rotationBy(180).setDuration(300).start();
+
                 }
             }
         });

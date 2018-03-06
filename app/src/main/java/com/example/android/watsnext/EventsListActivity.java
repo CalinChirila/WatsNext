@@ -168,9 +168,9 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.setEventsData(this, null);
+
     }
 }
 
-//TODO: Add empty state view
+
 //TODO: Improve the visuals
