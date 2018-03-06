@@ -1,5 +1,6 @@
 package com.example.android.watsnext.Activities;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.android.watsnext.Adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.data.EventContract.EventsEntry;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,14 +38,23 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
-    private String mEventType;
+
+    private int mEventTypeInt;
+    private String mEventTypeString;
     private String mEventText;
+    private long mEventDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         ButterKnife.bind(this);
+
+        // Set the event date to be the current date in millis
+
+
+        //TODO: when setting date, it also sets time. Needs FIX!
+        //TODO: conversion from date to string is wrong.
 
         //TODO: this will change if the user clicked add event or edit event
         toolbar.setTitle("Add Event");
@@ -67,17 +79,39 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mSaveEventButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                // Gather event data
                 mEventText = mEventEditText.getText().toString();
-                Toast.makeText(getApplicationContext(), mEventText, Toast.LENGTH_LONG).show();
+
+                //TODO: for DEBUG: consider eventDate to be current date and add millisInADAY
+                Calendar calendar = Calendar.getInstance();
+                mEventDate = calendar.getTimeInMillis();
+                EventUtils.convertEventDateToString(getApplicationContext(), mEventDate);
+
+                addEventToDatabase();
+                finish();
+
+
             }
         });
+    }
+
+    private void addEventToDatabase(){
+        ContentValues values = new ContentValues();
+        values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);
+        values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
+
+        //For testing
+        values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
+
+        getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
 
     @Override
     public void onEventTypeClick(int position) {
         // Set the button text to the selected option
-        mEventType = EventUtils.convertEventTypeToString(getApplicationContext(), position);
-        mShowEventsButton.setText(mEventType);
+        mEventTypeInt = position;
+        mEventTypeString = EventUtils.convertEventTypeToString(getApplicationContext(), position);
+        mShowEventsButton.setText(mEventTypeString);
 
         hideEventTypes();
     }

@@ -35,29 +35,31 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
 
     @Override
     public void onBindViewHolder(EventsAdapterViewHolder holder, int position) {
-        mEventsCursor.moveToPosition(position);
+        if(mEventsCursor != null && mEventsCursor.getCount() != 0 && !mEventsCursor.isClosed()) {
+            mEventsCursor.moveToPosition(position);
 
-        // Set the event type text
-        String eventTypeString = EventUtils.convertEventTypeToString(mContext, mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
-        holder.mEventTypeTextView.setText(eventTypeString);
+            // Set the event type text
+            String eventTypeString = EventUtils.convertEventTypeToString(mContext, mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+            holder.mEventTypeTextView.setText(eventTypeString);
 
-        // Set the event text
-        holder.mEventTextTextView.setText(mEventsCursor.getString(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT)));
+            // Set the event text
+            holder.mEventTextTextView.setText(mEventsCursor.getString(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT)));
 
-        // Set the event time
-        String eventTimeString = EventUtils.convertEventTimeToString(mEventsCursor.getLong(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
-        holder.mEventTimeTextView.setText(eventTimeString);
+            // Set the event time
+            String eventTimeString = EventUtils.convertEventTimeToString(mEventsCursor.getLong(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
+            holder.mEventTimeTextView.setText(eventTimeString);
 
-        // Set the reminder icon
-        int eventReminderType = mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
-        EventUtils.setReminderIcon(holder.mEventReminderIcon, eventReminderType);
+            // Set the reminder icon
+            int eventReminderType = mEventsCursor.getInt(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
+            EventUtils.setReminderIcon(holder.mEventReminderIcon, eventReminderType);
 
-        // Set the event date
-        String eventDateString = EventUtils.convertEventDateToString(mContext, mEventsCursor.getLong(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE)));
-        if(isSameDate(eventDateString)){
-            holder.mEventDateTextView.setVisibility(View.GONE);
-        } else {
-            holder.mEventDateTextView.setText(eventDateString);
+            // Set the event date
+            String eventDateString = EventUtils.convertEventDateToString(mContext, mEventsCursor.getLong(mEventsCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE)));
+            if (isSameDate(eventDateString)) {
+                holder.mEventDateTextView.setVisibility(View.GONE);
+            } else {
+                holder.mEventDateTextView.setText(eventDateString);
+            }
         }
 
     }

@@ -24,14 +24,13 @@ public class EventUtils {
     public static String convertEventDateToString(Context context, long eventDate){
 
         String formattedDate;
-        Calendar calendar = Calendar.getInstance();
-        long currentTimeInMillis = calendar.getTimeInMillis();
-        long timeBeforeEvent = eventDate - currentTimeInMillis;
 
-        if(timeBeforeEvent <= MILLIS_IN_A_DAY){
+        int daysBeforeEvent = getDaysBeforeEvent(eventDate);
+
+        if(daysBeforeEvent == 0){
             // Display the word TODAY
             formattedDate = context.getResources().getString(R.string.today);
-        } else if (timeBeforeEvent > MILLIS_IN_A_DAY && timeBeforeEvent <= MILLIS_IN_TWO_DAYS){
+        } else if (daysBeforeEvent == 1){
             // Display the word TOMORROW
             formattedDate = context.getResources().getString(R.string.tomorrow);
         } else {
@@ -40,6 +39,39 @@ public class EventUtils {
             formattedDate = dateFormat.format(eventDate);
         }
         return formattedDate;
+    }
+
+    /**
+     * Helper method that returns how many days are left until the event
+     * @param eventDate = the date of the event
+     * @return the number of days before the event
+     */
+    public static int getDaysBeforeEvent(long eventDate){
+
+        Calendar calendar = Calendar.getInstance();
+        int currentDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+
+        int daysInCurrentYear;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        if(currentYear % 4 == 0){
+            // Year has 366 days
+            daysInCurrentYear = 366;
+        } else {
+            daysInCurrentYear = 365;
+        }
+
+        calendar.setTimeInMillis(eventDate);
+        int eventDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+
+        int daysBeforeEvent = eventDayOfYear - currentDayOfYear;
+
+        if(daysBeforeEvent < 0){
+            // If the days before the event are negative, then the event is in another year
+            daysBeforeEvent = daysInCurrentYear + eventDayOfYear;
+        }
+
+        return daysBeforeEvent;
     }
 
     /**

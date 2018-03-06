@@ -1,6 +1,5 @@
 package com.example.android.watsnext.Activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -46,6 +45,8 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         setContentView(R.layout.activity_events_list);
         ButterKnife.bind(this);
 
+        //TODO: always query the db in chronologic order
+
         // Setup the toolbar
         toolbar.inflateMenu(R.menu.menu);
         setSupportActionBar(toolbar);
@@ -54,10 +55,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         mAddEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // PLACEHOLDER CODE ----------------------------------------------------------------
-                // addDummyData();
-                // mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
-                // ---------------------------------------------------------------------------------
+
                 Intent intent = new Intent(EventsListActivity.this, AddEventActivity.class);
                 startActivity(intent);
             }
@@ -91,26 +89,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
     }
 
 
-    /**
-     * Helper method that adds dummy data to the database
-     * TODO: must delete before release
-     */
-    private void addDummyData() {
-        int eventType = 2;
-        long eventDate = 975132478;
-        String eventText = "Black Panther Movie";
-        long eventTime = 912738519;
-        int reminderType = 2;
-
-        ContentValues values = new ContentValues();
-        values.put(EventsEntry.COLUMN_EVENT_TYPE, eventType);
-        values.put(EventsEntry.COLUMN_EVENT_DATE, eventDate);
-        values.put(EventsEntry.COLUMN_EVENT_TEXT, eventText);
-        values.put(EventsEntry.COLUMN_EVENT_TIME, eventTime);
-        values.put(EventsEntry.COLUMN_EVENT_REMINDER, reminderType);
-        getContentResolver().insert(EventsEntry.CONTENT_URI, values);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -138,7 +116,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
             @Override
             public void onStartLoading() {
                 //TODO: if nothing is changed, just show data. Save the state of the cursor
-
                 forceLoad();
             }
 
@@ -150,7 +127,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void deliverResult(Cursor data) {
-                //mCursor = data;
+                mCursor = data;
                 super.deliverResult(data);
             }
         };
