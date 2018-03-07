@@ -15,7 +15,7 @@ import java.util.Calendar;
 
 public class EventUtils {
 
-    public static final long MILLIS_IN_A_DAY = 86400000;
+    public static final long MILLIS_IN_A_DAY = DatePickerUtils.MILLIS_IN_A_DAY;
     public static final long MILLIS_IN_TWO_DAYS = MILLIS_IN_A_DAY * 2;
 
     /**
@@ -51,15 +51,8 @@ public class EventUtils {
         Calendar calendar = Calendar.getInstance();
         int currentDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
 
-        int daysInCurrentYear;
         int currentYear = calendar.get(Calendar.YEAR);
-
-        if(currentYear % 4 == 0){
-            // Year has 366 days
-            daysInCurrentYear = 366;
-        } else {
-            daysInCurrentYear = 365;
-        }
+        int daysInCurrentYear = DatePickerUtils.getDaysInCurrentYear(currentYear);
 
         calendar.setTimeInMillis(eventDate);
         int eventDayOfYear = calendar.get(Calendar.DAY_OF_YEAR);

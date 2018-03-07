@@ -11,30 +11,50 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.watsnext.Adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.Utils.DatePickerUtils;
 import com.example.android.watsnext.Utils.EventUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
-
-import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddEventActivity extends AppCompatActivity implements EventTypesAdapter.EventTypeClickHandler{
     @BindView(R.id.add_event_toolbar)
-    Toolbar toolbar;
+            Toolbar toolbar;
     @BindView(R.id.rv_event_types)
-    RecyclerView mEventTypesRecyclerView;
+            RecyclerView mEventTypesRecyclerView;
     @BindView(R.id.button_show_event_types)
-    Button mShowEventsButton;
+            Button mShowEventsButton;
     @BindView(R.id.iv_event_type_expand_arrow)
-    ImageView mEventTypeExpandArrow;
+            ImageView mEventTypeExpandArrow;
     @BindView(R.id.et_event_text)
-    EditText mEventEditText;
+            EditText mEventEditText;
     @BindView(R.id.fab_save_event)
-    FloatingActionButton mSaveEventButton;
+            FloatingActionButton mSaveEventButton;
+    @BindView(R.id.tv_date_picker_day)
+            TextView mDayTextView;
+    @BindView(R.id.tv_date_picker_month)
+            TextView mMonthTextView;
+    @BindView(R.id.tv_date_picker_year)
+            TextView mYearTextView;
+    @BindView(R.id.iv_day_plus_button)
+            ImageView mDayPlusButton;
+    @BindView(R.id.iv_day_minus_button)
+            ImageView mDayMinusButton;
+    @BindView(R.id.iv_month_plus_button)
+            ImageView mMonthPlusButton;
+    @BindView(R.id.iv_month_minus_button)
+            ImageView mMonthMinusButton;
+    @BindView(R.id.iv_year_plus_button)
+            ImageView mYearPlusButton;
+    @BindView(R.id.iv_year_minus_button)
+            ImageView mYearMinusButton;
+
+
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
@@ -50,49 +70,89 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         setContentView(R.layout.activity_add_event);
         ButterKnife.bind(this);
 
-        // Set the event date to be the current date in millis
+        //TODO: add content transitions between activities. when add event fab is pushed, move it to the correct place and morph the icon
+        //TODO: transition between activities should be also morph-ish
 
+        if(getIntent().getExtras() != null){
+            // User clicked on an existing event
+            // TODO: populate the event fields with corresponding data
+            toolbar.setTitle(R.string.edit_event);
+        } else {
+            // User clicked the add event button
+            toolbar.setTitle(R.string.add_event);
 
-        //TODO: when setting date, it also sets time. Needs FIX!
-        //TODO: conversion from date to string is wrong.
+            // Initialize date picker with current date
+            DatePickerUtils.setDatePickerDefaults(mDayTextView, mMonthTextView, mYearTextView);
+        }
 
-        //TODO: this will change if the user clicked add event or edit event
-        toolbar.setTitle("Add Event");
+        View.OnClickListener buttonClickListener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                int buttonId = v.getId();
+                switch(buttonId){
+                    case R.id.button_show_event_types:
+                        if(!eventTypesAreVisible) {
+                            showEventTypes();
+                        } else {
+                            hideEventTypes();
+                        }
+                        break;
+                    case R.id.fab_save_event:
+                        // Gather event data
+                        mEventText = mEventEditText.getText().toString();
+
+                        //TODO: for DEBUG: consider eventDate to be current date and add millisInADAY
+
+                        mEventDate = DatePickerUtils.getDateInMillis();
+                        EventUtils.convertEventDateToString(getApplicationContext(), mEventDate);
+
+                        addEventToDatabase();
+                        finish();
+
+                        //TODO: before adding the event into the db, validate data: check if event date is in future!
+                        break;
+                    case R.id.iv_day_plus_button:
+                        DatePickerUtils.increaseDay(mDayTextView);
+                        break;
+                    case R.id.iv_day_minus_button:
+                        DatePickerUtils.decreaseDay(mDayTextView);
+                        break;
+                    case R.id.iv_month_plus_button:
+                        DatePickerUtils.increaseMonth(mMonthTextView);
+                        break;
+                    case R.id.iv_month_minus_button:
+                        DatePickerUtils.decreaseMonth(mMonthTextView);
+                        break;
+                    case R.id.iv_year_plus_button:
+                        DatePickerUtils.increaseYear(mYearTextView);
+                        break;
+                    case R.id.iv_year_minus_button:
+                        DatePickerUtils.decreaseYear(mYearTextView);
+                        break;
+                }
+            }
+        };
+
+        mDayPlusButton.setOnClickListener(buttonClickListener);
+        mDayMinusButton.setOnClickListener(buttonClickListener);
+        mMonthPlusButton.setOnClickListener(buttonClickListener);
+        mMonthMinusButton.setOnClickListener(buttonClickListener);
+        mYearPlusButton.setOnClickListener(buttonClickListener);
+        mYearMinusButton.setOnClickListener(buttonClickListener);
+        mShowEventsButton.setOnClickListener(buttonClickListener);
+        mSaveEventButton.setOnClickListener(buttonClickListener);
+
         //Set the toolbar
         setSupportActionBar(toolbar);
 
+
+        //TODO: when setting date, it also sets time. Needs FIX!
+
+
         setupEventTypesRecyclerView();
 
-        mShowEventsButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(!eventTypesAreVisible) {
-                    showEventTypes();
-                } else {
-                    hideEventTypes();
-                }
-            }
-        });
+        //UNDO TILL HERE
 
-
-        //TODO: setup the edit text and the save button
-        mSaveEventButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                // Gather event data
-                mEventText = mEventEditText.getText().toString();
-
-                //TODO: for DEBUG: consider eventDate to be current date and add millisInADAY
-                Calendar calendar = Calendar.getInstance();
-                mEventDate = calendar.getTimeInMillis();
-                EventUtils.convertEventDateToString(getApplicationContext(), mEventDate);
-
-                addEventToDatabase();
-                finish();
-
-
-            }
-        });
     }
 
     private void addEventToDatabase(){
@@ -101,7 +161,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
 
         //For testing
-        values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate + EventUtils.MILLIS_IN_TWO_DAYS);
+        values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
