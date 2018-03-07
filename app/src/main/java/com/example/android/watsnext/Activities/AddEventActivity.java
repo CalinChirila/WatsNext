@@ -101,7 +101,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
 
         //For testing
-        values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
+        values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate + EventUtils.MILLIS_IN_TWO_DAYS);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }

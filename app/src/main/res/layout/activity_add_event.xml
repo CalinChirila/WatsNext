@@ -53,12 +53,15 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_event_details_header" />
 
         <include
-            android:id="@+id/include2"
+            android:id="@+id/event_type_drop_down_layout"
             layout="@layout/layout_event_types"
             android:layout_width="@dimen/spinner_width"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view_event_details_header_separator" />
+            app:layout_constraintTop_toTopOf="@+id/view_event_details_header_separator"
+            android:layout_marginLeft="8dp" />
 
         <EditText
             android:id="@+id/et_event_text"
@@ -86,5 +89,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- TODO: Animate this layout to slide down when drop down menu is activated-->
+        <include
+            android:id="@+id/date_picker"
+            layout="@layout/layout_date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/event_type_drop_down_layout"
+            app:layout_constraintStart_toStartOf="@+id/event_type_drop_down_layout"
+            app:layout_constraintTop_toBottomOf="@+id/event_type_drop_down_layout" />
+
+
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

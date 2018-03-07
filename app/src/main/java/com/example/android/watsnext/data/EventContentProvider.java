@@ -64,12 +64,12 @@ public class EventContentProvider extends ContentProvider {
             case EVENTS:
                 cursor = db.query(
                         EventsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
                         null,
                         null,
-                        null,
-                        null,
-                        null,
-                        null
+                        sortOrder
                 );
                 break;
             case EVENT:

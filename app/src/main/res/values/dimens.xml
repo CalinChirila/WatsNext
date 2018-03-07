@@ -2,7 +2,16 @@
 <resources>
     <dimen name="appBarHeight">56dp</dimen>
     <dimen name="statusBarHeight">24dp</dimen>
+
+
+    <!-- Event Type drop down menu -->
     <dimen name="spinner_width">131dp</dimen>
     <dimen name="spinner_height">39dp</dimen>
     <dimen name="spinner_margin">8dp</dimen>
+
+
+    <!-- Date Picker -->
+    <dimen name="date_picker_item_size">40dp</dimen>
+    <dimen name="date_picker_space_between_items">8dp</dimen>
+    <dimen name="date_picker_space_between_button_and_item">8dp</dimen>
 </resources>

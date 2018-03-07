@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <!-- TODO: improve visuals -->
+
+    <TextView
+        android:id="@+id/tv_date_picker_day"
+        android:layout_width="@dimen/date_picker_item_size"
+        android:layout_height="@dimen/date_picker_item_size"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_date_picker_month"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="DD" />
+
+    <TextView
+        android:id="@+id/tv_date_picker_month"
+        android:layout_width="@dimen/date_picker_item_size"
+        android:layout_height="@dimen/date_picker_item_size"
+        android:layout_marginEnd="@dimen/date_picker_space_between_items"
+        android:layout_marginStart="@dimen/date_picker_space_between_items"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_date_picker_year"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_date_picker_day"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="MM" />
+
+    <TextView
+        android:id="@+id/tv_date_picker_year"
+        android:layout_width="@dimen/date_picker_item_size"
+        android:layout_height="@dimen/date_picker_item_size"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_date_picker_month"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="YYYY" />
+
+    <ImageView
+        android:id="@+id/iv_month_plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintBottom_toTopOf="@+id/tv_date_picker_month"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_month"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_month"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_day_plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintBottom_toTopOf="@+id/tv_date_picker_day"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_day"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_day"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_year_plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintBottom_toTopOf="@+id/tv_date_picker_year"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_year"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_year"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_day_minus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_day"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_day"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_picker_day"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageView
+        android:id="@+id/iv_year_minus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_year"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_year"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_picker_year"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageView
+        android:id="@+id/iv_month_minus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/date_picker_space_between_button_and_item"
+        app:layout_constraintEnd_toEndOf="@+id/tv_date_picker_month"
+        app:layout_constraintStart_toStartOf="@+id/tv_date_picker_month"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_picker_month"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@android:color/white"
+        android:layout_marginStart="8dp"
+        android:text="@string/date"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_month_plus_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

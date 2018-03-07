@@ -23,9 +23,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
     private Context mContext;
     private String mComparedDate;
 
-
-
-
     @Override
     public EventsAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the item layout and pass it to the View Holder constructor
