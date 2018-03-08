@@ -1,6 +1,7 @@
 package com.example.android.watsnext.Activities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             ImageView mAmPmPlusButton;
     @BindView(R.id.iv_ampm_minus_button)
             ImageView mAmPmMinusButton;
+    @BindView(R.id.iv_pick_date_button)
+            ImageView mCalendarButton;
 
 
 
@@ -170,6 +173,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                     case R.id.iv_ampm_plus_button:
                         TimePickerUtils.switchAmPm(mAmPmTextView);
                         break;
+                    case R.id.iv_pick_date_button:
+                        Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
+                        startActivity(intent);
                 }
             }
         };
@@ -188,6 +194,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mMinuteMinusButton.setOnClickListener(buttonClickListener);
         mAmPmPlusButton.setOnClickListener(buttonClickListener);
         mAmPmMinusButton.setOnClickListener(buttonClickListener);
+        mCalendarButton.setOnClickListener(buttonClickListener);
 
         //Set the toolbar
         setSupportActionBar(toolbar);
@@ -210,6 +217,19 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        // Save the state here
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        // Restore the state. If there is a bundle from the calendar activity, set date picker with that information
+
     }
 
     @Override

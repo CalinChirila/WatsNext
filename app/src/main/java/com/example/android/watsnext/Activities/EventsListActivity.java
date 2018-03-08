@@ -45,6 +45,8 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         setContentView(R.layout.activity_events_list);
         ButterKnife.bind(this);
 
+        //TODO: improve landscape visuals
+
         // Setup the toolbar
         toolbar.inflateMenu(R.menu.menu);
         setSupportActionBar(toolbar);

@@ -23,7 +23,8 @@
             android:authorities="com.example.android.watsnext.data"
             android:exported="false" />
 
-        <activity android:name=".Activities.AddEventActivity"></activity>
+        <activity android:name=".Activities.AddEventActivity" />
+        <activity android:name=".Activities.CalendarActivity"></activity>
     </application>
 
 </manifest>

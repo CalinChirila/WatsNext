@@ -24,7 +24,10 @@ public class TimePickerUtils {
         } else {
             mTimePickerHour = 1;
         }
-        hourTextView.setText(String.valueOf(mTimePickerHour));
+
+        String hourString = String.valueOf(mTimePickerHour);
+        if(mTimePickerHour < 10) hourString = "0" + hourString;
+        hourTextView.setText(hourString);
     }
 
     /**
@@ -36,7 +39,10 @@ public class TimePickerUtils {
         } else {
             mTimePickerHour = 12;
         }
-        hourTextView.setText(String.valueOf(mTimePickerHour));
+
+        String hourString = String.valueOf(mTimePickerHour);
+        if(mTimePickerHour < 10) hourString = "0" + hourString;
+        hourTextView.setText(hourString);
     }
 
     /**
@@ -48,7 +54,10 @@ public class TimePickerUtils {
         } else {
             mTimePickerMinute = 0;
         }
-        minuteTextView.setText(String.valueOf(mTimePickerMinute));
+
+        String minuteString = String.valueOf(mTimePickerMinute);
+        if(mTimePickerMinute < 10) minuteString = "0" + minuteString;
+        minuteTextView.setText(minuteString);
     }
 
     /**
@@ -60,7 +69,10 @@ public class TimePickerUtils {
         } else {
             mTimePickerMinute = 59;
         }
-        minuteTextView.setText(String.valueOf(mTimePickerMinute));
+
+        String minuteString = String.valueOf(mTimePickerMinute);
+        if(mTimePickerMinute < 10) minuteString = "0" + minuteString;
+        minuteTextView.setText(minuteString);
     }
 
     /**
@@ -111,9 +123,15 @@ public class TimePickerUtils {
         mTimePickerMinute = calendar.get(Calendar.MINUTE);
         mTimePickerAmPm = calendar.get(Calendar.AM_PM);
 
+        String minuteString = String.valueOf(mTimePickerMinute);
+        if(mTimePickerMinute < 10) minuteString = "0" + minuteString;
+        minuteTextView.setText(minuteString);
+        String hourString = String.valueOf(mTimePickerHour);
+        if(mTimePickerHour < 10) hourString = "0" + hourString;
+        hourTextView.setText(hourString);
 
-        hourTextView.setText(String.valueOf(mTimePickerHour));
-        minuteTextView.setText(String.valueOf(mTimePickerMinute));
+        hourTextView.setText(hourString);
+        minuteTextView.setText(minuteString);
         ampmTextView.setText(convertAmPmToString(mTimePickerAmPm));
     }
 
