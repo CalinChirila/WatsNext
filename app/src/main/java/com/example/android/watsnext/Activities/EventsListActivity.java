@@ -55,7 +55,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         mAddEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Start the add event activity
                 Intent intent = new Intent(EventsListActivity.this, AddEventActivity.class);
                 startActivity(intent);
             }

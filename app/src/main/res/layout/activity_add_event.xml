@@ -101,6 +101,16 @@
             app:layout_constraintStart_toStartOf="@+id/event_type_drop_down_layout"
             app:layout_constraintTop_toBottomOf="@+id/event_type_drop_down_layout" />
 
+        <include
+            android:id="@+id/time_picker"
+            layout="@layout/layout_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_event_text" />
+
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

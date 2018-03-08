@@ -17,6 +17,7 @@ import com.example.android.watsnext.Adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.Utils.DatePickerUtils;
 import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.Utils.TimePickerUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import butterknife.BindView;
@@ -53,6 +54,24 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             ImageView mYearPlusButton;
     @BindView(R.id.iv_year_minus_button)
             ImageView mYearMinusButton;
+    @BindView(R.id.tv_time_picker_hour)
+            TextView mHourTextView;
+    @BindView(R.id.tv_time_picker_minute)
+            TextView mMinuteTextView;
+    @BindView(R.id.tv_time_picker_ampm)
+            TextView mAmPmTextView;
+    @BindView(R.id.iv_hour_plus_button)
+            ImageView mHourPlusButton;
+    @BindView(R.id.iv_hour_minus_button)
+            ImageView mHourMinusButton;
+    @BindView(R.id.iv_minute_plus_button)
+            ImageView mMinutePlusButton;
+    @BindView(R.id.iv_minute_minus_button)
+            ImageView mMinuteMinusButton;
+    @BindView(R.id.iv_ampm_plus_button)
+            ImageView mAmPmPlusButton;
+    @BindView(R.id.iv_ampm_minus_button)
+            ImageView mAmPmMinusButton;
 
 
 
@@ -63,12 +82,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private String mEventTypeString;
     private String mEventText;
     private long mEventDate;
+    private long mEventTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         ButterKnife.bind(this);
+
 
         //TODO: add content transitions between activities. when add event fab is pushed, move it to the correct place and morph the icon
         //TODO: transition between activities should be also morph-ish
@@ -83,6 +104,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             // Initialize date picker with current date
             DatePickerUtils.setDatePickerDefaults(mDayTextView, mMonthTextView, mYearTextView);
+
+            // Initialize time picker with current time
+            TimePickerUtils.setTimePickerDefaults(mHourTextView, mMinuteTextView, mAmPmTextView);
         }
 
         View.OnClickListener buttonClickListener = new View.OnClickListener(){
@@ -101,10 +125,11 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         // Gather event data
                         mEventText = mEventEditText.getText().toString();
 
-                        //TODO: for DEBUG: consider eventDate to be current date and add millisInADAY
-
                         mEventDate = DatePickerUtils.getDateInMillis();
                         EventUtils.convertEventDateToString(getApplicationContext(), mEventDate);
+
+                        mEventTime = TimePickerUtils.getTimeInMillis();
+                        EventUtils.convertEventTimeToString(mEventTime);
 
                         addEventToDatabase();
                         finish();
@@ -129,6 +154,22 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                     case R.id.iv_year_minus_button:
                         DatePickerUtils.decreaseYear(mYearTextView);
                         break;
+                    case R.id.iv_hour_plus_button:
+                        TimePickerUtils.increaseHour(mHourTextView);
+                        break;
+                    case R.id.iv_hour_minus_button:
+                        TimePickerUtils.decreaseHour(mHourTextView);
+                        break;
+                    case R.id.iv_minute_plus_button:
+                        TimePickerUtils.increaseMinute(mMinuteTextView);
+                        break;
+                    case R.id.iv_minute_minus_button:
+                        TimePickerUtils.decreaseMinute(mMinuteTextView);
+                        break;
+                    case R.id.iv_ampm_minus_button:
+                    case R.id.iv_ampm_plus_button:
+                        TimePickerUtils.switchAmPm(mAmPmTextView);
+                        break;
                 }
             }
         };
@@ -141,17 +182,21 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mYearMinusButton.setOnClickListener(buttonClickListener);
         mShowEventsButton.setOnClickListener(buttonClickListener);
         mSaveEventButton.setOnClickListener(buttonClickListener);
+        mHourPlusButton.setOnClickListener(buttonClickListener);
+        mHourMinusButton.setOnClickListener(buttonClickListener);
+        mMinutePlusButton.setOnClickListener(buttonClickListener);
+        mMinuteMinusButton.setOnClickListener(buttonClickListener);
+        mAmPmPlusButton.setOnClickListener(buttonClickListener);
+        mAmPmMinusButton.setOnClickListener(buttonClickListener);
 
         //Set the toolbar
         setSupportActionBar(toolbar);
 
 
-        //TODO: when setting date, it also sets time. Needs FIX!
-
 
         setupEventTypesRecyclerView();
 
-        //UNDO TILL HERE
+
 
     }
 
@@ -159,9 +204,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         ContentValues values = new ContentValues();
         values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
-
-        //For testing
         values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
+        values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
+
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }

@@ -85,7 +85,7 @@ public class EventContentProvider extends ContentProvider {
                         newSelectionArgs,
                         null,
                         null,
-                        null
+                        sortOrder
                 );
                 break;
             default:

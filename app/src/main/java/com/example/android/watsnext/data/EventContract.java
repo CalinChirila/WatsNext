@@ -29,6 +29,7 @@ public class EventContract {
         public static final String COLUMN_EVENT_TEXT = "text";
         public static final String COLUMN_EVENT_DATE = "date";
         public static final String COLUMN_EVENT_TIME = "time";
+        public static final String COLUMN_EVENT_DATE_AND_TIME = "dateAndTime";
         public static final String COLUMN_EVENT_LOCATION = "location";
         public static final String COLUMN_EVENT_REPEAT = "repeat";
         public static final String COLUMN_EVENT_REMINDER = "reminder";

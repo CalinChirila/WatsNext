@@ -14,4 +14,11 @@
     <dimen name="date_picker_item_size">40dp</dimen>
     <dimen name="date_picker_space_between_items">8dp</dimen>
     <dimen name="date_picker_space_between_button_and_item">8dp</dimen>
+    <dimen name="date_picker_header_text_size">16sp</dimen>
+
+    <!-- Time Picker -->
+    <dimen name="time_picker_item_size">40dp</dimen>
+    <dimen name="time_picker_space_between_items">8dp</dimen>
+    <dimen name="time_picker_space_between_button_and_item">8dp</dimen>
+    <dimen name="time_picker_header_text_size">16sp</dimen>
 </resources>

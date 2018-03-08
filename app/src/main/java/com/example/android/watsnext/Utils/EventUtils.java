@@ -71,8 +71,32 @@ public class EventUtils {
      * Helper method that converts the event time to a string
      */
     public static String convertEventTimeToString(long eventTime){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-        return timeFormat.format(eventTime);
+        String formattedTime;
+        long eventTimeInMins = eventTime / 60000;
+        int hours =(int) eventTimeInMins / 60;
+        int minutes =(int) eventTimeInMins - (hours * 60);
+
+        String ampm;
+        if(hours > 12){
+            ampm = " pm";
+            hours = hours - 12;
+        } else {
+            ampm = " am";
+        }
+
+        String hoursString = String.valueOf(hours);
+        String minutesString = String.valueOf(minutes);
+        if(hoursString.length() == 1) hoursString = "0" + hoursString;
+        if(minutesString.length() == 1) minutesString = "0" + minutesString;
+
+        formattedTime = hoursString + " : " + minutesString + ampm;
+        return formattedTime;
+
+
+        // BUG: When setting the date to be 12:something am, SimpleDateFormat converts it to pm and viceversa
+//        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", context.getResources().getConfiguration().locale);
+//        eventTime = eventTime - (2 * 60 * 60 * 1000);       //TODO: The code adds 2 hours to set time. This is a temporary fix until I find out where that happens.
+//        return timeFormat.format(eventTime);
     }
 
     /**
