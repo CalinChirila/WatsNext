@@ -206,6 +206,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
         values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
         values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
+        values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, mEventDate + mEventTime);
 
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);

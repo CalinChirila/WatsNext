@@ -14,6 +14,10 @@ public class TimePickerUtils {
     public static int mTimePickerMinute = 0;
     public static int mTimePickerAmPm = 0;      // 0 => am ; 1 => pm
 
+
+    /**
+     * This function will be called by the increase hour button from the add/edit event activity
+     */
     public static void increaseHour(TextView hourTextView){
         if(mTimePickerHour < 12){
             mTimePickerHour = mTimePickerHour + 1;
@@ -23,6 +27,9 @@ public class TimePickerUtils {
         hourTextView.setText(String.valueOf(mTimePickerHour));
     }
 
+    /**
+     * This function will be called by the decrease hour button from the add/edit event activity
+     */
     public static void decreaseHour(TextView hourTextView){
         if(mTimePickerHour > 1){
             mTimePickerHour = mTimePickerHour - 1;
@@ -32,6 +39,9 @@ public class TimePickerUtils {
         hourTextView.setText(String.valueOf(mTimePickerHour));
     }
 
+    /**
+     * This function will be called by the increase minute button from the add/edit event activity
+     */
     public static void increaseMinute(TextView minuteTextView){
         if(mTimePickerMinute < 59){
             mTimePickerMinute = mTimePickerMinute + 1;
@@ -41,6 +51,9 @@ public class TimePickerUtils {
         minuteTextView.setText(String.valueOf(mTimePickerMinute));
     }
 
+    /**
+     * This function will be called by the decrease minute button from the add/edit event activity
+     */
     public static void decreaseMinute(TextView minuteTextView){
         if(mTimePickerMinute > 0){
             mTimePickerMinute = mTimePickerMinute - 1;
@@ -50,6 +63,10 @@ public class TimePickerUtils {
         minuteTextView.setText(String.valueOf(mTimePickerMinute));
     }
 
+    /**
+     * This function will be called when the arrows for switching am / pm are pressed
+     * @param ampmTextView - the TextView to be updated
+     */
     public static void switchAmPm(TextView ampmTextView){
         switch(mTimePickerAmPm){
             case 0:
@@ -65,6 +82,9 @@ public class TimePickerUtils {
         }
     }
 
+    /**
+     * Convert am/pm values from int to string
+     */
     public static String convertAmPmToString(int ampm){
         String ampmString;
         switch(ampm){
@@ -81,17 +101,26 @@ public class TimePickerUtils {
         return ampmString;
     }
 
+    /**
+     * Set the time picker defaults to the current time
+     */
     public static void setTimePickerDefaults(TextView hourTextView, TextView minuteTextView, TextView ampmTextView){
         Calendar calendar = Calendar.getInstance();
         mTimePickerHour = calendar.get(Calendar.HOUR_OF_DAY);
+        if(mTimePickerHour > 12) mTimePickerHour = mTimePickerHour - 12;
         mTimePickerMinute = calendar.get(Calendar.MINUTE);
         mTimePickerAmPm = calendar.get(Calendar.AM_PM);
+
 
         hourTextView.setText(String.valueOf(mTimePickerHour));
         minuteTextView.setText(String.valueOf(mTimePickerMinute));
         ampmTextView.setText(convertAmPmToString(mTimePickerAmPm));
     }
 
+    /**
+     * Convert the time set by the user into milliseconds
+     * @return - time in milliseconds
+     */
     public static long getTimeInMillis(){
         long timeInMillis;
         if(mTimePickerAmPm == 1) mTimePickerHour = mTimePickerHour + 12;
