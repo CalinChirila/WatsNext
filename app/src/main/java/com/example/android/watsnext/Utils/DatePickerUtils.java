@@ -91,6 +91,8 @@ public class DatePickerUtils {
         dayTextView.setText(String.valueOf(mEventDay));
     }
 
+
+
     /**
      * This function will set the display date picker date to the present date
      * @param dayTextView - the day display
@@ -165,6 +167,14 @@ public class DatePickerUtils {
             return 365;
         }
     }
+
+    /**
+     * Setter methods
+     */
+    public static void setEventDay(int day){ mEventDay = day; }
+    public static void setEventMonth(int month){ mEventMonth = month; }
+    public static void setEventYear(int year){ mEventYear = year; }
+
 
     /**
      * Method that returns the date set on the date picker in milliseconds

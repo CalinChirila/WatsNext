@@ -1,16 +1,17 @@
 package com.example.android.watsnext.Activities;
 
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.widget.DatePicker;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.DatePicker;
 
-        import com.example.android.watsnext.R;
+import com.example.android.watsnext.R;
 
-        import java.util.Calendar;
+import java.util.Calendar;
 
-        import butterknife.BindView;
-        import butterknife.ButterKnife;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class CalendarActivity extends AppCompatActivity {
     @BindView(R.id.datePicker)
@@ -36,7 +37,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mYear = year;
-                mMonth = monthOfYear;
+                mMonth = monthOfYear + 1;
                 mDay = dayOfMonth;
 
                 Bundle bundle = new Bundle();
@@ -44,18 +45,11 @@ public class CalendarActivity extends AppCompatActivity {
                 bundle.putInt(KEY_MONTH, mMonth);
                 bundle.putInt(KEY_YEAR, mYear);
 
-                Intent intent = new Intent(CalendarActivity.this, AddEventActivity.class);
-                intent.putExtra(KEY_CALENDAR_BUNDLE, bundle);
-                startActivity(intent);
+                Intent resultIntent = new Intent(CalendarActivity.this, AddEventActivity.class);
+                resultIntent.putExtra(KEY_CALENDAR_BUNDLE, bundle);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         });
     }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        finish();
-    }
-
-
 }

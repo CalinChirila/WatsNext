@@ -1,5 +1,6 @@
 package com.example.android.watsnext.Activities;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,58 +25,57 @@ import com.example.android.watsnext.data.EventContract.EventsEntry;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddEventActivity extends AppCompatActivity implements EventTypesAdapter.EventTypeClickHandler{
+public class AddEventActivity extends AppCompatActivity implements EventTypesAdapter.EventTypeClickHandler {
     @BindView(R.id.add_event_toolbar)
-            Toolbar toolbar;
+    Toolbar toolbar;
     @BindView(R.id.rv_event_types)
-            RecyclerView mEventTypesRecyclerView;
+    RecyclerView mEventTypesRecyclerView;
     @BindView(R.id.button_show_event_types)
-            Button mShowEventsButton;
+    Button mShowEventsButton;
     @BindView(R.id.iv_event_type_expand_arrow)
-            ImageView mEventTypeExpandArrow;
+    ImageView mEventTypeExpandArrow;
     @BindView(R.id.et_event_text)
-            EditText mEventEditText;
+    EditText mEventEditText;
     @BindView(R.id.fab_save_event)
-            FloatingActionButton mSaveEventButton;
+    FloatingActionButton mSaveEventButton;
     @BindView(R.id.tv_date_picker_day)
-            TextView mDayTextView;
+    TextView mDayTextView;
     @BindView(R.id.tv_date_picker_month)
-            TextView mMonthTextView;
+    TextView mMonthTextView;
     @BindView(R.id.tv_date_picker_year)
-            TextView mYearTextView;
+    TextView mYearTextView;
     @BindView(R.id.iv_day_plus_button)
-            ImageView mDayPlusButton;
+    ImageView mDayPlusButton;
     @BindView(R.id.iv_day_minus_button)
-            ImageView mDayMinusButton;
+    ImageView mDayMinusButton;
     @BindView(R.id.iv_month_plus_button)
-            ImageView mMonthPlusButton;
+    ImageView mMonthPlusButton;
     @BindView(R.id.iv_month_minus_button)
-            ImageView mMonthMinusButton;
+    ImageView mMonthMinusButton;
     @BindView(R.id.iv_year_plus_button)
-            ImageView mYearPlusButton;
+    ImageView mYearPlusButton;
     @BindView(R.id.iv_year_minus_button)
-            ImageView mYearMinusButton;
+    ImageView mYearMinusButton;
     @BindView(R.id.tv_time_picker_hour)
-            TextView mHourTextView;
+    TextView mHourTextView;
     @BindView(R.id.tv_time_picker_minute)
-            TextView mMinuteTextView;
+    TextView mMinuteTextView;
     @BindView(R.id.tv_time_picker_ampm)
-            TextView mAmPmTextView;
+    TextView mAmPmTextView;
     @BindView(R.id.iv_hour_plus_button)
-            ImageView mHourPlusButton;
+    ImageView mHourPlusButton;
     @BindView(R.id.iv_hour_minus_button)
-            ImageView mHourMinusButton;
+    ImageView mHourMinusButton;
     @BindView(R.id.iv_minute_plus_button)
-            ImageView mMinutePlusButton;
+    ImageView mMinutePlusButton;
     @BindView(R.id.iv_minute_minus_button)
-            ImageView mMinuteMinusButton;
+    ImageView mMinuteMinusButton;
     @BindView(R.id.iv_ampm_plus_button)
-            ImageView mAmPmPlusButton;
+    ImageView mAmPmPlusButton;
     @BindView(R.id.iv_ampm_minus_button)
-            ImageView mAmPmMinusButton;
+    ImageView mAmPmMinusButton;
     @BindView(R.id.iv_pick_date_button)
-            ImageView mCalendarButton;
-
+    ImageView mCalendarButton;
 
 
     EventTypesAdapter mEventTypesAdapter;
@@ -87,6 +87,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private long mEventDate;
     private long mEventTime;
 
+    public static final int REQUEST_CODE_CALENDAR = 198;
+    private static final String KEY_EVENT_TYPE = "eventType";
+    private static final String KEY_EVENT_TEXT = "eventText";
+    private static final String KEY_EVENT_DATE = "eventDate";
+    private static final String KEY_EVENT_TIME = "eventTime";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +103,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         //TODO: add content transitions between activities. when add event fab is pushed, move it to the correct place and morph the icon
         //TODO: transition between activities should be also morph-ish
 
-        if(getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             // User clicked on an existing event
             // TODO: populate the event fields with corresponding data
             toolbar.setTitle(R.string.edit_event);
@@ -112,13 +118,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             TimePickerUtils.setTimePickerDefaults(mHourTextView, mMinuteTextView, mAmPmTextView);
         }
 
-        View.OnClickListener buttonClickListener = new View.OnClickListener(){
+
+        View.OnClickListener buttonClickListener = new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 int buttonId = v.getId();
-                switch(buttonId){
+                switch (buttonId) {
                     case R.id.button_show_event_types:
-                        if(!eventTypesAreVisible) {
+                        if (!eventTypesAreVisible) {
                             showEventTypes();
                         } else {
                             hideEventTypes();
@@ -174,8 +181,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         TimePickerUtils.switchAmPm(mAmPmTextView);
                         break;
                     case R.id.iv_pick_date_button:
-                        Intent intent = new Intent(AddEventActivity.this, CalendarActivity.class);
-                        startActivity(intent);
+                        Intent calendarIntent = new Intent(AddEventActivity.this, CalendarActivity.class);
+                        startActivityForResult(calendarIntent, REQUEST_CODE_CALENDAR);
                 }
             }
         };
@@ -199,15 +206,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         //Set the toolbar
         setSupportActionBar(toolbar);
 
-
-
-        setupEventTypesRecyclerView();
-
-
-
     }
 
-    private void addEventToDatabase(){
+    private void addEventToDatabase() {
         ContentValues values = new ContentValues();
         values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
@@ -220,16 +221,59 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        // Save the state here
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_EVENT_TYPE, mEventTypeInt);
+        outState.putString(KEY_EVENT_TEXT, mEventText);
+        outState.putLong(KEY_EVENT_DATE, mEventDate);
+        outState.putLong(KEY_EVENT_TIME, mEventTime);
+
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        // Restore the state. If there is a bundle from the calendar activity, set date picker with that information
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mEventTypeInt = savedInstanceState.getInt(KEY_EVENT_TYPE);
+        mEventText = savedInstanceState.getString(KEY_EVENT_TEXT);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Update information with data from calendar if any.
+
+        setupEventTypesRecyclerView();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_CODE_CALENDAR:
+                if(resultCode == Activity.RESULT_OK){
+
+                    Bundle calendarBundle = data.getBundleExtra(CalendarActivity.KEY_CALENDAR_BUNDLE);
+
+                    int day = calendarBundle.getInt(CalendarActivity.KEY_DAY);
+                    int month = calendarBundle.getInt(CalendarActivity.KEY_MONTH);
+                    int year = calendarBundle.getInt(CalendarActivity.KEY_YEAR);
+
+                    String dayString = String.valueOf(day);
+                    String monthString = DatePickerUtils.convertMonthToString(month);
+                    String yearString = String.valueOf(year);
+
+                    DatePickerUtils.setEventDay(day);
+                    DatePickerUtils.setEventMonth(month);
+                    DatePickerUtils.setEventYear(year);
+
+                    mDayTextView.setText(dayString);
+                    mMonthTextView.setText(monthString);
+                    mYearTextView.setText(yearString);
+                }
+                break;
+        }
     }
 
     @Override
@@ -245,7 +289,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     /**
      * Helper method for the setup of the RecyclerView
      */
-    private void setupEventTypesRecyclerView(){
+    private void setupEventTypesRecyclerView() {
         mEventTypesAdapter = new EventTypesAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mEventTypesRecyclerView.setHasFixedSize(true);
@@ -255,7 +299,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     /**
      * Helper method for displaying the event types
      */
-    private void showEventTypes(){
+    private void showEventTypes() {
         // Make the recycler view visible
         mEventTypesRecyclerView.setVisibility(View.VISIBLE);
 
@@ -270,7 +314,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     /**
      * Helper method for hiding the event types
      */
-    private void hideEventTypes(){
+    private void hideEventTypes() {
         mEventTypesRecyclerView.setVisibility(View.GONE);
         eventTypesAreVisible = false;
         mEventTypeExpandArrow.animate().rotationBy(180).setDuration(300).start();
