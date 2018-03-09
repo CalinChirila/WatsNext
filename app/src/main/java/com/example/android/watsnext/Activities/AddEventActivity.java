@@ -36,6 +36,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     ImageView mEventTypeExpandArrow;
     @BindView(R.id.et_event_text)
     EditText mEventEditText;
+    @BindView(R.id.et_event_location)
+    EditText mEventLocationEditText;
     @BindView(R.id.fab_save_event)
     FloatingActionButton mSaveEventButton;
     @BindView(R.id.tv_date_picker_day)
@@ -84,14 +86,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private int mEventTypeInt;
     private String mEventTypeString;
     private String mEventText;
+    private String mEventLocation;
     private long mEventDate;
     private long mEventTime;
 
     public static final int REQUEST_CODE_CALENDAR = 198;
-    private static final String KEY_EVENT_TYPE = "eventType";
-    private static final String KEY_EVENT_TEXT = "eventText";
-    private static final String KEY_EVENT_DATE = "eventDate";
-    private static final String KEY_EVENT_TIME = "eventTime";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +134,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                     case R.id.fab_save_event:
                         // Gather event data
                         mEventText = mEventEditText.getText().toString();
+                        mEventLocation = mEventLocationEditText.getText().toString();
 
                         mEventDate = DatePickerUtils.getDateInMillis();
                         EventUtils.convertEventDateToString(getApplicationContext(), mEventDate);
@@ -215,28 +216,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
         values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
         values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, mEventDate + mEventTime);
+        values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
 
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_EVENT_TYPE, mEventTypeInt);
-        outState.putString(KEY_EVENT_TEXT, mEventText);
-        outState.putLong(KEY_EVENT_DATE, mEventDate);
-        outState.putLong(KEY_EVENT_TIME, mEventTime);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mEventTypeInt = savedInstanceState.getInt(KEY_EVENT_TYPE);
-        mEventText = savedInstanceState.getString(KEY_EVENT_TEXT);
-
-    }
 
     @Override
     public void onResume() {

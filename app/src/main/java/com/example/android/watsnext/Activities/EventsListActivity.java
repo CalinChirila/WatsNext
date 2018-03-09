@@ -121,7 +121,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public Cursor loadInBackground() {
-                //TODO: After implementing time picker, make sort order take time into consideration for events happening on the same day
                 String sortOrder = EventsEntry.COLUMN_EVENT_DATE_AND_TIME + " ASC";
                 mCursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, sortOrder);
                 return mCursor;

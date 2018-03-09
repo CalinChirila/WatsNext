@@ -22,5 +22,6 @@
     <string name="month_format_jan">Jan</string>
     <string name="am">am</string>
     <string name="pm">pm</string>
+    <string name="location">Location</string>
 
 </resources>
