@@ -78,10 +78,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     ImageView mAmPmMinusButton;
     @BindView(R.id.iv_pick_date_button)
     ImageView mCalendarButton;
+    @BindView(R.id.iv_map_button)
+    ImageView mMapButton;
 
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
+
+
 
     private int mEventTypeInt;
     private String mEventTypeString;
@@ -184,6 +188,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                     case R.id.iv_pick_date_button:
                         Intent calendarIntent = new Intent(AddEventActivity.this, CalendarActivity.class);
                         startActivityForResult(calendarIntent, REQUEST_CODE_CALENDAR);
+                        break;
+                    case R.id.iv_map_button:
+                        // TODO: We want the location of the event from the MapsActivity, so change to startActivityForResult
+                        Intent mapIntent = new Intent(AddEventActivity.this, MapsActivity.class);
+                        startActivity(mapIntent);
+                        break;
                 }
             }
         };
@@ -203,6 +213,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mAmPmPlusButton.setOnClickListener(buttonClickListener);
         mAmPmMinusButton.setOnClickListener(buttonClickListener);
         mCalendarButton.setOnClickListener(buttonClickListener);
+        mMapButton.setOnClickListener(buttonClickListener);
 
         //Set the toolbar
         setSupportActionBar(toolbar);
