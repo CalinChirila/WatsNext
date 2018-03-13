@@ -95,6 +95,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private long mEventTime;
 
     public static final int REQUEST_CODE_CALENDAR = 198;
+    public static final int REQUEST_CODE_MAP = 272;
 
 
     @Override
@@ -190,9 +191,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         startActivityForResult(calendarIntent, REQUEST_CODE_CALENDAR);
                         break;
                     case R.id.iv_map_button:
-                        // TODO: We want the location of the event from the MapsActivity, so change to startActivityForResult
                         Intent mapIntent = new Intent(AddEventActivity.this, MapsActivity.class);
-                        startActivity(mapIntent);
+                        startActivityForResult(mapIntent, REQUEST_CODE_MAP);
                         break;
                 }
             }
@@ -267,6 +267,13 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                     mDayTextView.setText(dayString);
                     mMonthTextView.setText(monthString);
                     mYearTextView.setText(yearString);
+                }
+                break;
+            case REQUEST_CODE_MAP:
+                // Set the location edit text with the obtained address
+                if(resultCode == Activity.RESULT_OK){
+                    mEventLocation = data.getStringExtra(MapsActivity.EXTRA_ADDRESS);
+                    mEventLocationEditText.setText(mEventLocation);
                 }
                 break;
         }
