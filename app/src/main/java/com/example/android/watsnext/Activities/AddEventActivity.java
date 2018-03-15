@@ -19,8 +19,12 @@ import com.example.android.watsnext.Adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.Utils.DatePickerUtils;
 import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.Utils.RepeaterTextView;
 import com.example.android.watsnext.Utils.TimePickerUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,6 +151,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventTime = TimePickerUtils.getTimeInMillis();
                         EventUtils.convertEventTimeToString(mEventTime);
 
+                        setupRepeatedEvents();
+
                         addEventToDatabase();
                         finish();
 
@@ -220,6 +226,55 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     }
 
+
+    /**
+     * Method for setting up the event that the user chose to repeat on certain days
+     */
+    private void setupRepeatedEvents(){
+        ArrayList<Integer> eventRepeats = RepeaterTextView.getIndicesOfRepeatDays();
+
+        // If the event doesn't repeat, exit early
+        if(eventRepeats.size() == 0) return;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mEventDate);
+        int eventDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 2;
+
+        long repeatDate;
+
+        // For every ticked box in the Repeat section, add another event with the corresponding date
+        for(int i = 0; i < eventRepeats.size(); i ++){
+            int dayOfWeekOfRepeatedEvent = eventRepeats.get(i);
+
+            int numberOfDaysUntilEventRepeats = dayOfWeekOfRepeatedEvent - eventDayOfWeek;
+            if(numberOfDaysUntilEventRepeats <= 0) numberOfDaysUntilEventRepeats = 7 + numberOfDaysUntilEventRepeats;
+
+            repeatDate = mEventDate + (numberOfDaysUntilEventRepeats * DatePickerUtils.MILLIS_IN_A_DAY);
+
+            EventUtils.convertEventDateToString(getApplicationContext(), repeatDate);
+            addRepeatedEventToDatabase(repeatDate);
+        }
+    }
+
+    /**
+     * Add copies of the original event according to the repeat options
+     * @param repeatDate - the date at which the event will repeat
+     */
+    private void addRepeatedEventToDatabase(long repeatDate){
+        ContentValues values = new ContentValues();
+        values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);
+        values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
+        values.put(EventsEntry.COLUMN_EVENT_DATE, repeatDate);
+        values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
+        values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, repeatDate + mEventTime);
+        values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
+
+        getContentResolver().insert(EventsEntry.CONTENT_URI, values);
+    }
+
+    /**
+     * Add the event set up by the user to the database
+     */
     private void addEventToDatabase() {
         ContentValues values = new ContentValues();
         values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);

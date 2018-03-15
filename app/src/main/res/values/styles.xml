@@ -10,4 +10,12 @@
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
+    <!-- Repeater Text View style -->
+    <style name="RepeaterItemStyle" parent="AppTheme">
+        <item name="android:layout_width">@dimen/repeater_item_size</item>
+        <item name="android:layout_height">@dimen/repeater_item_size</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

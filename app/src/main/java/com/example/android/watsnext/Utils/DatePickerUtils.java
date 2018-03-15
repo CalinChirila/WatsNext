@@ -33,6 +33,7 @@ public class DatePickerUtils {
             mEventMonth = 1;
         }
         monthTextView.setText(convertMonthToString(mEventMonth));
+
     }
 
     /**
