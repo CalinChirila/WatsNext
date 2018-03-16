@@ -10,12 +10,98 @@
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
-    <!-- Repeater Text View style -->
+    <!-- Floating Action Buttons-->
+    <style name="FloatingActionButtonStyle" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/fab_bottom_margin</item>
+    </style>
+
+    <!-- Picker Layout Style -->
+    <style name="PickerLayoutStyle" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/picker_layout_start_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/picker_layout_start_margin</item>
+        <item name="android:layout_marginTop">@dimen/picker_layout_top_margin</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/picker_layout_end_margin</item>
+        <item name="android:layout_marginRight">@dimen/picker_layout_end_margin</item>
+    </style>
+
+    <!-- Picker Arrows style-->
+    <style name="PickerArrowStyle" parent="AppTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:padding">@dimen/date_picker_space_between_button_and_item</item>
+    </style>
+
+    <!-- Picker Item style -->
+    <style name="PickerItemStyle" parent="AppTheme">
+        <item name="android:layout_width">@dimen/date_picker_item_size</item>
+        <item name="android:layout_height">@dimen/date_picker_item_size</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Repeater TextView style -->
     <style name="RepeaterItemStyle" parent="AppTheme">
         <item name="android:layout_width">@dimen/repeater_item_size</item>
         <item name="android:layout_height">@dimen/repeater_item_size</item>
         <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:layout_marginTop">@dimen/repeater_top_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/repeater_start_margin</item>
+        <item name="android:layout_marginLeft">@dimen/repeater_start_margin</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Add Event TextViews style -->
+    <style name="AddEventTextViewsStyle" parent="AppTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/text_views_text_size</item>
+    </style>
+
+    <!-- Add Event Header TextView style -->
+    <style name="AddEventHeaderTextViewStyle" parent="AppTheme">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/header_text_view_width</item>
+        <item name="android:layout_marginTop">@dimen/header_top_margin</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/header_text_size</item>
+    </style>
+
+    <!-- Add Event Header Separator View style -->
+    <style name="AddEventHeaderSeparatorViewStyle" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/separator_stroke_width</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginLeft">@dimen/separator_lateral_margin</item>
+        <item name="android:layout_marginRight">@dimen/separator_lateral_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/separator_lateral_margin</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/separator_lateral_margin</item>
+    </style>
+
+    <!-- Reminder Radio Group style -->
+    <style name="EventReminderRadioGroupStyle" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/radio_group_lateral_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/radio_group_lateral_margin</item>
+    </style>
+
+    <!-- Reminder Radio Button style -->
+    <style name="EventReminderRadioButtonStyle" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingLeft">@dimen/radio_button_lateral_padding</item>
+        <item name="android:paddingRight">@dimen/radio_button_lateral_padding</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">@dimen/radio_button_lateral_padding</item>
+        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">@dimen/radio_button_lateral_padding</item>
     </style>
 
 </resources>

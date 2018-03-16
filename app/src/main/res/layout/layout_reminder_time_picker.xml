@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <!-- TODO: improve visuals -->
+
+    <TextView
+        android:id="@+id/tv_reminder_time_picker_day"
+        style="@style/PickerItemStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/days" />
+
+    <TextView
+        android:id="@+id/tv_reminder_time_picker_hour"
+        style="@style/PickerItemStyle"
+        android:layout_marginEnd="@dimen/date_picker_space_between_items"
+        android:layout_marginStart="@dimen/date_picker_space_between_items"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_reminder_time_picker_minutes"
+        app:layout_constraintStart_toEndOf="@+id/tv_reminder_time_picker_day"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/hours" />
+
+    <TextView
+        android:id="@+id/tv_reminder_time_picker_minutes"
+        style="@style/PickerItemStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/mins" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_hours_plus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_increase_reminder_hours_before_event"
+        app:layout_constraintBottom_toTopOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_hour"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_days_plus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_increase_reminder_days_before_event"
+        app:layout_constraintBottom_toTopOf="@+id/tv_reminder_time_picker_day"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_day"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_day"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_minutes_plus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_increase_reminder_minutes_before_event"
+        app:layout_constraintBottom_toTopOf="@+id/tv_reminder_time_picker_minutes"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_minutes"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_minutes"
+        app:srcCompat="@android:drawable/arrow_up_float" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_days_minus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_decrease_reminder_days_before_event"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_day"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_day"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminder_time_picker_day"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_minutes_minus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_decrease_reminder_minutes_before_event"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_minutes"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_minutes"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminder_time_picker_minutes"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageView
+        android:id="@+id/iv_reminder_hours_minus_button"
+        style="@style/PickerArrowStyle"
+        android:contentDescription="@string/content_description_decrease_reminder_hours_before_event"
+        app:layout_constraintEnd_toEndOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintStart_toStartOf="@+id/tv_reminder_time_picker_hour"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminder_time_picker_hour"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+</android.support.constraint.ConstraintLayout>

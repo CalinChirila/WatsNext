@@ -10,12 +10,7 @@
 
     <TextView
         android:id="@+id/tv_time_picker_hour"
-        android:layout_width="@dimen/time_picker_item_size"
-        android:layout_height="@dimen/time_picker_item_size"
-        android:background="@android:color/darker_gray"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
+        style="@style/PickerItemStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_time_picker_minute"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -25,14 +20,9 @@
 
     <TextView
         android:id="@+id/tv_time_picker_minute"
-        android:layout_width="@dimen/time_picker_item_size"
-        android:layout_height="@dimen/time_picker_item_size"
+        style="@style/PickerItemStyle"
         android:layout_marginEnd="@dimen/time_picker_space_between_items"
         android:layout_marginStart="@dimen/time_picker_space_between_items"
-        android:background="@android:color/darker_gray"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_time_picker_ampm"
         app:layout_constraintStart_toEndOf="@+id/tv_time_picker_hour"
@@ -41,12 +31,7 @@
 
     <TextView
         android:id="@+id/tv_time_picker_ampm"
-        android:layout_width="@dimen/time_picker_item_size"
-        android:layout_height="@dimen/time_picker_item_size"
-        android:background="@android:color/darker_gray"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
+        style="@style/PickerItemStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_time_picker_minute"
@@ -55,63 +40,57 @@
 
     <ImageView
         android:id="@+id/iv_minute_plus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintBottom_toTopOf="@+id/tv_time_picker_minute"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_minute"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_minute"
-        app:srcCompat="@android:drawable/arrow_up_float" />
+        app:srcCompat="@android:drawable/arrow_up_float"
+        android:contentDescription="@string/content_description_next_minute" />
 
     <ImageView
         android:id="@+id/iv_hour_plus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintBottom_toTopOf="@+id/tv_time_picker_hour"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_hour"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_hour"
-        app:srcCompat="@android:drawable/arrow_up_float" />
+        app:srcCompat="@android:drawable/arrow_up_float"
+        android:contentDescription="@string/content_description_next_hour" />
 
     <ImageView
         android:id="@+id/iv_ampm_plus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintBottom_toTopOf="@+id/tv_time_picker_ampm"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_ampm"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_ampm"
-        app:srcCompat="@android:drawable/arrow_up_float" />
+        app:srcCompat="@android:drawable/arrow_up_float"
+        android:contentDescription="@string/content_description_next_am_pm" />
 
     <ImageView
         android:id="@+id/iv_hour_minus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_hour"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_hour"
         app:layout_constraintTop_toBottomOf="@+id/tv_time_picker_hour"
-        app:srcCompat="@android:drawable/arrow_down_float" />
+        app:srcCompat="@android:drawable/arrow_down_float"
+        android:contentDescription="@string/content_description_previous_hour" />
 
     <ImageView
         android:id="@+id/iv_ampm_minus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_ampm"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_ampm"
         app:layout_constraintTop_toBottomOf="@+id/tv_time_picker_ampm"
-        app:srcCompat="@android:drawable/arrow_down_float" />
+        app:srcCompat="@android:drawable/arrow_down_float"
+        android:contentDescription="@string/content_description_previous_am_pm" />
 
     <ImageView
         android:id="@+id/iv_minute_minus_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/time_picker_space_between_button_and_item"
+        style="@style/PickerArrowStyle"
         app:layout_constraintEnd_toEndOf="@+id/tv_time_picker_minute"
         app:layout_constraintStart_toStartOf="@+id/tv_time_picker_minute"
         app:layout_constraintTop_toBottomOf="@+id/tv_time_picker_minute"
-        app:srcCompat="@android:drawable/arrow_down_float" />
+        app:srcCompat="@android:drawable/arrow_down_float"
+        android:contentDescription="@string/content_description_previous_minute" />
 
     <TextView
         android:id="@+id/tv_time"

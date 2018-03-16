@@ -11,7 +11,6 @@
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_monday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginTop="8dp"
         android:text="M"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
@@ -19,72 +18,50 @@
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_tuesday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="T"
         app:layout_constraintStart_toEndOf="@+id/repeater_monday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_wednesday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="W"
         app:layout_constraintStart_toEndOf="@+id/repeater_tuesday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_thursday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="T"
         app:layout_constraintStart_toEndOf="@+id/repeater_wednesday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_friday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="F"
         app:layout_constraintStart_toEndOf="@+id/repeater_thursday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_saturday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="S"
         app:layout_constraintStart_toEndOf="@+id/repeater_friday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <com.example.android.watsnext.Utils.RepeaterTextView
         android:id="@+id/repeater_sunday"
         style="@style/RepeaterItemStyle"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="S"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/repeater_saturday"
-        app:layout_constraintTop_toBottomOf="@+id/repeater_header"
-        android:layout_marginLeft="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
     <TextView
         android:id="@+id/repeater_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/AddEventTextViewsStyle"
         android:text="@string/repeater_header"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/repeater_header_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

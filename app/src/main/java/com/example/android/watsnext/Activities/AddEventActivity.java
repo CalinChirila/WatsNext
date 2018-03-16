@@ -157,6 +157,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         finish();
 
                         //TODO: before adding the event into the db, validate data: check if event date is in future!
+                        //TODO: The list of events will need to be updated with new data every day at midnight!
                         break;
                     case R.id.iv_day_plus_button:
                         DatePickerUtils.increaseDay(mDayTextView);

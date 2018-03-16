@@ -3,26 +3,57 @@
     <dimen name="appBarHeight">56dp</dimen>
     <dimen name="statusBarHeight">24dp</dimen>
 
-
     <!-- Event Type drop down menu -->
     <dimen name="spinner_width">131dp</dimen>
     <dimen name="spinner_height">39dp</dimen>
     <dimen name="spinner_margin">8dp</dimen>
 
+    <!-- Add Event Header -->
+    <dimen name="header_top_margin">16dp</dimen>
+    <dimen name="header_text_view_width">0dp</dimen>
+    <dimen name="separator_stroke_width">1dp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+    <dimen name="separator_lateral_margin">8dp</dimen>
+
+    <!-- Event Text -->
+    <dimen name="event_text_end_margin">8dp</dimen>
+    <dimen name="event_text_top_margin">8dp</dimen>
+
+    <!-- Floating Action Button -->
+    <dimen name="fab_bottom_margin">8dp</dimen>
+
+    <!-- Picker Layouts -->
+    <dimen name="picker_layout_start_margin">8dp</dimen>
+    <dimen name="picker_layout_end_margin">8dp</dimen>
+    <dimen name="picker_layout_top_margin">12dp</dimen>
+    <dimen name="picker_text_bottom_margin">24dp</dimen>
 
     <!-- Date Picker -->
     <dimen name="date_picker_item_size">40dp</dimen>
     <dimen name="date_picker_space_between_items">8dp</dimen>
     <dimen name="date_picker_space_between_button_and_item">8dp</dimen>
-    <dimen name="date_picker_header_text_size">16sp</dimen>
 
     <!-- Time Picker -->
     <dimen name="time_picker_item_size">40dp</dimen>
     <dimen name="time_picker_space_between_items">8dp</dimen>
     <dimen name="time_picker_space_between_button_and_item">8dp</dimen>
-    <dimen name="time_picker_header_text_size">16sp</dimen>
+
+    <!-- Event Location Text -->
+    <dimen name="event_location_EditText_width">300dp</dimen>
+    <dimen name="event_location_end_margin">8dp</dimen>
 
     <!-- Repeater -->
     <dimen name="repeater_item_size">32dp</dimen>
-    <dimen name="repeater_header_text_size">16sp</dimen>
+    <dimen name="repeater_top_margin">8dp</dimen>
+    <dimen name="repeater_start_margin">8dp</dimen>
+
+    <!-- Add Event TextViews -->
+    <dimen name="text_views_text_size">16sp</dimen>
+    <dimen name="text_views_start_margin">8dp</dimen>
+
+    <!-- Reminder Radio Group -->
+    <dimen name="radio_group_lateral_margin">8dp</dimen>
+
+    <!-- Reminder Radio Button -->
+    <dimen name="radio_button_lateral_padding">8dp</dimen>
 </resources>

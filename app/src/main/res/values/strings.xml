@@ -26,5 +26,34 @@
     <string name="title_activity_maps">Map</string>
     <string name="save_location">Save Location</string>
     <string name="repeater_header">Repeat</string>
+    <string name="content_description_next_month">Next Month</string>
+    <string name="content_description_next_day">Next Day</string>
+    <string name="content_description_next_year">Next Year</string>
+    <string name="content_description_previous_day">Previous Day</string>
+    <string name="content_description_previous_year">Previous Year</string>
+    <string name="content_description_previous_month">Previous Month</string>
+    <string name="content_description_next_minute">Next Minute</string>
+    <string name="content_description_next_hour">Next Hour</string>
+    <string name="content_description_next_am_pm">Next Am/Pm</string>
+    <string name="content_description_previous_hour">Previous Hour</string>
+    <string name="content_description_previous_am_pm">Previous Am/Pm</string>
+    <string name="content_description_previous_minute">Previous Minute</string>
+    <string name="reminder_type">Reminder: </string>
+    <string name="no_reminder">No reminder</string>
+    <string name="reminder">Reminder</string>
+    <string name="notification">Notification</string>
+    <string name="alarm">Alarm</string>
+    <string name="content_description_launch_google_maps">Launch Google Maps</string>
+    <string name="content_description_open_calendar">Open Calendar</string>
+    <string name="content_description_increase_reminder_days_before_event">Increase reminder days before event</string>
+    <string name="content_description_increase_reminder_minutes_before_event">Increase reminder minutes before event</string>
+    <string name="content_description_increase_reminder_hours_before_event">Increase reminder hours before event</string>
+    <string name="content_description_decrease_reminder_days_before_event">Decrease reminder days before event</string>
+    <string name="content_description_decrease_reminder_minutes_before_event">Decrease reminder minutes before event</string>
+    <string name="content_description_decrease_reminder_hours_before_event">Decrease reminder hours before event</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="mins">Mins</string>
+    <string name="reminder_text_before_the_event">before the event</string>
 
 </resources>

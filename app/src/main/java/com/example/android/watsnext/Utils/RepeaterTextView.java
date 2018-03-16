@@ -1,7 +1,6 @@
 package com.example.android.watsnext.Utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -83,7 +82,7 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
         } else {
 
             // Add repeated event
-            v.setBackgroundColor(Color.RED);
+            v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             isSelected = true;
 
         }
