@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.android.watsnext.Adapters.EventTypesAdapter;
@@ -84,6 +86,16 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     ImageView mCalendarButton;
     @BindView(R.id.iv_map_button)
     ImageView mMapButton;
+    @BindView(R.id.rb_noReminder)
+    RadioButton mNoReminderButton;
+    @BindView(R.id.rb_notification)
+    RadioButton mNotificationReminderButton;
+    @BindView(R.id.rb_alarm)
+    RadioButton mAlarmNotificationButton;
+    @BindView(R.id.reminder_time_picker_layout)
+    ConstraintLayout mReminderTimePickerLayout;
+    @BindView(R.id.tv_reminder_text)
+    TextView mReminderTextView;
 
 
     EventTypesAdapter mEventTypesAdapter;
@@ -201,6 +213,25 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         Intent mapIntent = new Intent(AddEventActivity.this, MapsActivity.class);
                         startActivityForResult(mapIntent, REQUEST_CODE_MAP);
                         break;
+                    case R.id.rb_noReminder:
+                        // If the user chooses to have no reminder, hide the reminder time picker layout
+                        if(mReminderTimePickerLayout.getVisibility() == View.VISIBLE) {
+                            mReminderTimePickerLayout.setVisibility(View.GONE);
+                            mReminderTextView.setVisibility(View.GONE);
+                        }
+                        break;
+                    case R.id.rb_notification:
+                        if(mReminderTimePickerLayout.getVisibility() == View.GONE) {
+                            mReminderTimePickerLayout.setVisibility(View.VISIBLE);
+                            mReminderTextView.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case R.id.rb_alarm:
+                        if(mReminderTimePickerLayout.getVisibility() == View.GONE) {
+                            mReminderTimePickerLayout.setVisibility(View.VISIBLE);
+                            mReminderTextView.setVisibility(View.VISIBLE);
+                        }
+                        break;
                 }
             }
         };
@@ -221,6 +252,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mAmPmMinusButton.setOnClickListener(buttonClickListener);
         mCalendarButton.setOnClickListener(buttonClickListener);
         mMapButton.setOnClickListener(buttonClickListener);
+        mNoReminderButton.setOnClickListener(buttonClickListener);
+        mNotificationReminderButton.setOnClickListener(buttonClickListener);
+        mAlarmNotificationButton.setOnClickListener(buttonClickListener);
 
         //Set the toolbar
         setSupportActionBar(toolbar);
@@ -334,6 +368,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                 break;
         }
     }
+
+    //TODO: add functionality of the reminder
 
     @Override
     public void onEventTypeClick(int position) {
