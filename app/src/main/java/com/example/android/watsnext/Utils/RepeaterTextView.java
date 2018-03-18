@@ -16,7 +16,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
 
     private int mIndex;
 
-
     public static boolean[] repeaterArray = new boolean[7];
 
     private boolean isSelected = false;
@@ -41,9 +40,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
         this.setOnClickListener(this);
         assignIndexToRepeaterView(this.getId());
     }
-
-
-
 
     private void assignIndexToRepeaterView(int viewID){
         switch(viewID){
@@ -94,7 +90,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
     //TODO Create a function updateEvents that will:
     // 1) Reschedule repeated events
     // 2) Remove past events
-
 
 
     public static ArrayList<Integer> getIndicesOfRepeatDays(){

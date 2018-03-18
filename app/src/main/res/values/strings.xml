@@ -53,7 +53,7 @@
     <string name="content_description_decrease_reminder_hours_before_event">Decrease reminder hours before event</string>
     <string name="days">Days</string>
     <string name="hours">Hours</string>
-    <string name="mins">Mins</string>
+    <string name="mins">Min</string>
     <string name="reminder_text_before_the_event">before the event</string>
 
 </resources>

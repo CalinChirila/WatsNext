@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.example.android.watsnext.Adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.Utils.DatePickerUtils;
 import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.Utils.Reminder;
 import com.example.android.watsnext.Utils.RepeaterTextView;
 import com.example.android.watsnext.Utils.TimePickerUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
@@ -96,11 +98,28 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     ConstraintLayout mReminderTimePickerLayout;
     @BindView(R.id.tv_reminder_text)
     TextView mReminderTextView;
+    @BindView(R.id.iv_reminder_days_plus_button)
+    ImageView mReminderDaysPlusButton;
+    @BindView(R.id.iv_reminder_days_minus_button)
+    ImageView mReminderDaysMinusButton;
+    @BindView(R.id.iv_reminder_hours_plus_button)
+    ImageView mReminderHoursPlusButton;
+    @BindView(R.id.iv_reminder_hours_minus_button)
+    ImageView mReminderHoursMinusButton;
+    @BindView(R.id.iv_reminder_minutes_plus_button)
+    ImageView mReminderMinutesPlusButton;
+    @BindView(R.id.iv_reminder_minutes_minus_button)
+    ImageView mReminderMinutesMinusButton;
+    @BindView(R.id.tv_reminder_time_picker_day)
+    TextView mReminderDayTextView;
+    @BindView(R.id.tv_reminder_time_picker_hour)
+    TextView mReminderHourTextView;
+    @BindView(R.id.tv_reminder_time_picker_minutes)
+    TextView mReminderMinuteTextView;
 
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
-
 
 
     private int mEventTypeInt;
@@ -109,6 +128,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private String mEventLocation;
     private long mEventDate;
     private long mEventTime;
+    private long mEventDateAndTime;
+    private int mEventReminderType = 0; // 0 => no reminder, 1 => notification; 2 => alarm
+    private Reminder mReminder;
+    private long mEventReminderTime;
 
     public static final int REQUEST_CODE_CALENDAR = 198;
     public static final int REQUEST_CODE_MAP = 272;
@@ -163,8 +186,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventTime = TimePickerUtils.getTimeInMillis();
                         EventUtils.convertEventTimeToString(mEventTime);
 
-                        setupRepeatedEvents();
+                        mEventDateAndTime = mEventDate + mEventTime;
 
+                        setupRepeatedEvents();
+                        setupEventReminder();
                         addEventToDatabase();
                         finish();
 
@@ -213,24 +238,52 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         Intent mapIntent = new Intent(AddEventActivity.this, MapsActivity.class);
                         startActivityForResult(mapIntent, REQUEST_CODE_MAP);
                         break;
+                    case R.id.iv_reminder_days_plus_button:
+                        Reminder.increaseReminderDays(mReminderDayTextView);
+                        break;
+                    case R.id.iv_reminder_days_minus_button:
+                        Reminder.decreaseReminderDays(mReminderDayTextView);
+                        break;
+                    case R.id.iv_reminder_hours_plus_button:
+                        Reminder.increaseReminderHours(mReminderHourTextView);
+                        break;
+                    case R.id.iv_reminder_hours_minus_button:
+                        Reminder.decreaseReminderHours(mReminderHourTextView);
+                        break;
+                    case R.id.iv_reminder_minutes_plus_button:
+                        Reminder.increaseReminderMinutes(mReminderMinuteTextView);
+                        break;
+                    case R.id.iv_reminder_minutes_minus_button:
+                        Reminder.decreaseReminderMinutes(mReminderMinuteTextView);
+                        break;
                     case R.id.rb_noReminder:
                         // If the user chooses to have no reminder, hide the reminder time picker layout
-                        if(mReminderTimePickerLayout.getVisibility() == View.VISIBLE) {
+                        //TODO: add animations for reminder options
+                        if (mReminderTimePickerLayout.getVisibility() == View.VISIBLE) {
                             mReminderTimePickerLayout.setVisibility(View.GONE);
                             mReminderTextView.setVisibility(View.GONE);
                         }
+
+                        mEventReminderType = 0;
+
                         break;
                     case R.id.rb_notification:
-                        if(mReminderTimePickerLayout.getVisibility() == View.GONE) {
+                        if (mReminderTimePickerLayout.getVisibility() == View.GONE) {
                             mReminderTimePickerLayout.setVisibility(View.VISIBLE);
                             mReminderTextView.setVisibility(View.VISIBLE);
                         }
+
+                        mEventReminderType = 1;
+
                         break;
                     case R.id.rb_alarm:
-                        if(mReminderTimePickerLayout.getVisibility() == View.GONE) {
+                        if (mReminderTimePickerLayout.getVisibility() == View.GONE) {
                             mReminderTimePickerLayout.setVisibility(View.VISIBLE);
                             mReminderTextView.setVisibility(View.VISIBLE);
                         }
+
+                        mEventReminderType = 2;
+
                         break;
                 }
             }
@@ -252,24 +305,65 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mAmPmMinusButton.setOnClickListener(buttonClickListener);
         mCalendarButton.setOnClickListener(buttonClickListener);
         mMapButton.setOnClickListener(buttonClickListener);
+        mReminderDaysPlusButton.setOnClickListener(buttonClickListener);
+        mReminderDaysMinusButton.setOnClickListener(buttonClickListener);
+        mReminderHoursPlusButton.setOnClickListener(buttonClickListener);
+        mReminderHoursMinusButton.setOnClickListener(buttonClickListener);
+        mReminderMinutesPlusButton.setOnClickListener(buttonClickListener);
+        mReminderMinutesMinusButton.setOnClickListener(buttonClickListener);
         mNoReminderButton.setOnClickListener(buttonClickListener);
         mNotificationReminderButton.setOnClickListener(buttonClickListener);
         mAlarmNotificationButton.setOnClickListener(buttonClickListener);
+
 
         //Set the toolbar
         setSupportActionBar(toolbar);
 
     }
 
+    private void setupEventReminder(){
+        mReminder = new Reminder(mEventReminderType, mEventDateAndTime);
+
+
+        int reminderDays;
+        int reminderHours;
+        int reminderMinutes;
+
+        if(TextUtils.isEmpty(mReminderDayTextView.getText())){
+            reminderDays = 0;
+        } else {
+            reminderDays = Integer.parseInt(mReminderDayTextView.getText().toString());
+        }
+
+        if(TextUtils.isEmpty(mReminderHourTextView.getText())){
+            reminderHours = 0;
+        } else {
+            reminderHours = Integer.parseInt(mReminderHourTextView.getText().toString());
+        }
+
+        if(TextUtils.isEmpty(mReminderMinuteTextView.getText())){
+            reminderMinutes = 0;
+        } else {
+            reminderMinutes = Integer.parseInt(mReminderMinuteTextView.getText().toString());
+        }
+
+        mReminder.setReminderDays(reminderDays);
+        mReminder.setReminderHours(reminderHours);
+        mReminder.setReminderMinutes(reminderMinutes);
+
+        mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
+
+        mReminder.initReminder(getApplicationContext());
+    }
 
     /**
      * Method for setting up the event that the user chose to repeat on certain days
      */
-    private void setupRepeatedEvents(){
+    private void setupRepeatedEvents() {
         ArrayList<Integer> eventRepeats = RepeaterTextView.getIndicesOfRepeatDays();
 
         // If the event doesn't repeat, exit early
-        if(eventRepeats.size() == 0) return;
+        if (eventRepeats.size() == 0) return;
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mEventDate);
@@ -278,11 +372,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         long repeatDate;
 
         // For every ticked box in the Repeat section, add another event with the corresponding date
-        for(int i = 0; i < eventRepeats.size(); i ++){
+        for (int i = 0; i < eventRepeats.size(); i++) {
             int dayOfWeekOfRepeatedEvent = eventRepeats.get(i);
 
             int numberOfDaysUntilEventRepeats = dayOfWeekOfRepeatedEvent - eventDayOfWeek;
-            if(numberOfDaysUntilEventRepeats <= 0) numberOfDaysUntilEventRepeats = 7 + numberOfDaysUntilEventRepeats;
+            if (numberOfDaysUntilEventRepeats <= 0)
+                numberOfDaysUntilEventRepeats = 7 + numberOfDaysUntilEventRepeats;
 
             repeatDate = mEventDate + (numberOfDaysUntilEventRepeats * DatePickerUtils.MILLIS_IN_A_DAY);
 
@@ -293,9 +388,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     /**
      * Add copies of the original event according to the repeat options
+     *
      * @param repeatDate - the date at which the event will repeat
      */
-    private void addRepeatedEventToDatabase(long repeatDate){
+    private void addRepeatedEventToDatabase(long repeatDate) {
         ContentValues values = new ContentValues();
         values.put(EventsEntry.COLUMN_EVENT_TYPE, mEventTypeInt);
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
@@ -303,6 +399,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
         values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, repeatDate + mEventTime);
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
+        values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
+        values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
@@ -316,9 +414,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_TEXT, mEventText);
         values.put(EventsEntry.COLUMN_EVENT_DATE, mEventDate);
         values.put(EventsEntry.COLUMN_EVENT_TIME, mEventTime);
-        values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, mEventDate + mEventTime);
+        values.put(EventsEntry.COLUMN_EVENT_DATE_AND_TIME, mEventDateAndTime);
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
-
+        values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
+        values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
@@ -336,9 +435,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode){
+        switch (requestCode) {
             case REQUEST_CODE_CALENDAR:
-                if(resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
 
                     Bundle calendarBundle = data.getBundleExtra(CalendarActivity.KEY_CALENDAR_BUNDLE);
 
@@ -361,7 +460,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                 break;
             case REQUEST_CODE_MAP:
                 // Set the location edit text with the obtained address
-                if(resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     mEventLocation = data.getStringExtra(MapsActivity.EXTRA_ADDRESS);
                     mEventLocationEditText.setText(mEventLocation);
                 }
@@ -369,7 +468,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         }
     }
 
-    //TODO: add functionality of the reminder
 
     @Override
     public void onEventTypeClick(int position) {
