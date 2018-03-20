@@ -1,11 +1,16 @@
 package com.example.android.watsnext.Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -120,11 +125,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
+    private boolean isAlarmPermissionGranted = false;
 
 
     private int mEventTypeInt;
     private String mEventTypeString;
-    private String mEventText;
+    public static String mEventText;
     private String mEventLocation;
     private long mEventDate;
     private long mEventTime;
@@ -135,6 +141,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     public static final int REQUEST_CODE_CALENDAR = 198;
     public static final int REQUEST_CODE_MAP = 272;
+    public static final int REQUEST_PERMISSION_ALARM = 999;
 
 
     @Override
@@ -189,8 +196,11 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventDateAndTime = mEventDate + mEventTime;
 
                         setupRepeatedEvents();
+
                         setupEventReminder();
+
                         addEventToDatabase();
+
                         finish();
 
                         //TODO: before adding the event into the db, validate data: check if event date is in future!
@@ -277,11 +287,19 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
                         break;
                     case R.id.rb_alarm:
+                        // Request alarm permission
+                        if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SET_ALARM)
+                                != PackageManager.PERMISSION_GRANTED){
+                            ActivityCompat.requestPermissions(AddEventActivity.this, new String[]{Manifest.permission.SET_ALARM}, REQUEST_PERMISSION_ALARM);
+                        }
+
+                        // Show the Reminder UI
                         if (mReminderTimePickerLayout.getVisibility() == View.GONE) {
                             mReminderTimePickerLayout.setVisibility(View.VISIBLE);
                             mReminderTextView.setVisibility(View.VISIBLE);
                         }
 
+                        // Set the type of reminder
                         mEventReminderType = 2;
 
                         break;
@@ -322,38 +340,41 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     }
 
     private void setupEventReminder(){
-        mReminder = new Reminder(mEventReminderType, mEventDateAndTime);
 
+            mReminder = new Reminder(mEventReminderType, mEventDateAndTime);
 
-        int reminderDays;
-        int reminderHours;
-        int reminderMinutes;
+            int reminderDays;
+            int reminderHours;
+            int reminderMinutes;
 
-        if(TextUtils.isEmpty(mReminderDayTextView.getText())){
-            reminderDays = 0;
-        } else {
-            reminderDays = Integer.parseInt(mReminderDayTextView.getText().toString());
-        }
+            // Default the reminder values to 0 if the corresponding TextViews are empty.
+            // Otherwise, get the int value from them.
+            if (TextUtils.isEmpty(mReminderDayTextView.getText())) {
+                reminderDays = 0;
+            } else {
+                reminderDays = Integer.parseInt(mReminderDayTextView.getText().toString());
+            }
 
-        if(TextUtils.isEmpty(mReminderHourTextView.getText())){
-            reminderHours = 0;
-        } else {
-            reminderHours = Integer.parseInt(mReminderHourTextView.getText().toString());
-        }
+            if (TextUtils.isEmpty(mReminderHourTextView.getText())) {
+                reminderHours = 0;
+            } else {
+                reminderHours = Integer.parseInt(mReminderHourTextView.getText().toString());
+            }
 
-        if(TextUtils.isEmpty(mReminderMinuteTextView.getText())){
-            reminderMinutes = 0;
-        } else {
-            reminderMinutes = Integer.parseInt(mReminderMinuteTextView.getText().toString());
-        }
+            if (TextUtils.isEmpty(mReminderMinuteTextView.getText())) {
+                reminderMinutes = 0;
+            } else {
+                reminderMinutes = Integer.parseInt(mReminderMinuteTextView.getText().toString());
+            }
 
-        mReminder.setReminderDays(reminderDays);
-        mReminder.setReminderHours(reminderHours);
-        mReminder.setReminderMinutes(reminderMinutes);
+            mReminder.setReminderDays(reminderDays);
+            mReminder.setReminderHours(reminderHours);
+            mReminder.setReminderMinutes(reminderMinutes);
 
-        mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
+            mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
 
-        mReminder.initReminder(getApplicationContext());
+            mReminder.initReminder(getApplicationContext());
+
     }
 
     /**
@@ -427,7 +448,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     public void onResume() {
         super.onResume();
         // Update information with data from calendar if any.
-
         setupEventTypesRecyclerView();
 
     }
@@ -468,6 +488,16 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode){
+            case REQUEST_PERMISSION_ALARM:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    isAlarmPermissionGranted = true;
+                }
+        }
+
+    }
 
     @Override
     public void onEventTypeClick(int position) {

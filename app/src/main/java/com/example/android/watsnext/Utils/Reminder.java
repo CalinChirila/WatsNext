@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.example.android.watsnext.BroadcastReceivers.AlarmReceiver;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by Calin-Cristian Chirila on 3/18/2018.
  */
@@ -78,16 +81,13 @@ public class Reminder {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager == null) return;
 
-            long alarmTime = mEventDateAndTime - getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes);
+            Calendar calendar = new GregorianCalendar();
+            int gmtOffSet = calendar.getTimeZone().getRawOffset();
 
-            //TODO: delete the line below before release
-            alarmTime = alarmTime - (2* 3600 * 1000); //TODO: EVRYKA!! Handle time-zones!
-
-            //TODO: might have to convert all time variables to local time
-            // TODO: problem with alarm not being called
+            long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
 
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, 0);
+            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime, alarmPendingIntent);
