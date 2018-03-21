@@ -18,6 +18,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.v("IMPORTANT", "Alarm received");
 
+        // When the alarm is received, start the alarm activity
         Intent alarm = new Intent(context, AlarmActivity.class);
         String alarmMessage = AddEventActivity.mEventText;
         alarm.putExtra(AlarmClock.EXTRA_MESSAGE, alarmMessage);

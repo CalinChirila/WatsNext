@@ -55,5 +55,9 @@
     <string name="hours">Hours</string>
     <string name="mins">Min</string>
     <string name="reminder_text_before_the_event">before the event</string>
+    <string name="stop_alarm">Stop Alarm</string>
+
+    <string name="notification_channel_name">WatsNext</string>
+    <string name="notification_channel_description">notification reminders</string>
 
 </resources>

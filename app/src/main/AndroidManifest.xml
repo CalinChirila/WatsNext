@@ -61,6 +61,7 @@
             android:label="@string/title_activity_maps" />
 
         <receiver android:name=".BroadcastReceivers.AlarmReceiver" />
+        <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
         <activity android:name=".Activities.AlarmActivity"
             android:showOnLockScreen="true"/>

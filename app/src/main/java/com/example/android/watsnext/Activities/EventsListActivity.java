@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.android.watsnext.Adapters.EventsAdapter;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.Utils.Reminder;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import butterknife.BindView;
@@ -101,6 +102,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         switch (itemID) {
             case R.id.menu_delete_all_events:
                 getContentResolver().delete(EventsEntry.CONTENT_URI, null, null);
+                Reminder.cancelReminder();
                 mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
                 showEmptyState();
                 break;

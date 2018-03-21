@@ -31,6 +31,8 @@ public class AlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set the window to full screen and show it while screen is locked
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_alarm);
         ButterKnife.bind(this);
@@ -40,7 +42,6 @@ public class AlarmActivity extends AppCompatActivity {
 
         mRingTonePlayer = MediaPlayer.create(getApplicationContext(), R.raw.ringtone1);
         mRingTonePlayer.start();
-        
 
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         // Start vibration without delay
@@ -53,17 +54,22 @@ public class AlarmActivity extends AppCompatActivity {
         } else {
             mVibrator.vibrate(vibrationPattern, 1);
         }
+
+        // Wakeup phone screen
         wakeupPhoneScreen();
 
+        // Get the event message that the user set and display it in the alarm activity
         String alarmMessage = getIntent().getStringExtra(AlarmClock.EXTRA_MESSAGE);
-
         mAlarmMessageTextView.setText(alarmMessage);
 
-
+        // When the Stop Alarm button is clicked:
+        // Stop the alarm
+        // Release media player resources
+        // Stop the vibration
+        // Exit the alarm activity
         mStopAlarmButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // Stop the alarm
                 releaseMediaPlayerResources();
                 mScreenLock.release();
                 mVibrator.cancel();
@@ -73,14 +79,21 @@ public class AlarmActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Helper method to wakeup the phone screen
+     */
     private void wakeupPhoneScreen(){
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         if(powerManager != null) {
             mScreenLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+            // Keep the screen awake for 1 minute
             mScreenLock.acquire(60*1000L /* 1 minute */);
         }
     }
 
+    /**
+     * Helper method to stop the media playback and release resources
+     */
     private void releaseMediaPlayerResources(){
         if(mRingTonePlayer != null){
             mRingTonePlayer.stop();
@@ -89,6 +102,7 @@ public class AlarmActivity extends AppCompatActivity {
         }
     }
 
+    // When the activity is destroyed, release media player resources
     @Override
     public void onDestroy(){
         super.onDestroy();

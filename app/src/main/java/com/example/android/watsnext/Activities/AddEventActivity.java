@@ -129,7 +129,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
 
     private int mEventTypeInt;
-    private String mEventTypeString;
+    public static String mEventTypeString;
     public static String mEventText;
     private String mEventLocation;
     private long mEventDate;
@@ -373,7 +373,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
 
-            mReminder.initReminder(getApplicationContext());
+            mReminder.createReminder(getApplicationContext());
 
     }
 

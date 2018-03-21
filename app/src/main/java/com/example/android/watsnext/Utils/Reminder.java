@@ -8,6 +8,7 @@ import android.os.Build;
 import android.widget.TextView;
 
 import com.example.android.watsnext.BroadcastReceivers.AlarmReceiver;
+import com.example.android.watsnext.BroadcastReceivers.NotificationReceiver;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,10 +26,14 @@ public class Reminder {
     private static int daysBeforeEvent;
     private static int mReminderType;
 
-
     public static final int REMINDER_NOTIFICATION = 1;
     public static final int REMINDER_ALARM = 2;
     private static final int REQUEST_CODE_ALARM = 123;
+    private static final int REQUEST_CODE_NOTIFICATION = 122;
+
+    private static PendingIntent mReminderPendingIntent;
+
+
 
     /**
      * Reminder constructor
@@ -39,22 +44,6 @@ public class Reminder {
         mEventDateAndTime = eventDateAndTime;
         mReminderType = reminderType;
         daysBeforeEvent = EventUtils.getDaysBeforeEvent(mEventDateAndTime);
-    }
-
-
-
-
-
-    public static int getReminderDays(){
-        return mReminderDays;
-    }
-
-    public static int getReminderHours(){
-        return mReminderHours;
-    }
-
-    public static int getReminderMinutes(){
-        return mReminderMinutes;
     }
 
     public void setReminderDays(int days){
@@ -73,29 +62,52 @@ public class Reminder {
         return (days * DatePickerUtils.MILLIS_IN_A_DAY) + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);
     }
 
-    public void initReminder(Context context){
-        //TODO: complete method
+
+
+
+    /**
+     * Helper method that creates the reminder based on its type
+     */
+    public void createReminder(Context context){
+        // Create an alarm
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager == null) return;
+        
+
+        Calendar calendar = new GregorianCalendar();
+        int gmtOffSet = calendar.getTimeZone().getRawOffset();
+
+        // Set the reminder time taking the gmt into consideration
+        long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
 
         if(mReminderType == REMINDER_ALARM) {
-
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager == null) return;
-
-            Calendar calendar = new GregorianCalendar();
-            int gmtOffSet = calendar.getTimeZone().getRawOffset();
-
-            long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
-
+            // Create the alarm intent
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime, alarmPendingIntent);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, alarmPendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, alarmTime, mReminderPendingIntent);
+            }
+        }
+        else if (mReminderType == REMINDER_NOTIFICATION){
+            // Create the notification intent
+            Intent notificationIntent = new Intent(context, NotificationReceiver.class);
+            mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_NOTIFICATION, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC, alarmTime, mReminderPendingIntent);
             }
         }
     }
 
+    /**
+     * This method cancels the pending intents when the event is removed before the reminder goes off
+     */
+    public static void cancelReminder(){
+        if(mReminderPendingIntent != null){
+            mReminderPendingIntent.cancel();
+        }
+    }
 
     /**
      * Increase the number of days before the event at which the reminder will be set
