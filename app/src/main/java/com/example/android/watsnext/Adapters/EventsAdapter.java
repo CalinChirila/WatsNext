@@ -23,6 +23,16 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
     private Context mContext;
     private String mComparedDate;
 
+    private final EventClickHandler mEventClickHandler;
+
+    public interface EventClickHandler{
+        void onEventClick(int position);
+    }
+
+    public EventsAdapter(EventClickHandler handler){
+        mEventClickHandler = handler;
+    }
+
     @Override
     public EventsAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the item layout and pass it to the View Holder constructor
@@ -67,7 +77,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
         return mEventsCursor.getCount();
     }
 
-    public class EventsAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class EventsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mEventTypeTextView;
         TextView mEventTextTextView;
         TextView mEventTimeTextView;
@@ -83,6 +93,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
             mEventDateTextView = itemView.findViewById(R.id.tv_item_event_date);
             mEventReminderIcon = itemView.findViewById(R.id.iv_item_reminder_icon);
 
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            mEventClickHandler.onEventClick(this.getAdapterPosition());
         }
     }
 

@@ -92,7 +92,20 @@ public class DatePickerUtils {
         dayTextView.setText(String.valueOf(mEventDay));
     }
 
+    public static void setDatePickerAtDate(long date, TextView dayTextView, TextView monthTextView, TextView yearTextView){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
 
+        mEventDay = calendar.get(Calendar.DATE);
+        mEventMonth = calendar.get(Calendar.MONTH) + 1;
+        mEventYear = calendar.get(Calendar.YEAR);
+
+        dayTextView.setText(String.valueOf(mEventDay));
+        monthTextView.setText(convertMonthToString(mEventMonth));
+        yearTextView.setText(String.valueOf(mEventYear));
+
+        calendar.clear();
+    }
 
     /**
      * This function will set the display date picker date to the present date
@@ -102,7 +115,7 @@ public class DatePickerUtils {
      */
     public static void setDatePickerDefaults(TextView dayTextView, TextView monthTextView, TextView yearTextView){
         mEventDay = calendar.get(Calendar.DATE);
-        mEventMonth = calendar.get(Calendar.MONTH) + 1;     // BECAUSE REASONS!
+        mEventMonth = calendar.get(Calendar.MONTH) + 1;
         mEventYear = calendar.get(Calendar.YEAR);
 
         dayTextView.setText(String.valueOf(mEventDay));

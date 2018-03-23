@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.AlarmClock;
-import android.util.Log;
 
 import com.example.android.watsnext.Activities.AddEventActivity;
 import com.example.android.watsnext.Activities.AlarmActivity;
@@ -16,7 +15,6 @@ import com.example.android.watsnext.Activities.AlarmActivity;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v("IMPORTANT", "Alarm received");
 
         // When the alarm is received, start the alarm activity
         Intent alarm = new Intent(context, AlarmActivity.class);

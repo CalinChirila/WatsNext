@@ -18,13 +18,14 @@ import android.widget.TextView;
 
 import com.example.android.watsnext.Adapters.EventsAdapter;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.Utils.EventUtils;
 import com.example.android.watsnext.Utils.Reminder;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EventsListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EventsListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, EventsAdapter.EventClickHandler {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab_add_event)
@@ -39,6 +40,16 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
     private LoaderManager mEventsLoaderManager;
 
     private static final int EVENTS_LOADER_ID = 1337;
+
+    public static final String EXTRA_EVENT_ID = "eventID";
+    public static final String EXTRA_EVENT_TYPE = "eventType";
+    public static final String EXTRA_EVENT_TEXT = "eventText";
+    public static final String EXTRA_EVENT_DATE = "eventDate";
+    public static final String EXTRA_EVENT_TIME = "eventTime";
+    public static final String EXTRA_EVENT_LOCATION = "eventLocation";
+    public static final String EXTRA_EVENT_REPEAT = "eventRepeat";
+    public static final String EXTRA_EVENT_REMINDER = "eventReminder";
+    public static final String EXTRA_EVENT_REMINDER_TIME = "eventReminderTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +79,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mAdapter = new EventsAdapter();
+        mAdapter = new EventsAdapter(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -151,6 +162,55 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onEventClick(int position) {
+        // Gather event data for the clicked item and build an intent with it
+
+        Intent eventDetailsIntent = createEventDetailsIntent(position);
+
+        // Launch the activity
+        startActivity(eventDetailsIntent);
+    }
+
+    /**
+     * Helper method that creates an intent filled with the event information
+     * @param position => the position in the list that was clicked
+     * @return => the intent for the details activity(AddEventActivity)
+     */
+    private Intent createEventDetailsIntent(int position){
+        // Move cursor to the clicked position
+        mCursor.moveToPosition(position);
+
+        // Get only the information needed for display and event ID
+        // The event id will be used when the save event button is clicked,
+        // But instead of adding a new event, we will update this one
+        int eventID = mCursor.getInt(mCursor.getColumnIndex(EventsEntry._ID));
+        String eventType = EventUtils.convertEventTypeToString(this, mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+        String eventText = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
+        long eventDate = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE));
+        long eventTime = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME));
+        String eventLocation = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_LOCATION));
+        String eventRepeat = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
+        int eventReminder = mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
+        long eventReminderTime = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER_TIME));
+
+        Intent eventDetailsIntent = new Intent(EventsListActivity.this, AddEventActivity.class);
+
+        eventDetailsIntent.putExtra(EXTRA_EVENT_ID, eventID);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_TYPE, eventType);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_TEXT, eventText);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_DATE, eventDate);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_TIME, eventTime);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_LOCATION, eventLocation);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_REPEAT, eventRepeat);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER, eventReminder);
+        eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER_TIME, eventReminderTime);
+
+
+
+        return eventDetailsIntent;
     }
 }
 

@@ -113,6 +113,29 @@ public class TimePickerUtils {
         return ampmString;
     }
 
+    public static void setTimePickerAtTime(long time, TextView hourTextView, TextView minuteTextView, TextView ampmTextView){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+
+        // Take gmt into consideration
+        int gmtOffSet = calendar.getTimeZone().getRawOffset();
+        mTimePickerHour = calendar.get(Calendar.HOUR_OF_DAY) - (gmtOffSet / (60 * 60 * 1000));
+        if(mTimePickerHour > 12) mTimePickerHour = mTimePickerHour - 12;
+        mTimePickerMinute = calendar.get(Calendar.MINUTE);
+        mTimePickerAmPm = calendar.get(Calendar.AM_PM);
+
+        String minuteString = String.valueOf(mTimePickerMinute);
+        if(mTimePickerMinute < 10) minuteString = "0" + minuteString;
+        minuteTextView.setText(minuteString);
+        String hourString = String.valueOf(mTimePickerHour);
+        if(mTimePickerHour < 10) hourString = "0" + hourString;
+        hourTextView.setText(hourString);
+
+        hourTextView.setText(hourString);
+        minuteTextView.setText(minuteString);
+        ampmTextView.setText(convertAmPmToString(mTimePickerAmPm));
+    }
+
     /**
      * Set the time picker defaults to the current time
      */

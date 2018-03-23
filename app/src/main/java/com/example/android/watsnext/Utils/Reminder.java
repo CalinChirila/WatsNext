@@ -33,8 +33,6 @@ public class Reminder {
 
     private static PendingIntent mReminderPendingIntent;
 
-
-
     /**
      * Reminder constructor
      * @param eventDateAndTime - the date and time(in millis) of the event
@@ -62,9 +60,6 @@ public class Reminder {
         return (days * DatePickerUtils.MILLIS_IN_A_DAY) + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000);
     }
 
-
-
-
     /**
      * Helper method that creates the reminder based on its type
      */
@@ -72,7 +67,6 @@ public class Reminder {
         // Create an alarm
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
-        
 
         Calendar calendar = new GregorianCalendar();
         int gmtOffSet = calendar.getTimeZone().getRawOffset();
