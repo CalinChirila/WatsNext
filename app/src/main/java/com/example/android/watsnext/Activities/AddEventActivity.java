@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,10 +32,6 @@ import com.example.android.watsnext.Utils.Reminder;
 import com.example.android.watsnext.Utils.RepeaterTextView;
 import com.example.android.watsnext.Utils.TimePickerUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -139,7 +136,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     private long mEventDate;
     private long mEventTime;
     private long mEventDateAndTime;
-    private ArrayList<Integer> mEventRepeater;
+    private ArrayList<Integer> mRepeatDays;
+    private String mRepeatDaysString;
     private int mEventReminderType = 0; // 0 => no reminder, 1 => notification; 2 => alarm
     private Reminder mReminder;
     private long mEventReminderTime;
@@ -173,6 +171,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             DatePickerUtils.setDatePickerAtDate(mEventDate, mDayTextView, mMonthTextView, mYearTextView);
             TimePickerUtils.setTimePickerAtTime(mEventTime, mHourTextView, mMinuteTextView, mAmPmTextView);
+
+            setRepeatDaysInterface(mRepeatDaysString);
+
+
 
             // TODO: finish populating the repeater and reminder and modify save to update event in the db
             // TODO: find out why event IDs are 70+
@@ -213,12 +215,16 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         EventUtils.convertEventTimeToString(mEventTime);
 
                         mEventDateAndTime = mEventDate + mEventTime;
+                        mRepeatDays = RepeaterTextView.getRepeatDays();
 
-                        setupRepeatedEvents();
+                        // ADD this to db, when getting predetermined repeat days, check if i from 0 to 7 is contained in the string
+                        String repeatDaysString = mRepeatDays.toString();
+                        Log.v("IMPORTANT", repeatDaysString);
 
                         setupEventReminder();
 
                         addEventToDatabase();
+                        setupRepeatedEvents();
 
                         finish();
 
@@ -405,31 +411,17 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mEventLocation = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_LOCATION);
         mEventReminderType = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER, -1);
         mEventReminderTime = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER_TIME, -1);
-
-        JSONObject repeatJson;
-        try {
-            String jsonString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_REPEAT);
-            if(jsonString != null) {
-                repeatJson = new JSONObject(jsonString);
-                JSONArray repeatJsonArray = repeatJson.getJSONArray("repeatDays");
-                for (int i = 0; i < repeatJsonArray.length(); i++) {
-                    mEventRepeater.add(repeatJsonArray.getInt(i));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        mRepeatDaysString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_REPEAT);
     }
 
     /**
      * Method for setting up the event that the user chose to repeat on certain days
      */
     private void setupRepeatedEvents() {
-        mEventRepeater = RepeaterTextView.getIndicesOfRepeatDays();
+        ArrayList<Integer> eventRepeats = RepeaterTextView.getRepeatDays();
 
         // If the event doesn't repeat, exit early
-        if (mEventRepeater.size() == 0) return;
+        if (eventRepeats.size() == 0) return;
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mEventDate);
@@ -438,8 +430,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         long repeatDate;
 
         // For every ticked box in the Repeat section, add another event with the corresponding date
-        for (int i = 0; i < mEventRepeater.size(); i++) {
-            int dayOfWeekOfRepeatedEvent = mEventRepeater.get(i);
+        for (int i = 0; i < eventRepeats.size(); i++) {
+            int dayOfWeekOfRepeatedEvent = eventRepeats.get(i);
 
             int numberOfDaysUntilEventRepeats = dayOfWeekOfRepeatedEvent - eventDayOfWeek;
             if (numberOfDaysUntilEventRepeats <= 0)
@@ -467,15 +459,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
+        values.put(EventsEntry.COLUMN_EVENT_REPEAT, mRepeatDays.toString());
 
-        JSONObject repeaterJson = new JSONObject();
-        try {
-            repeaterJson.put("repeatDays", mEventRepeater);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String repeatDays = repeaterJson.toString();
-        values.put(EventsEntry.COLUMN_EVENT_REPEAT, repeatDays);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
@@ -493,15 +478,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
+        values.put(EventsEntry.COLUMN_EVENT_REPEAT, mRepeatDays.toString());
 
-        JSONObject repeaterJson = new JSONObject();
-        try {
-            repeaterJson.put("repeatDays", mEventRepeater);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String repeatDays = repeaterJson.toString();
-        values.put(EventsEntry.COLUMN_EVENT_REPEAT, repeatDays);
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
     }
@@ -605,5 +583,27 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         eventTypesAreVisible = false;
         mEventTypeExpandArrow.animate().rotationBy(180).setDuration(300).start();
 
+    }
+
+    /**
+     * This method gets called when a user clicks on an event in the list
+     * Its purpose is to set the event repeater interface to the values the user selected for
+     * that specific event
+     * @param repeatDays - the repeat days array taken from the database
+     * We will use a for loop to cycle through all the possible values ( 0 - 6)
+     * If any value is found withing the provided String, get that RepeatTextView by the index and
+     * alter its background color
+     */
+    private void setRepeatDaysInterface(String repeatDays){
+        if(mRepeatDays == null) mRepeatDays = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+
+            if(repeatDays.contains(String.valueOf(i))){
+                RepeaterTextView v = RepeaterTextView.getRepeaterViewAtIndex(AddEventActivity.this, i);
+                v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                v.isSelected = true;
+                mRepeatDays.add(i);
+            }
+        }
     }
 }
