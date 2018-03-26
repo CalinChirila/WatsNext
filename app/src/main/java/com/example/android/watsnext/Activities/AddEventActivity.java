@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -153,7 +154,12 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         ButterKnife.bind(this);
-
+        // Set the toolbar
+        setSupportActionBar(toolbar);
+        // Set back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Change the back button color to white
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
 
         //TODO: add content transitions between activities. when add event fab is pushed, move it to the correct place and morph the icon
         //TODO: transition between activities should be also morph-ish
@@ -173,7 +179,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             TimePickerUtils.setTimePickerAtTime(mEventTime, mHourTextView, mMinuteTextView, mAmPmTextView);
 
             setRepeatDaysInterface(mRepeatDaysString);
-
+            setReminderChoiceInterface(mEventReminderType);
+            setReminderValues(mEventReminderTime);
 
 
             // TODO: finish populating the repeater and reminder and modify save to update event in the db
@@ -304,8 +311,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         break;
                     case R.id.rb_notification:
                         if (mReminderTimePickerLayout.getVisibility() == View.GONE) {
-                            mReminderTimePickerLayout.setVisibility(View.VISIBLE);
-                            mReminderTextView.setVisibility(View.VISIBLE);
+                            showReminderTimeInterface();
                         }
 
                         mEventReminderType = 1;
@@ -320,8 +326,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
                         // Show the Reminder UI
                         if (mReminderTimePickerLayout.getVisibility() == View.GONE) {
-                            mReminderTimePickerLayout.setVisibility(View.VISIBLE);
-                            mReminderTextView.setVisibility(View.VISIBLE);
+                            showReminderTimeInterface();
                         }
 
                         // Set the type of reminder
@@ -357,10 +362,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mNoReminderButton.setOnClickListener(buttonClickListener);
         mNotificationReminderButton.setOnClickListener(buttonClickListener);
         mAlarmNotificationButton.setOnClickListener(buttonClickListener);
-
-
-        //Set the toolbar
-        setSupportActionBar(toolbar);
 
     }
 
@@ -402,6 +403,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     }
 
+    /**
+     * If the user clicked on an event in the list, extract all the event information from that intent
+     */
     private void extractEventInformation(){
         mEventID = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_ID, -1);
         mEventTypeString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_TYPE);
@@ -412,6 +416,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mEventReminderType = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER, -1);
         mEventReminderTime = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER_TIME, -1);
         mRepeatDaysString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_REPEAT);
+        mEventReminderType = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER, -1);
+        mEventReminderTime = mIntent.getLongExtra(EventsListActivity.EXTRA_EVENT_REMINDER_TIME, -1);
     }
 
     /**
@@ -605,5 +611,41 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                 mRepeatDays.add(i);
             }
         }
+    }
+
+    /**
+     * Preset the reminder choice if the user clicked on an event
+     */
+    private void setReminderChoiceInterface(int reminderType){
+        switch(reminderType){
+            case 0:
+                mNoReminderButton.setChecked(true);
+                break;
+            case 1:
+                mNotificationReminderButton.setChecked(true);
+                showReminderTimeInterface();
+                break;
+            case 2:
+                mAlarmNotificationButton.setChecked(true);
+                showReminderTimeInterface();
+                break;
+        }
+    }
+
+    private void setReminderValues(long timeInMillis){
+        int days =(int) (timeInMillis / DatePickerUtils.MILLIS_IN_A_DAY);
+        long hoursInMillis = timeInMillis - (days * DatePickerUtils.MILLIS_IN_A_DAY);
+        int hours =(int) (hoursInMillis / 3600000);
+        long minutesInMillis = hoursInMillis - (hours * 3600000);
+        int minutes = (int) (minutesInMillis / 60000);
+
+        mReminderDayTextView.setText(String.valueOf(days));
+        mReminderHourTextView.setText(String.valueOf(hours));
+        mReminderMinuteTextView.setText(String.valueOf(minutes));
+    }
+
+    private void showReminderTimeInterface(){
+        mReminderTimePickerLayout.setVisibility(View.VISIBLE);
+        mReminderTextView.setVisibility(View.VISIBLE);
     }
 }

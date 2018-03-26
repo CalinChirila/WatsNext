@@ -108,7 +108,7 @@ public class Reminder {
      * @param reminderDayTextView - the reminder days display
      */
     public static void increaseReminderDays(TextView reminderDayTextView){
-
+        daysBeforeEvent = EventUtils.getDaysBeforeEvent(mEventDateAndTime);
         // The user cannot set a reminder at a number of days greater than the days before the event
         if(daysBeforeEvent > mReminderDays) {
             mReminderDays += 1;

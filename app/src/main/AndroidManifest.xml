@@ -58,7 +58,8 @@
 
         <activity
             android:name=".Activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".Activities.AddEventActivity"/>
 
         <receiver android:name=".BroadcastReceivers.AlarmReceiver" />
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
