@@ -59,5 +59,7 @@
 
     <string name="notification_channel_name">WatsNext</string>
     <string name="notification_channel_description">notification reminders</string>
+    <string name="appwidget_text">Upcoming Events</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

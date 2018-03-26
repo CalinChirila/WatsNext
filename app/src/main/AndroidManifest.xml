@@ -59,13 +59,24 @@
         <activity
             android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".Activities.AddEventActivity"/>
+            android:parentActivityName=".Activities.AddEventActivity" />
 
         <receiver android:name=".BroadcastReceivers.AlarmReceiver" />
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
-        <activity android:name=".Activities.AlarmActivity"
-            android:showOnLockScreen="true"/>
+        <activity
+            android:name=".Activities.AlarmActivity"
+            android:showOnLockScreen="true" />
+
+        <receiver android:name=".Widget.EventsWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/events_widget_provider_info" />
+        </receiver>
     </application>
 
 </manifest>
