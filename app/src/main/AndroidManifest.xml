@@ -29,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.EventsListActivity">
+        <activity android:name=".activities.EventsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,14 +40,14 @@
         <provider
             android:name=".data.EventContentProvider"
             android:authorities="com.example.android.watsnext.data"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
-            android:name=".Activities.AddEventActivity"
-            android:parentActivityName=".Activities.EventsListActivity" />
+            android:name=".activities.AddEventActivity"
+            android:parentActivityName=".activities.EventsListActivity" />
         <activity
-            android:name=".Activities.CalendarActivity"
-            android:parentActivityName=".Activities.AddEventActivity" />
+            android:name=".activities.CalendarActivity"
+            android:parentActivityName=".activities.AddEventActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -57,18 +57,18 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Activities.MapsActivity"
+            android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".Activities.AddEventActivity" />
+            android:parentActivityName=".activities.AddEventActivity" />
 
-        <receiver android:name=".BroadcastReceivers.AlarmReceiver" />
-        <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
+        <receiver android:name=".broadcastReceivers.AlarmReceiver" />
+        <receiver android:name=".broadcastReceivers.NotificationReceiver" />
 
         <activity
-            android:name=".Activities.AlarmActivity"
+            android:name=".activities.AlarmActivity"
             android:showOnLockScreen="true" />
 
-        <receiver android:name=".Widget.EventsWidgetProvider">
+        <receiver android:name=".widget.EventsWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -77,6 +77,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/events_widget_provider_info" />
         </receiver>
+        <service android:name="com.example.android.watsnext.widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Utils;
+package com.example.android.watsnext.utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.widget.TextView;
 
-import com.example.android.watsnext.BroadcastReceivers.AlarmReceiver;
-import com.example.android.watsnext.BroadcastReceivers.NotificationReceiver;
+import com.example.android.watsnext.broadcastReceivers.AlarmReceiver;
+import com.example.android.watsnext.broadcastReceivers.NotificationReceiver;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

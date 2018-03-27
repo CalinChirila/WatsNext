@@ -1,12 +1,12 @@
-package com.example.android.watsnext.BroadcastReceivers;
+package com.example.android.watsnext.broadcastReceivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.AlarmClock;
 
-import com.example.android.watsnext.Activities.AddEventActivity;
-import com.example.android.watsnext.Activities.AlarmActivity;
+import com.example.android.watsnext.activities.AddEventActivity;
+import com.example.android.watsnext.activities.AlarmActivity;
 
 /**
  * Created by Calin-Cristian Chirila on 3/18/2018.

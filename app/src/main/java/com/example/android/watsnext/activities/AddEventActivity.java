@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Activities;
+package com.example.android.watsnext.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -25,13 +25,13 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.example.android.watsnext.Adapters.EventTypesAdapter;
+import com.example.android.watsnext.adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.Utils.DatePickerUtils;
-import com.example.android.watsnext.Utils.EventUtils;
-import com.example.android.watsnext.Utils.Reminder;
-import com.example.android.watsnext.Utils.RepeaterTextView;
-import com.example.android.watsnext.Utils.TimePickerUtils;
+import com.example.android.watsnext.utils.DatePickerUtils;
+import com.example.android.watsnext.utils.EventUtils;
+import com.example.android.watsnext.utils.Reminder;
+import com.example.android.watsnext.utils.RepeaterTextView;
+import com.example.android.watsnext.utils.TimePickerUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     android:background="@drawable/materialbackground"
-    tools:context="com.example.android.watsnext.Activities.EventsListActivity">
+    tools:context="com.example.android.watsnext.activities.EventsListActivity">
 
 
     <android.support.design.widget.AppBarLayout

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    tools:context="com.example.android.watsnext.Activities.MapsActivity">
+    tools:context="com.example.android.watsnext.activities.MapsActivity">
 
     <fragment
         android:id="@+id/map"

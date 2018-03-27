@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Activities;
+package com.example.android.watsnext.activities;
 
 import android.Manifest;
 import android.app.Activity;

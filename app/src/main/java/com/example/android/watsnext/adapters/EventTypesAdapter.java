@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Adapters;
+package com.example.android.watsnext.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.utils.EventUtils;
 
 /**
  * Created by Calin-Cristian Chirila on 3/4/2018.

@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Utils;
+package com.example.android.watsnext.utils;
 
 import android.app.Activity;
 import android.content.Context;

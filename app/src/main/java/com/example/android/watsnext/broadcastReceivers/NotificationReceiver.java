@@ -1,4 +1,4 @@
-package com.example.android.watsnext.BroadcastReceivers;
+package com.example.android.watsnext.broadcastReceivers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,7 +11,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
-import com.example.android.watsnext.Activities.AddEventActivity;
+import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.R;
 
 /**

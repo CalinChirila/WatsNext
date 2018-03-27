@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Adapters;
+package com.example.android.watsnext.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.Utils.EventUtils;
+import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 /**

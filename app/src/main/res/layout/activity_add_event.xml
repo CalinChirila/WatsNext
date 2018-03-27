@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/materialbackground"
     android:fitsSystemWindows="false"
-    tools:context="com.example.android.watsnext.Activities.AddEventActivity">
+    tools:context="com.example.android.watsnext.activities.AddEventActivity">
 
 
     <android.support.constraint.ConstraintLayout

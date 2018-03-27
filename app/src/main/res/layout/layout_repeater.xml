@@ -7,49 +7,49 @@
     android:layout_height="wrap_content">
 
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_monday"
         style="@style/RepeaterItemStyle"
         android:text="M"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_tuesday"
         style="@style/RepeaterItemStyle"
         android:text="T"
         app:layout_constraintStart_toEndOf="@+id/repeater_monday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_wednesday"
         style="@style/RepeaterItemStyle"
         android:text="W"
         app:layout_constraintStart_toEndOf="@+id/repeater_tuesday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_thursday"
         style="@style/RepeaterItemStyle"
         android:text="T"
         app:layout_constraintStart_toEndOf="@+id/repeater_wednesday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_friday"
         style="@style/RepeaterItemStyle"
         android:text="F"
         app:layout_constraintStart_toEndOf="@+id/repeater_thursday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_saturday"
         style="@style/RepeaterItemStyle"
         android:text="S"
         app:layout_constraintStart_toEndOf="@+id/repeater_friday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
-    <com.example.android.watsnext.Utils.RepeaterTextView
+    <com.example.android.watsnext.utils.RepeaterTextView
         android:id="@+id/repeater_sunday"
         style="@style/RepeaterItemStyle"
         android:text="S"

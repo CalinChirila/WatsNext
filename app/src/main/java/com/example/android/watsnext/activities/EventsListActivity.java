@@ -1,4 +1,4 @@
-package com.example.android.watsnext.Activities;
+package com.example.android.watsnext.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,11 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.watsnext.Adapters.EventsAdapter;
+import com.example.android.watsnext.adapters.EventsAdapter;
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.Utils.EventUtils;
-import com.example.android.watsnext.Utils.Reminder;
-import com.example.android.watsnext.Utils.RepeaterTextView;
+import com.example.android.watsnext.utils.EventUtils;
+import com.example.android.watsnext.utils.Reminder;
+import com.example.android.watsnext.utils.RepeaterTextView;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 import butterknife.BindView;
