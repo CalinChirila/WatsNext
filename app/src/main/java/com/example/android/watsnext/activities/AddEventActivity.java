@@ -2,6 +2,8 @@ package com.example.android.watsnext.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,14 +27,15 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.example.android.watsnext.adapters.EventTypesAdapter;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.adapters.EventTypesAdapter;
+import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.DatePickerUtils;
 import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
 import com.example.android.watsnext.utils.TimePickerUtils;
-import com.example.android.watsnext.data.EventContract.EventsEntry;
+import com.example.android.watsnext.widget.EventsWidget;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -233,6 +236,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         addEventToDatabase();
                         setupRepeatedEvents();
 
+                        updateAppWidget();
+
                         finish();
 
                         //TODO: before adding the event into the db, validate data: check if event date is in future!
@@ -401,6 +406,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             mReminder.createReminder(getApplicationContext());
 
+    }
+
+    private void updateAppWidget(){
+        Intent updateWidgetIntent = new Intent(AddEventActivity.this, EventsWidget.class);
+        updateWidgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), EventsWidget.class));
+        updateWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(updateWidgetIntent);
     }
 
     /**

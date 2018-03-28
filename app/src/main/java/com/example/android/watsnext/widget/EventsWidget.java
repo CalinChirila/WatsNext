@@ -2,49 +2,57 @@ package com.example.android.watsnext.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
-import com.example.android.watsnext.utils.EventUtils;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class EventsWidget extends AppWidgetProvider {
 
+    static RemoteViews views;
+    static int mWidgetId;
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+        mWidgetId = appWidgetId;
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_events);
+        views = new RemoteViews(context.getPackageName(), R.layout.widget_events);
         views.setTextViewText(R.id.tv_widget_title, widgetText);
 
-
-        //DEBUG SECTION -------------------------------------------------------------------------
         Cursor cursor = context.getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, null);
-        int size = cursor.getCount();
-        cursor.moveToFirst();
-        String eventTime = EventUtils.convertEventTimeToString(cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
+        if(cursor != null && cursor.getCount() != 0) {
 
-        Log.v("IMPORTANT", String.valueOf(size) + " " + eventTime);
+            cursor.moveToFirst();
+            //TODO: widget events don't update
 
-        //---------------------------------------------------------------------------------------
+            Intent intent = new Intent(context, WidgetService.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            views.setRemoteAdapter(R.id.widget_events_list, intent);
 
-
-        Intent intent = new Intent(context, WidgetService.class);
-        intent.putExtra("cursorSize", size);
-        views.setRemoteAdapter(R.id.widget_events_list, intent);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-        cursor.close();
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views);
+            cursor.close();
+        }
     }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if(intent.getAction().equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_events);
+            AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, EventsWidget.class), rv);
+        }
+    }
+
 
 
     @Override

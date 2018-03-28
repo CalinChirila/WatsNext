@@ -61,5 +61,6 @@
     <string name="notification_channel_description">notification reminders</string>
     <string name="appwidget_text">Upcoming Events</string>
     <string name="add_widget">Add widget</string>
+    <string name="no_more_events">No more upcoming events</string>
 
 </resources>

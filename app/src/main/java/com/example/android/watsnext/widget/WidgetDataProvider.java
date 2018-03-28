@@ -16,18 +16,17 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     private Cursor mCursor;
     private Context mContext;
 
+    private String[] projection = new String[]{
+            EventsEntry.COLUMN_EVENT_TYPE,
+            EventsEntry.COLUMN_EVENT_TEXT,
+            EventsEntry.COLUMN_EVENT_DATE,
+            EventsEntry.COLUMN_EVENT_TIME
+    };
+    private String sortOrder = EventsEntry.COLUMN_EVENT_DATE_AND_TIME + " ASC";
+
     WidgetDataProvider(Context context){
         mContext = context;
-
         Log.v("IMPORTANT", "RemoteViewsFactory constructor called");
-
-        String[] projection = new String[]{
-                EventsEntry.COLUMN_EVENT_TYPE,
-                EventsEntry.COLUMN_EVENT_TEXT,
-                EventsEntry.COLUMN_EVENT_DATE,
-                EventsEntry.COLUMN_EVENT_TIME
-        };
-        String sortOrder = EventsEntry.COLUMN_EVENT_DATE_AND_TIME + " ASC";
         mCursor = mContext.getContentResolver().query(EventsEntry.CONTENT_URI, projection, null, null, sortOrder);
     }
 
@@ -38,7 +37,8 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public void onDataSetChanged() {
-        mCursor.moveToPosition(0);
+        // Query the database for updated information
+        mCursor = mContext.getContentResolver().query(EventsEntry.CONTENT_URI, projection, null, null, sortOrder);
     }
 
     @Override
@@ -52,21 +52,34 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     @Override
     public int getCount() {
         // We will only show the upcoming 3 events
-        return 3;
+        if(mCursor.getCount() >= 3){
+            return 3;
+        } else {
+            return mCursor.getCount();
+        }
+
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_event_item_layout);
+        String eventDate;
+        String eventTime;
+        String eventText;
+        // Move the cursor to the current position and extract the event information
+        if(mCursor.moveToPosition(position)) {
+            eventDate = EventUtils.convertEventDateToString(mContext, mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE)));
+            eventTime = EventUtils.convertEventTimeToString(mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
 
-        mCursor.moveToPosition(position);
-        String eventDate = EventUtils.convertEventDateToString(mContext, mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE)));
-        String eventTime = EventUtils.convertEventTimeToString(mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
-
-        String eventText = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
-        if(eventText == null || TextUtils.isEmpty(eventText)){
-            // Replace event text with the event type
-            eventText = EventUtils.convertEventTypeToString(mContext, mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+            eventText = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
+            if (eventText == null || TextUtils.isEmpty(eventText)) {
+                // Replace event text with the event type
+                eventText = EventUtils.convertEventTypeToString(mContext, mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+            }
+        } else {
+            eventDate = "";
+            eventTime = "";
+            eventText = mContext.getString(R.string.no_more_events);
         }
 
         rv.setTextViewText(R.id.tv_widget_event_date, eventDate);
