@@ -1,6 +1,7 @@
 package com.example.android.watsnext.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventUtils;
 
@@ -15,6 +17,8 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private Cursor mCursor;
     private Context mContext;
+    private static final int REQUEST_FROM_WIDGET = 142;
+    private static final String EXTRA_WIDGET_ITEM_POSITION = "widgetItemPosition";
 
     private String[] projection = new String[]{
             EventsEntry.COLUMN_EVENT_TYPE,
@@ -85,6 +89,10 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         rv.setTextViewText(R.id.tv_widget_event_date, eventDate);
         rv.setTextViewText(R.id.tv_widget_event_time, eventTime);
         rv.setTextViewText(R.id.tv_widget_event_description, eventText);
+
+        Intent launchEventDetailsIntent = new Intent(mContext, AddEventActivity.class);
+        launchEventDetailsIntent.setAction(EventsWidget.ACTION_WIDGET_ITEM);
+        rv.setOnClickFillInIntent(R.id.widget_list_item, launchEventDetailsIntent);
 
         return rv;
 
