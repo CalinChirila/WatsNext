@@ -75,10 +75,14 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/events_widget_provider_info" />
+                android:resource="@xml/events_widget" />
         </receiver>
-        <service android:name="com.example.android.watsnext.widget.WidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service android:name=".widget.WidgetItemService"/>
+
     </application>
 
 </manifest>

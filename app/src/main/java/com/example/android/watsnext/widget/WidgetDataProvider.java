@@ -3,13 +3,13 @@ package com.example.android.watsnext.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventUtils;
 
@@ -17,10 +17,9 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private Cursor mCursor;
     private Context mContext;
-    private static final int REQUEST_FROM_WIDGET = 142;
-    private static final String EXTRA_WIDGET_ITEM_POSITION = "widgetItemPosition";
 
     private String[] projection = new String[]{
+            EventsEntry._ID,
             EventsEntry.COLUMN_EVENT_TYPE,
             EventsEntry.COLUMN_EVENT_TEXT,
             EventsEntry.COLUMN_EVENT_DATE,
@@ -30,7 +29,6 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     WidgetDataProvider(Context context){
         mContext = context;
-        Log.v("IMPORTANT", "RemoteViewsFactory constructor called");
         mCursor = mContext.getContentResolver().query(EventsEntry.CONTENT_URI, projection, null, null, sortOrder);
     }
 
@@ -47,6 +45,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public void onDestroy() {
+        // When the widget is destroyed, close the cursor
         if(mCursor != null){
             mCursor.close();
             mCursor = null;
@@ -55,7 +54,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public int getCount() {
-        // We will only show the upcoming 3 events
+        // We will only show the upcoming 3 events maximum
         if(mCursor.getCount() >= 3){
             return 3;
         } else {
@@ -66,40 +65,49 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public RemoteViews getViewAt(int position) {
+        // Create the remote view for the widget collection item
+        if(mCursor == null || mCursor.getCount() == 0) return null;
+
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_event_item_layout);
-        String eventDate;
-        String eventTime;
-        String eventText;
+
+        // These variables contain the information to be displayed in the widget list item
+        String eventDate = "";
+        String eventTime = "";
+        String eventText = "";
+        int eventId = -1;
+
         // Move the cursor to the current position and extract the event information
         if(mCursor.moveToPosition(position)) {
+
+            // Get the information from the database and convert it to readable strings
             eventDate = EventUtils.convertEventDateToString(mContext, mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE)));
             eventTime = EventUtils.convertEventTimeToString(mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME)));
-
             eventText = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
+            eventId = mCursor.getInt(mCursor.getColumnIndex(EventsEntry._ID));
+
+            // If the event text is not available, display the event type
             if (eventText == null || TextUtils.isEmpty(eventText)) {
-                // Replace event text with the event type
                 eventText = EventUtils.convertEventTypeToString(mContext, mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
             }
-        } else {
-            eventDate = "";
-            eventTime = "";
-            eventText = mContext.getString(R.string.no_more_events);
         }
 
+        // Set the strings to the remote view
         rv.setTextViewText(R.id.tv_widget_event_date, eventDate);
         rv.setTextViewText(R.id.tv_widget_event_time, eventTime);
         rv.setTextViewText(R.id.tv_widget_event_description, eventText);
 
-        Intent launchEventDetailsIntent = new Intent(mContext, AddEventActivity.class);
-        launchEventDetailsIntent.setAction(EventsWidget.ACTION_WIDGET_ITEM);
-        rv.setOnClickFillInIntent(R.id.widget_list_item, launchEventDetailsIntent);
+        Bundle extras = new Bundle();
+        extras.putInt("extraEventId", eventId);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+        rv.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
 
         return rv;
-
     }
 
     @Override
     public RemoteViews getLoadingView() {
+        // No loading view necessary
         return null;
     }
 
