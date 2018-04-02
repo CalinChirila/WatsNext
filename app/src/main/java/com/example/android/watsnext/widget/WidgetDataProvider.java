@@ -27,7 +27,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     };
     private String sortOrder = EventsEntry.COLUMN_EVENT_DATE_AND_TIME + " ASC";
 
-    WidgetDataProvider(Context context){
+    public WidgetDataProvider(Context context){
         mContext = context;
         mCursor = mContext.getContentResolver().query(EventsEntry.CONTENT_URI, projection, null, null, sortOrder);
     }

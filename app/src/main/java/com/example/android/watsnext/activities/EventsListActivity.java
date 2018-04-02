@@ -16,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.watsnext.adapters.EventsAdapter;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.adapters.EventsAdapter;
+import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
-import com.example.android.watsnext.data.EventContract.EventsEntry;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,8 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
     RecyclerView mRecyclerView;
     @BindView(R.id.tv_empty_state)
     TextView mEmptyState;
+    @BindView(R.id.ad_view_banner)
+    AdView mAdView;
 
     public Cursor mCursor;
     private EventsAdapter mAdapter;
@@ -57,6 +61,10 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
         ButterKnife.bind(this);
+
+        // Load the add into the events list activity
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         //TODO: improve landscape visuals
 
