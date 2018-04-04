@@ -132,7 +132,6 @@ public class Reminder {
      * @param reminderHourTextView - the reminder hours display
      */
     public static void increaseReminderHours(TextView reminderHourTextView){
-        //TODO: validate reminder time so that it can't be greater than the current time before event
         mReminderHours += 1;
         reminderHourTextView.setText(String.valueOf(mReminderHours));
     }

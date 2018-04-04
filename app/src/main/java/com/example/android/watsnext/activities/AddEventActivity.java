@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -26,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.adapters.EventTypesAdapter;
@@ -170,7 +173,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
         if (mIntent.hasExtra(EventsListActivity.EXTRA_EVENT_ID)) {
             // User clicked on an existing event
-            // TODO: populate the event fields with corresponding data
             toolbar.setTitle(R.string.edit_event);
             extractEventInformation();
 
@@ -187,7 +189,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
 
             // TODO: finish populating the repeater and reminder and modify save to update event in the db
-            // TODO: find out why event IDs are 70+
+
 
         } else {
             // User clicked the add event button
@@ -233,15 +235,17 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
                         setupEventReminder();
 
-                        addEventToDatabase();
-                        setupRepeatedEvents();
+                        // If the event information is valid, add it to the database
+                        if(validateEvent()) {
+                            addEventToDatabase();
+                            setupRepeatedEvents();
 
-                        updateAppWidget();
+                            updateAppWidget();
+                            finish();
+                        }
 
-                        finish();
 
-                        //TODO: before adding the event into the db, validate data: check if event date is in future!
-                        //TODO: The list of events will need to be updated with new data every day at midnight!
+                        //TODO: update the event information every time the user enters the app, in onResume()
                         break;
                     case R.id.iv_day_plus_button:
                         DatePickerUtils.increaseDay(mDayTextView);
@@ -499,8 +503,17 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
         values.put(EventsEntry.COLUMN_EVENT_REPEAT, mRepeatDays.toString());
 
+        if(mIntent.hasExtra(EventsListActivity.EXTRA_EVENT_ID)){
+            // Update the existing event
+            Uri eventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, mEventID);
+            String selection = EventsEntry._ID + "=?";
+            String[] selectionArgs = {String.valueOf(mEventID)};
+            getContentResolver().update(eventUri, values, selection, selectionArgs);
 
-        getContentResolver().insert(EventsEntry.CONTENT_URI, values);
+        } else {
+            // Otherwise insert a new event in the db
+            getContentResolver().insert(EventsEntry.CONTENT_URI, values);
+        }
     }
 
 
@@ -661,4 +674,19 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mReminderTimePickerLayout.setVisibility(View.VISIBLE);
         mReminderTextView.setVisibility(View.VISIBLE);
     }
+
+    /**
+     * Helper methods that validates event information before it is added to the database
+     */
+    private boolean validateEvent(){
+        Calendar calendar = Calendar.getInstance();
+        long currentDate = calendar.getTimeInMillis();
+        if(mEventDateAndTime >= currentDate){
+            return true;
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.Event_date_in_past, Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
 }

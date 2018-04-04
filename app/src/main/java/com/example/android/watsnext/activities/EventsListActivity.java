@@ -138,7 +138,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void onStartLoading() {
-                //TODO: if nothing is changed, just show data. Save the state of the cursor
                 forceLoad();
             }
 

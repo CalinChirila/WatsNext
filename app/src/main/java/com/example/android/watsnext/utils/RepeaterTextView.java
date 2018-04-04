@@ -115,8 +115,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
         }
     }
 
-    //TODO: when clicking on preset event, the repeater is colored correctly but when saving, the array is 0
-
     @Override
     public void onClick(View v) {
         if(isSelected){

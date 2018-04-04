@@ -15,9 +15,6 @@ import java.util.Calendar;
 
 public class EventUtils {
 
-    public static final long MILLIS_IN_A_DAY = DatePickerUtils.MILLIS_IN_A_DAY;
-    public static final long MILLIS_IN_TWO_DAYS = MILLIS_IN_A_DAY * 2;
-
     /**
      * Helper method that converts the event date to a string
      */
@@ -92,11 +89,6 @@ public class EventUtils {
         formattedTime = hoursString + " : " + minutesString + ampm;
         return formattedTime;
 
-
-        // BUG: When setting the date to be 12:something am, SimpleDateFormat converts it to pm and viceversa
-//        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", context.getResources().getConfiguration().locale);
-//        eventTime = eventTime - (2 * 60 * 60 * 1000);       //TODO: The code adds 2 hours to set time. This is a temporary fix until I find out where that happens.
-//        return timeFormat.format(eventTime);
     }
 
     /**
