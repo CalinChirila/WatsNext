@@ -109,6 +109,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
         notifyDataSetChanged();
     }
 
+
     private boolean isSameDate(String formattedDate){
         if(formattedDate.equals(mComparedDate)){
             return true;

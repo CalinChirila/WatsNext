@@ -145,10 +145,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
 
     }
 
-    //TODO Create a function updateEvents that will:
-    // 1) Reschedule repeated events
-    // 2) Remove past events
-
     /**
      * Returns the array of indices of the repeat days
      */

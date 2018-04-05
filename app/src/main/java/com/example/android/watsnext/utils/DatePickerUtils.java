@@ -10,8 +10,6 @@ import java.util.Calendar;
 
 public class DatePickerUtils {
 
-    private static final String TAG = DatePickerUtils.class.getSimpleName();
-
     public static final long MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
     public static int mEventMonth;

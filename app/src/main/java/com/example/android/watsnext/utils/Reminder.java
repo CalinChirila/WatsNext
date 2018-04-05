@@ -5,13 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.android.watsnext.broadcastReceivers.AlarmReceiver;
 import com.example.android.watsnext.broadcastReceivers.NotificationReceiver;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Created by Calin-Cristian Chirila on 3/18/2018.
@@ -68,12 +68,13 @@ public class Reminder {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
 
-        Calendar calendar = new GregorianCalendar();
-        int gmtOffSet = calendar.getTimeZone().getRawOffset();
+        int gmtOffSet = Calendar.DST_OFFSET; // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
 
         // Set the reminder time taking the gmt into consideration
         long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
-
+        Log.v("IMPORTANT", "OLD: " + String.valueOf(alarmTime));
+        alarmTime = alarmTime - 7200000;
+        Log.v("IMPORTANT", "NEW: " + String.valueOf(alarmTime));
         if(mReminderType == REMINDER_ALARM) {
             // Create the alarm intent
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);

@@ -1,7 +1,9 @@
 package com.example.android.watsnext.activities;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +27,8 @@ import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,8 +70,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         // Load the add into the events list activity
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
-        //TODO: improve landscape visuals
 
         // Setup the toolbar
         toolbar.inflateMenu(R.menu.menu);
@@ -162,6 +165,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         if (data.getCount() == 0) {
             showEmptyState();
         } else {
+            deletePastEvents(data);
             setupRecyclerView();
             mAdapter.setEventsData(this, data);
             hideEmptyState();
@@ -217,9 +221,34 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER, eventReminder);
         eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER_TIME, eventReminderTime);
 
-
+        //TODO: delete gmt todos after debug
 
         return eventDetailsIntent;
+    }
+
+    /**
+     * Delete events that are in the past
+     * @param cursor - the db cursor
+     */
+    private void deletePastEvents(Cursor cursor) {
+        if (cursor == null || cursor.getCount() == 0) return;
+
+        Calendar calendar = Calendar.getInstance();
+        long currentDateAndTime = calendar.getTimeInMillis();
+
+        while (cursor.moveToNext()) {
+            long eventDateAndTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE_AND_TIME));
+            // Take GMT into consideration
+            eventDateAndTime = eventDateAndTime - (calendar.getTimeZone().getRawOffset() / 60 * 60 * 1000); // TODO: gmt here
+            if (eventDateAndTime < currentDateAndTime) {
+                Log.v("IMPORTANT", "Delete");
+                long eventId = cursor.getLong(cursor.getColumnIndex(EventsEntry._ID));
+                Uri pastEventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
+                String selection = EventsEntry._ID + "=?";
+                String[] selectionArgs = {String.valueOf(eventId)};
+                getContentResolver().delete(pastEventUri, selection, selectionArgs);
+            }
+        }
     }
 }
 
