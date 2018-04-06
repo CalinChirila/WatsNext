@@ -8,6 +8,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
@@ -423,16 +424,21 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
      */
     private void extractEventInformation(){
         mEventID = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_ID, -1);
-        mEventTypeString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_TYPE);
-        mEventText = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_TEXT);
-        mEventDate = mIntent.getLongExtra(EventsListActivity.EXTRA_EVENT_DATE, -1);
-        mEventTime = mIntent.getLongExtra(EventsListActivity.EXTRA_EVENT_TIME, -1);
-        mEventLocation = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_LOCATION);
-        mEventReminderType = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER, -1);
-        mEventReminderTime = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER_TIME, -1);
-        mRepeatDaysString = mIntent.getStringExtra(EventsListActivity.EXTRA_EVENT_REPEAT);
-        mEventReminderType = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_REMINDER, -1);
-        mEventReminderTime = mIntent.getLongExtra(EventsListActivity.EXTRA_EVENT_REMINDER_TIME, -1);
+        String selection = EventsEntry._ID + "=?";
+        String[] selectionArgs = {String.valueOf(mEventID)};
+        Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, selection, selectionArgs, null);
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            mEventTypeString = EventUtils.convertEventTypeToString(this, cursor.getInt(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
+            mEventText = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
+            mEventDate = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE));
+            mEventTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME));
+            mEventLocation = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_LOCATION));
+            mEventReminderType = cursor.getInt(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
+            mEventReminderTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER_TIME));
+            mRepeatDaysString = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
+            cursor.close();
+        }
     }
 
     /**
