@@ -187,7 +187,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             setReminderChoiceInterface(mEventReminderType);
             setReminderValues(mEventReminderTime);
 
-
             // TODO: finish populating the repeater and reminder and modify save to update event in the db
 
 
@@ -243,7 +242,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                             updateAppWidget();
                             finish();
                         }
-
 
                         //TODO: update the event information every time the user enters the app, in onResume()
                         break;
@@ -627,6 +625,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
      * alter its background color
      */
     private void setRepeatDaysInterface(String repeatDays){
+        if(repeatDays == null) return;
         if(mRepeatDays == null) mRepeatDays = new ArrayList<>();
         for(int i = 0; i < 7; i++){
 

@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.activities.EventsListActivity;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventUtils;
 
@@ -97,7 +98,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         rv.setTextViewText(R.id.tv_widget_event_description, eventText);
 
         Bundle extras = new Bundle();
-        extras.putInt("extraEventId", eventId);
+        extras.putInt(EventsListActivity.EXTRA_EVENT_ID, eventId);
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);

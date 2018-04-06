@@ -64,5 +64,6 @@
     <string name="no_more_events">No more upcoming events</string>
     <string name="Event_date_in_past">Event date and time are in the past. Please select a future date for the event</string>
     <string name="event">Event</string>
+    <string name="no_upcoming_events">No upcoming events</string>
 
 </resources>

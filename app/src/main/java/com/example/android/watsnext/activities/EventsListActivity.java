@@ -25,6 +25,7 @@ import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
+import com.example.android.watsnext.widget.WidgetDataProvider;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -126,6 +127,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
             case R.id.menu_delete_all_events:
                 getContentResolver().delete(EventsEntry.CONTENT_URI, null, null);
                 Reminder.cancelReminder();
+                new WidgetDataProvider(getApplicationContext());
                 RepeaterTextView.resetRepeatDays();
                 mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
                 showEmptyState();

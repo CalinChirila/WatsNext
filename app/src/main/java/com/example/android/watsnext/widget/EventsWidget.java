@@ -34,23 +34,28 @@ public class EventsWidget extends AppWidgetProvider {
 
         // Query the events database
         Cursor cursor = context.getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, null);
-        if(cursor != null && cursor.moveToFirst()) {
 
-            // Create an intent for the RemoteViews Factory
-            Intent intent = new Intent(context, WidgetService.class);
-            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-            // Set the adapter for the widget collection
-            views.setRemoteAdapter(R.id.widget_events_list, intent);
+        // Create an intent for the RemoteViews Factory
+        Intent intent = new Intent(context, WidgetService.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        // Set the adapter for the widget collection
+        views.setRemoteAdapter(R.id.widget_events_list, intent);
+
+
 
             // Set the Pending Intent template
             Intent appIntent = new Intent(context, AddEventActivity.class);
             PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.widget_events_list, appPendingIntent);
 
-            // Instruct the widget manager to update the widget
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
+        // Instruct the widget manager to update the widget
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+        if(cursor != null){
             cursor.close();
         }
+
     }
 
     @Override
@@ -65,8 +70,6 @@ public class EventsWidget extends AppWidgetProvider {
         }
 
     }
-
-
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
