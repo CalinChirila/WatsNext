@@ -20,8 +20,6 @@ public class EventsWidget extends AppWidgetProvider {
 
     static int mWidgetId;
 
-    public static final String ACTION_WIDGET_ITEM = "com.example.android.watsnext.widget.EventsWidget.ACTION_WIDGET_ITEM";
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         // Store the widget id into a global variable

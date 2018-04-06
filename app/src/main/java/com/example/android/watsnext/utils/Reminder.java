@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.android.watsnext.broadcastReceivers.AlarmReceiver;
@@ -32,6 +31,7 @@ public class Reminder {
     private static final int REQUEST_CODE_NOTIFICATION = 122;
 
     private static PendingIntent mReminderPendingIntent;
+    public static final String ALARM_REMINDER_TYPE = "alarmReminderType";
 
     /**
      * Reminder constructor
@@ -68,16 +68,16 @@ public class Reminder {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
 
-        int gmtOffSet = Calendar.DST_OFFSET; // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
+        Calendar calendar = Calendar.getInstance();
+        int gmtOffSet = calendar.getTimeZone().getRawOffset(); // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
 
         // Set the reminder time taking the gmt into consideration
         long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
-        Log.v("IMPORTANT", "OLD: " + String.valueOf(alarmTime));
-        alarmTime = alarmTime - 7200000;
-        Log.v("IMPORTANT", "NEW: " + String.valueOf(alarmTime));
+
         if(mReminderType == REMINDER_ALARM) {
             // Create the alarm intent
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+            alarmIntent.putExtra(ALARM_REMINDER_TYPE, mReminderType);
             mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

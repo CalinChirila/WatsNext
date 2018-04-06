@@ -240,7 +240,8 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
             long eventDateAndTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE_AND_TIME));
             // Take GMT into consideration
             eventDateAndTime = eventDateAndTime - (calendar.getTimeZone().getRawOffset() / 60 * 60 * 1000); // TODO: gmt here
-            if (eventDateAndTime < currentDateAndTime) {
+            // Keep the event for 1 hour before deleting it
+            if ((eventDateAndTime + 3600000) < currentDateAndTime) {
                 Log.v("IMPORTANT", "Delete");
                 long eventId = cursor.getLong(cursor.getColumnIndex(EventsEntry._ID));
                 Uri pastEventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);

@@ -8,12 +8,14 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.utils.EventUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +61,10 @@ public class AlarmActivity extends AppCompatActivity {
         wakeupPhoneScreen();
 
         // Get the event message that the user set and display it in the alarm activity
-        String alarmMessage = getIntent().getStringExtra(AlarmClock.EXTRA_MESSAGE);
+        String alarmMessage = EventUtils.convertEventTypeToString(this, getIntent().getIntExtra(AlarmClock.EXTRA_MESSAGE, 0));
+        if(TextUtils.isEmpty(alarmMessage) || alarmMessage.equals(getString(R.string.event_type_other))){
+            alarmMessage = getString(R.string.event);
+        }
         mAlarmMessageTextView.setText(alarmMessage);
 
         // When the Stop Alarm button is clicked:
