@@ -18,7 +18,7 @@ import com.example.android.watsnext.data.EventContract.EventsEntry;
  */
 public class EventsWidget extends AppWidgetProvider {
 
-    static int mWidgetId;
+    public static int mWidgetId;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -42,17 +42,15 @@ public class EventsWidget extends AppWidgetProvider {
         views.setRemoteAdapter(R.id.widget_events_list, intent);
 
 
-
-            // Set the Pending Intent template
-            Intent appIntent = new Intent(context, AddEventActivity.class);
-            PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setPendingIntentTemplate(R.id.widget_events_list, appPendingIntent);
-
+        // Set the Pending Intent template
+        Intent appIntent = new Intent(context, AddEventActivity.class);
+        PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_events_list, appPendingIntent);
 
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        if(cursor != null){
+        if (cursor != null) {
             cursor.close();
         }
 
@@ -62,7 +60,7 @@ public class EventsWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
-        switch(action){
+        switch (action) {
             case AppWidgetManager.ACTION_APPWIDGET_UPDATE:
                 RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_events);
                 AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, EventsWidget.class), rv);

@@ -69,7 +69,7 @@ public class Reminder {
         if (alarmManager == null) return;
 
         Calendar calendar = Calendar.getInstance();
-        int gmtOffSet = calendar.getTimeZone().getRawOffset(); // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
+        int gmtOffSet = calendar.getTimeZone().getRawOffset() + calendar.getTimeZone().getDSTSavings(); // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
 
         // Set the reminder time taking the gmt into consideration
         long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);

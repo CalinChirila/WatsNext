@@ -94,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         // Add a marker to the current user position and move the camera
+
         if(mCurrentLocation != null) {
             LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
             mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Current Position"));
@@ -131,6 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return currentLocation;
         } catch (SecurityException e){
             Log.e(TAG, "Location permission denied");
+
         }
         return null;
     }
