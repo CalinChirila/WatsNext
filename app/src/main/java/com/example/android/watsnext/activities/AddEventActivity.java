@@ -23,6 +23,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -161,6 +163,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         ButterKnife.bind(this);
+
+        // Display the menu
+        toolbar.inflateMenu(R.menu.event_item_menu);
         // Set the toolbar
         setSupportActionBar(toolbar);
         // Set back button
@@ -692,6 +697,32 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             Toast.makeText(getApplicationContext(), R.string.Event_date_in_past, Toast.LENGTH_LONG).show();
             return false;
         }
+    }
+
+    private void deleteEvent(int eventId){
+        Uri eventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
+        getContentResolver().delete(eventUri, null, null);
+        Reminder.cancelReminder();
+        AppWidgetManager.getInstance(getApplicationContext()).notifyAppWidgetViewDataChanged(EventsWidget.mWidgetId, R.id.widget_events_list);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.event_item_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch(menuItem.getItemId()){
+            case R.id.menu_delete_event:
+                // Insert code to delete 1 event here
+                deleteEvent(mEventID);
+                break;
+        }
+
+        return true;
     }
 
 }

@@ -75,7 +75,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         mAdView.loadAd(adRequest);
 
         // Setup the toolbar
-        toolbar.inflateMenu(R.menu.menu);
+        toolbar.inflateMenu(R.menu.events_list_menu);
         setSupportActionBar(toolbar);
 
         // Setup the Add Event Button
@@ -118,7 +118,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.events_list_menu, menu);
         return true;
     }
 
