@@ -173,8 +173,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         // Change the back button color to white
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
 
-        //TODO: add content transitions between activities. when add event fab is pushed, move it to the correct place and morph the icon
-        //TODO: transition between activities should be also morph-ish
         mIntent = getIntent();
 
         if (mIntent.hasExtra(EventsListActivity.EXTRA_EVENT_ID)) {
@@ -673,13 +671,16 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         long hoursInMillis = timeInMillis - (days * DatePickerUtils.MILLIS_IN_A_DAY);
         int hours =(int) (hoursInMillis / 3600000);
         long minutesInMillis = hoursInMillis - (hours * 3600000);
-        int minutes = (int) (minutesInMillis / 60000);
+        int minutes =(int) (minutesInMillis / 60000);
 
         mReminderDayTextView.setText(String.valueOf(days));
         mReminderHourTextView.setText(String.valueOf(hours));
         mReminderMinuteTextView.setText(String.valueOf(minutes));
     }
 
+    /**
+     * Helper method that displays the event reminder interface
+     */
     private void showReminderTimeInterface(){
         mReminderTimePickerLayout.setVisibility(View.VISIBLE);
         mReminderTextView.setVisibility(View.VISIBLE);
@@ -720,6 +721,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                 // Insert code to delete 1 event here
                 deleteEvent(mEventID);
                 break;
+            case android.R.id.home:
+                finish();
         }
 
         return true;
