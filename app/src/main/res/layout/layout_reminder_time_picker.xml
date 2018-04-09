@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
-    <!-- TODO: improve visuals -->
 
     <TextView
         android:id="@+id/tv_reminder_time_picker_day"

@@ -119,7 +119,7 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
     public void onClick(View v) {
         if(isSelected){
             // Remove repeated event
-            v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            v.setBackgroundColor(getResources().getColor(R.color.dark_transparent_background));
             this.isSelected = false;
 
             //DEBUG TOAST

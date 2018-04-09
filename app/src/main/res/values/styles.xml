@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
 
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
@@ -39,8 +40,9 @@
     <style name="PickerItemStyle" parent="AppTheme">
         <item name="android:layout_width">@dimen/date_picker_item_size</item>
         <item name="android:layout_height">@dimen/date_picker_item_size</item>
-        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:background">@color/dark_transparent_background</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColorHint">@android:color/white</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
@@ -49,7 +51,8 @@
     <style name="RepeaterItemStyle" parent="AppTheme">
         <item name="android:layout_width">@dimen/repeater_item_size</item>
         <item name="android:layout_height">@dimen/repeater_item_size</item>
-        <item name="android:background">@android:color/darker_gray</item>
+        <item name="android:background">@color/dark_transparent_background</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginTop">@dimen/repeater_top_margin</item>
         <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/repeater_start_margin</item>
         <item name="android:layout_marginLeft">@dimen/repeater_start_margin</item>

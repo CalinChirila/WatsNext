@@ -22,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,8 +190,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             setReminderChoiceInterface(mEventReminderType);
             setReminderValues(mEventReminderTime);
 
-            // TODO: finish populating the repeater and reminder and modify save to update event in the db
-
 
         } else {
             // User clicked the add event button
@@ -232,10 +229,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventDateAndTime = mEventDate + mEventTime;
                         mRepeatDays = RepeaterTextView.getRepeatDays();
 
-                        // ADD this to db, when getting predetermined repeat days, check if i from 0 to 7 is contained in the string
-                        String repeatDaysString = mRepeatDays.toString();
-                        Log.v("IMPORTANT", repeatDaysString);
-
                         setupEventReminder();
 
                         // If the event information is valid, add it to the database
@@ -247,7 +240,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                             finish();
                         }
 
-                        //TODO: update the event information every time the user enters the app, in onResume()
                         break;
                     case R.id.iv_day_plus_button:
                         DatePickerUtils.increaseDay(mDayTextView);
@@ -311,7 +303,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         break;
                     case R.id.rb_noReminder:
                         // If the user chooses to have no reminder, hide the reminder time picker layout
-                        //TODO: add animations for reminder options
                         if (mReminderTimePickerLayout.getVisibility() == View.VISIBLE) {
                             mReminderTimePickerLayout.setVisibility(View.GONE);
                             mReminderTextView.setVisibility(View.GONE);
