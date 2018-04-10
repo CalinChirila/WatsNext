@@ -2,10 +2,12 @@ package com.example.android.watsnext.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -229,13 +231,11 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventDateAndTime = mEventDate + mEventTime;
                         mRepeatDays = RepeaterTextView.getRepeatDays();
 
-                        setupEventReminder();
-
                         // If the event information is valid, add it to the database
                         if(validateEvent()) {
                             addEventToDatabase();
                             setupRepeatedEvents();
-
+                            setupEventReminder();
                             updateAppWidget();
                             finish();
                         }
@@ -710,13 +710,31 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         switch(menuItem.getItemId()){
             case R.id.menu_delete_event:
                 // Insert code to delete 1 event here
-                deleteEvent(mEventID);
+                showDeleteEventConfirmationDialogue();
                 break;
             case android.R.id.home:
                 finish();
         }
 
         return true;
+    }
+
+    /**
+     * Helper method that shows a confirmation dialogue before deleting event data
+     */
+    public void showDeleteEventConfirmationDialogue(){
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_event)
+                .setMessage(R.string.delete_event_confirmation_message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteEvent(mEventID);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .create()
+                .show();
     }
 
 }

@@ -1,7 +1,9 @@
 package com.example.android.watsnext.activities;
 
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,13 +128,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         int itemID = menuItem.getItemId();
         switch (itemID) {
             case R.id.menu_delete_all_events:
-                getContentResolver().delete(EventsEntry.CONTENT_URI, null, null);
-                Reminder.cancelReminder();
-                new WidgetDataProvider(getApplicationContext());
-                AppWidgetManager.getInstance(getApplicationContext()).notifyAppWidgetViewDataChanged(EventsWidget.mWidgetId, R.id.widget_events_list);
-                RepeaterTextView.resetRepeatDays();
-                mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
-                showEmptyState();
+                showDeleteAllEventsConfirmationDialogue();
                 break;
         }
 
@@ -226,8 +221,6 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER, eventReminder);
         eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER_TIME, eventReminderTime);
 
-        //TODO: delete gmt todos after debug
-
         return eventDetailsIntent;
     }
 
@@ -244,10 +237,9 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         while (cursor.moveToNext()) {
             long eventDateAndTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE_AND_TIME));
             // Take GMT into consideration
-            eventDateAndTime = eventDateAndTime - (calendar.getTimeZone().getRawOffset() / 60 * 60 * 1000); // TODO: gmt here
+            eventDateAndTime = eventDateAndTime - (calendar.getTimeZone().getRawOffset() / 60 * 60 * 1000);
             // Keep the event for 1 hour before deleting it
             if ((eventDateAndTime + 3600000) < currentDateAndTime) {
-                Log.v("IMPORTANT", "Delete");
                 long eventId = cursor.getLong(cursor.getColumnIndex(EventsEntry._ID));
                 Uri pastEventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
                 String selection = EventsEntry._ID + "=?";
@@ -256,7 +248,36 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
             }
         }
     }
+
+    /**
+     * Helper method to delete all events from the database
+     */
+    private void deleteAllEvents(){
+        getContentResolver().delete(EventsEntry.CONTENT_URI, null, null);
+        Reminder.cancelReminder();
+        new WidgetDataProvider(getApplicationContext());
+        AppWidgetManager.getInstance(getApplicationContext()).notifyAppWidgetViewDataChanged(EventsWidget.mWidgetId, R.id.widget_events_list);
+        RepeaterTextView.resetRepeatDays();
+        mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
+        showEmptyState();
+    }
+
+    /**
+     * Helper method that shows a confirmation dialogue before deleting all event data
+     */
+    public void showDeleteAllEventsConfirmationDialogue(){
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_all_events_confirmation_title)
+                .setMessage(R.string.delete_all_events_confirmation_message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteAllEvents();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .create()
+                .show();
+    }
 }
 
-
-//TODO: Improve the visuals
