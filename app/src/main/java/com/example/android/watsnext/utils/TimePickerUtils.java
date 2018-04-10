@@ -119,7 +119,7 @@ public class TimePickerUtils {
 
         // Take gmt into consideration
         int gmtOffSet = calendar.getTimeZone().getRawOffset()  / (60 * 60 * 1000);
-        mTimePickerHour = calendar.get(Calendar.HOUR_OF_DAY) - gmtOffSet; // TODO: GMT here
+        mTimePickerHour = calendar.get(Calendar.HOUR_OF_DAY) - gmtOffSet;
         if(mTimePickerHour > 12) mTimePickerHour = mTimePickerHour - 12;
         mTimePickerMinute = calendar.get(Calendar.MINUTE);
         mTimePickerAmPm = calendar.get(Calendar.AM_PM);

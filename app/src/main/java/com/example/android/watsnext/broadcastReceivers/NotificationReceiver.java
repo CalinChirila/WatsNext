@@ -58,7 +58,6 @@ public class NotificationReceiver extends BroadcastReceiver {
             // When the notification is clicked, the event details activity should be launched
             Intent notificationIntent = new Intent(context, AddEventActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            //TODO: add all event details in this intent
             PendingIntent notificationPendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
             notificationBuilder

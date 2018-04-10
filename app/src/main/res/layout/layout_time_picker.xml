@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
-    <!-- TODO: improve visuals -->
-
     <TextView
         android:id="@+id/tv_time_picker_hour"
         style="@style/PickerItemStyle"
@@ -96,10 +94,8 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="@dimen/time_picker_text_bottom_margin"
         android:textColor="@android:color/white"
-        android:layout_marginStart="8dp"
         android:text="@string/time"
         app:layout_constraintBottom_toBottomOf="@+id/iv_minute_plus_button"
         app:layout_constraintEnd_toEndOf="parent"

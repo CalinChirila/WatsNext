@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Upcoming Events"
-        android:textSize="24sp"
+        android:textSize="@dimen/widget_title_text_size"
         android:textColor="@android:color/white"
         android:textAlignment="center" />
 

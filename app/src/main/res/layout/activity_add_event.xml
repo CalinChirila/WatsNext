@@ -18,7 +18,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/appBarHeight"
-            app:elevation="0dp"
+            app:elevation="@dimen/app_bar_elevation"
             android:background="@android:color/transparent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -50,9 +50,8 @@
             layout="@layout/layout_event_types"
             android:layout_width="@dimen/spinner_width"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/event_spinner_start_margin"
+            android:layout_marginTop="@dimen/event_spinner_top_margin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/view_event_details_header_separator" />
 
@@ -60,9 +59,8 @@
             android:id="@+id/et_event_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/event_details_edittext_end_margin"
+            android:layout_marginTop="@dimen/event_details_edittext_top_margin"
             android:ems="10"
             android:hint="@string/event_text_hint"
             android:inputType="textCapSentences"
@@ -79,7 +77,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_done" />
 
-        <!-- TODO: Animate this layout to slide down when drop down menu is activated-->
         <include
             android:id="@+id/date_picker"
             style="@style/PickerLayoutStyle"
@@ -111,7 +108,6 @@
             android:layout_width="@dimen/event_location_EditText_width"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/event_location_end_margin"
-            android:layout_marginRight="@dimen/event_location_end_margin"
             android:hint="@string/location"
             android:inputType="textCapSentences"
             android:maxLines="1"
@@ -198,10 +194,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:textAlignment="center"
             android:text="@string/reminder_text_before_the_event"
             android:textColor="@android:color/white"
@@ -209,10 +201,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reminder_time_picker_layout"
-            app:layout_constraintTop_toTopOf="@+id/reminder_time_picker_layout"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="4dp" />
-
+            app:layout_constraintTop_toTopOf="@+id/reminder_time_picker_layout" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

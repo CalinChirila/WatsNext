@@ -4,10 +4,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Created by Astraeus on 2/26/2018.
+ * Created by Calin-Cristian Chirila on 2/26/2018.
  */
 
-//TODO: test if using Room is more efficient
 
 public class EventContract {
     public static final String AUTHORITY = "com.example.android.watsnext.data";

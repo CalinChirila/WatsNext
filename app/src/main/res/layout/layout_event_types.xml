@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/event_types_root"
     android:layout_width="@dimen/spinner_width"
     android:layout_gravity="center"
@@ -12,10 +11,10 @@
         android:layout_width="@dimen/spinner_width"
         android:layout_height="@dimen/spinner_height"
         android:background="@drawable/rounded_corner"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/event_type_spinner_text_size"
         android:layout_marginTop="8dp"
-        android:paddingRight="8dp"
+        android:textColor="@android:color/darker_gray"
+        android:paddingEnd="@dimen/event_type_spinner_end_date"
         android:text="@string/spinner_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,33 +24,24 @@
         android:id="@+id/iv_event_type_expand_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:elevation="4dp"
+        android:layout_margin="@dimen/event_type_spinner_arrow_margin"
+        android:elevation="@dimen/event_type_spinner_arrow_elevation"
         app:layout_constraintBottom_toBottomOf="@+id/button_show_event_types"
         app:layout_constraintEnd_toEndOf="@+id/button_show_event_types"
         app:layout_constraintTop_toTopOf="@+id/button_show_event_types"
         app:srcCompat="@drawable/ic_expand_more"
-        android:layout_marginRight="8dp" />
+        android:contentDescription="@string/show_all_event_types" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_event_types"
         android:layout_width="@dimen/spinner_width"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_show_event_types" />
-
-
-
 
 </android.support.constraint.ConstraintLayout>
 

@@ -7,11 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
 /**
- * Created by Astraeus on 2/26/2018.
+ * Created by Calin-Cristian Chirila on 2/26/2018.
  */
 
 public class EventDbHelper extends SQLiteOpenHelper {
-    //TODO: might create another table for past events, with less information (only type, text and date)
 
     private static final String DATABASE_NAME = "events.db";
     private static final int DATABASE_VERSION = 2;

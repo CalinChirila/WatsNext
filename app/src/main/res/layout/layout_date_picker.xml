@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
-    <!-- TODO: improve visuals -->
-
     <TextView
         android:id="@+id/tv_date_picker_day"
         style="@style/PickerItemStyle"

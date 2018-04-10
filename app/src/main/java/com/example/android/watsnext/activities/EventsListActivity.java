@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.adapters.EventsAdapter;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
-import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
 import com.example.android.watsnext.widget.EventsWidget;
@@ -196,30 +195,14 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         // Move cursor to the clicked position
         mCursor.moveToPosition(position);
 
-        // Get only the information needed for display and event ID
+        // Get event ID
         // The event id will be used when the save event button is clicked,
         // But instead of adding a new event, we will update this one
         int eventID = mCursor.getInt(mCursor.getColumnIndex(EventsEntry._ID));
-        String eventType = EventUtils.convertEventTypeToString(this, mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE)));
-        String eventText = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
-        long eventDate = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE));
-        long eventTime = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME));
-        String eventLocation = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_LOCATION));
-        String eventRepeat = mCursor.getString(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
-        int eventReminder = mCursor.getInt(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
-        long eventReminderTime = mCursor.getLong(mCursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER_TIME));
 
         Intent eventDetailsIntent = new Intent(EventsListActivity.this, AddEventActivity.class);
 
         eventDetailsIntent.putExtra(EXTRA_EVENT_ID, eventID);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_TYPE, eventType);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_TEXT, eventText);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_DATE, eventDate);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_TIME, eventTime);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_LOCATION, eventLocation);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_REPEAT, eventRepeat);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER, eventReminder);
-        eventDetailsIntent.putExtra(EXTRA_EVENT_REMINDER_TIME, eventReminderTime);
 
         return eventDetailsIntent;
     }
