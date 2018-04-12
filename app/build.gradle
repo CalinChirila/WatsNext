@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -11,10 +12,21 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs{
+        watsnextconfig{
+            keyAlias 'key'
+            keyPassword 'jonbonjovi666'
+            storeFile file('../watsnextkeysore.jks')
+            storePassword 'badhairday666'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.watsnextconfig
         }
     }
 }

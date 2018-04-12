@@ -30,7 +30,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.EventsListActivity">
+        <activity android:name="com.example.android.com.calin.android.watsnext.activities.EventsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,16 +39,16 @@
         </activity>
 
         <provider
-            android:name=".data.EventContentProvider"
+            android:name="com.example.android.com.calin.android.watsnext.data.EventContentProvider"
             android:authorities="com.example.android.watsnext.data"
             android:exported="true" />
 
         <activity
-            android:name=".activities.AddEventActivity"
-            android:parentActivityName=".activities.EventsListActivity" />
+            android:name="com.example.android.com.calin.android.watsnext.activities.AddEventActivity"
+            android:parentActivityName="com.example.android.com.calin.android.watsnext.activities.EventsListActivity" />
         <activity
-            android:name=".activities.CalendarActivity"
-            android:parentActivityName=".activities.AddEventActivity" />
+            android:name="com.example.android.com.calin.android.watsnext.activities.CalendarActivity"
+            android:parentActivityName="com.example.android.com.calin.android.watsnext.activities.AddEventActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -58,18 +58,18 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities.MapsActivity"
+            android:name="com.example.android.com.calin.android.watsnext.activities.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".activities.AddEventActivity" />
+            android:parentActivityName="com.example.android.com.calin.android.watsnext.activities.AddEventActivity" />
 
-        <receiver android:name=".broadcastReceivers.AlarmReceiver" />
-        <receiver android:name=".broadcastReceivers.NotificationReceiver" />
+        <receiver android:name="com.example.android.com.calin.android.watsnext.broadcastReceivers.AlarmReceiver" />
+        <receiver android:name="com.example.android.com.calin.android.watsnext.broadcastReceivers.NotificationReceiver" />
 
         <activity
-            android:name=".activities.AlarmActivity"
+            android:name="com.example.android.com.calin.android.watsnext.activities.AlarmActivity"
             android:showOnLockScreen="true" />
 
-        <receiver android:name=".widget.EventsWidget">
+        <receiver android:name="com.example.android.com.calin.android.watsnext.widget.EventsWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -80,7 +80,7 @@
         </receiver>
 
         <service
-            android:name=".widget.WidgetService"
+            android:name="com.example.android.com.calin.android.watsnext.widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
