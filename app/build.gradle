@@ -15,7 +15,7 @@ android {
 
     signingConfigs{
         watsnextconfig{
-            keyAlias 'key'
+            keyAlias 'watsnextkey'
             keyPassword 'jonbonjovi666'
             storeFile file('../watsnextkeystore.jks')
             storePassword 'badhairday666'
