@@ -70,5 +70,12 @@
     <string name="delete_all_events_confirmation_title">Delete All Events</string>
     <string name="delete_all_events_confirmation_message">You are about to delete ALL the events from the database. Do you wish to proceed?</string>
     <string name="show_all_event_types">Show all event types</string>
+    <string name="repeater_monday">M</string>
+    <string name="repeater_tuesday">T</string>
+    <string name="repeater_wednesday">W</string>
+    <string name="repeater_thursday">T</string>
+    <string name="repeater_friday">F</string>
+    <string name="repeater_saturday">S</string>
+    <string name="repeater_sunday">S</string>
 
 </resources>
