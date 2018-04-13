@@ -100,4 +100,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="event_type_spinner_arrow_elevation">4dp</dimen>
     <dimen name="time_picker_text_bottom_margin">24dp</dimen>
     <dimen name="widget_title_text_size">24sp</dimen>
+    <dimen name="weather_fab_bottom_margin">4dp</dimen>
 </resources>

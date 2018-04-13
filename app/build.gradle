@@ -17,7 +17,7 @@ android {
         watsnextconfig{
             keyAlias 'key'
             keyPassword 'jonbonjovi666'
-            storeFile file('../watsnextkeysore.jks')
+            storeFile file('../watsnextkeystore.jks')
             storePassword 'badhairday666'
         }
     }
@@ -46,9 +46,6 @@ dependencies {
     // ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
-    // Picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // Google Play Services - Maps
     implementation 'com.google.android.gms:play-services-maps:12.0.1'
