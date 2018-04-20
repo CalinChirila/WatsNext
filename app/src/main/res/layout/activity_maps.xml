@@ -46,14 +46,4 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_weather_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/weather_fab_bottom_margin"
-        map:srcCompat="@drawable/ic_wb_sunny_white_24dp"
-        map:layout_constraintBottom_toBottomOf="@+id/button_save_location_address"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toEndOf="@+id/button_save_location_address" />
-
 </android.support.constraint.ConstraintLayout>
