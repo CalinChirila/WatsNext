@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import com.example.android.watsnext.R;
 import com.example.android.watsnext.adapters.EventTypesAdapter;
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.DatePickerUtils;
+import com.example.android.watsnext.utils.EventRescheduler;
 import com.example.android.watsnext.utils.EventUtils;
 import com.example.android.watsnext.utils.Reminder;
 import com.example.android.watsnext.utils.RepeaterTextView;
@@ -133,11 +135,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
     TextView mReminderHourTextView;
     @BindView(R.id.tv_reminder_time_picker_minutes)
     TextView mReminderMinuteTextView;
+    @BindView(R.id.switch_repeat_monthly)
+    Switch mSwitch;
 
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
     private boolean isAlarmPermissionGranted = false;
+    private boolean isRepeatedMonthly = false;
 
     private int mEventID;
     private int mEventTypeInt;
@@ -335,6 +340,29 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         mEventReminderType = 2;
 
                         break;
+                    case R.id.switch_repeat_monthly:
+                        if(mSwitch.isChecked()){
+                            isRepeatedMonthly = true;
+
+                            // Disable the other repeat options
+                            for(int i = 0; i < 7; i++){
+                                View repeaterTV = RepeaterTextView.getRepeaterViewAtIndex(AddEventActivity.this, i);
+                                repeaterTV.setClickable(false);
+                                repeaterTV.setBackgroundColor(getResources().getColor(R.color.dark_transparent_background));
+                                mRepeatDays = new ArrayList<>();
+                                mRepeatDays.add(EventRescheduler.ONE_MONTH);
+                            }
+                        } else {
+                            isRepeatedMonthly = false;
+
+                            // Enable the other repeat options
+                            for(int i = 0; i< 7; i++){
+                                View repeaterTV = RepeaterTextView.getRepeaterViewAtIndex(AddEventActivity.this, i);
+                                repeaterTV.setClickable(true);
+                                mRepeatDays = new ArrayList<>();
+                                mRepeatDays.clear();
+                            }
+                        }
                 }
             }
         };
@@ -364,6 +392,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         mNoReminderButton.setOnClickListener(buttonClickListener);
         mNotificationReminderButton.setOnClickListener(buttonClickListener);
         mAlarmNotificationButton.setOnClickListener(buttonClickListener);
+        mSwitch.setOnClickListener(buttonClickListener);
 
     }
 
@@ -401,7 +430,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
 
-            mReminder.createReminder(getApplicationContext());
+            mReminder.createReminder(getApplicationContext(), mEventID);
 
     }
 
@@ -437,6 +466,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     /**
      * Method for setting up the event that the user chose to repeat on certain days
+     * This method will add the events for the next week only
      */
     private void setupRepeatedEvents() {
         ArrayList<Integer> eventRepeats = RepeaterTextView.getRepeatDays();
@@ -480,7 +510,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
-        values.put(EventsEntry.COLUMN_EVENT_REPEAT, mRepeatDays.toString());
+        String repeatDays = mRepeatDays.toString();
+        values.put(EventsEntry.COLUMN_EVENT_REPEAT, repeatDays);
 
 
         getContentResolver().insert(EventsEntry.CONTENT_URI, values);
@@ -499,7 +530,8 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         values.put(EventsEntry.COLUMN_EVENT_LOCATION, mEventLocation);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER, mEventReminderType);
         values.put(EventsEntry.COLUMN_EVENT_REMINDER_TIME, mEventReminderTime);
-        values.put(EventsEntry.COLUMN_EVENT_REPEAT, mRepeatDays.toString());
+        String repeatDays = mRepeatDays.toString();
+        values.put(EventsEntry.COLUMN_EVENT_REPEAT, repeatDays);
 
         if(mIntent.hasExtra(EventsListActivity.EXTRA_EVENT_ID)){
             // Update the existing event

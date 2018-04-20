@@ -78,5 +78,7 @@
     <string name="repeater_saturday">S</string>
     <string name="repeater_sunday">S</string>
     <string name="no_internet_message">A network connection is required to access this feature</string>
+    <string name="repeat_every_month">repeatEveryMonth</string>
+    <string name="monthly">Monthly</string>
 
 </resources>

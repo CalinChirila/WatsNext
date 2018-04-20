@@ -1,12 +1,14 @@
 package com.example.android.watsnext.activities;
 
+import android.content.ContentUris;
+import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,7 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.watsnext.R;
-import com.example.android.watsnext.utils.EventUtils;
+import com.example.android.watsnext.data.EventContract;
+import com.example.android.watsnext.utils.EventRescheduler;
+import com.example.android.watsnext.utils.Reminder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,9 +64,15 @@ public class AlarmActivity extends AppCompatActivity {
         // Wakeup phone screen
         wakeupPhoneScreen();
 
+        // Get the event id and use it to get the correct alarm message text
+        long eventId = getIntent().getLongExtra(Reminder.ALARM_EVENT_ID, -1);
+        Uri eventUri = ContentUris.withAppendedId(EventContract.EventsEntry.CONTENT_URI, eventId);
+        Cursor cursor = getContentResolver().query(eventUri, null, null, null, null);
+
+
         // Get the event message that the user set and display it in the alarm activity
-        String alarmMessage = EventUtils.convertEventTypeToString(this, getIntent().getIntExtra(AlarmClock.EXTRA_MESSAGE, 0));
-        if(TextUtils.isEmpty(alarmMessage) || alarmMessage.equals(getString(R.string.event_type_other))){
+        String alarmMessage = cursor.getString(cursor.getColumnIndex(EventContract.EventsEntry.COLUMN_EVENT_TEXT));
+        if(TextUtils.isEmpty(alarmMessage)){
             alarmMessage = getString(R.string.event);
         }
         mAlarmMessageTextView.setText(alarmMessage);
@@ -82,6 +92,10 @@ public class AlarmActivity extends AppCompatActivity {
             }
         });
 
+
+        // Setup the next event
+        EventRescheduler.rescheduleEvent(this, eventId);
+        cursor.close();
     }
 
     /**

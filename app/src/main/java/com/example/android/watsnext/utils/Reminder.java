@@ -32,6 +32,7 @@ public class Reminder {
 
     private static PendingIntent mReminderPendingIntent;
     public static final String ALARM_REMINDER_TYPE = "alarmReminderType";
+    public static final String ALARM_EVENT_ID = "eventId";
 
     /**
      * Reminder constructor
@@ -63,13 +64,13 @@ public class Reminder {
     /**
      * Helper method that creates the reminder based on its type
      */
-    public void createReminder(Context context){
+    public void createReminder(Context context, long eventId){
         // Create an alarm
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
 
         Calendar calendar = Calendar.getInstance();
-        int gmtOffSet = calendar.getTimeZone().getRawOffset() + calendar.getTimeZone().getDSTSavings(); // From my knowledge the GMT for Romania was + 2, but according to gmt website, it's + 3 now. I don't understand...
+        int gmtOffSet = calendar.getTimeZone().getRawOffset() + calendar.getTimeZone().getDSTSavings();
 
         // Set the reminder time taking the gmt into consideration
         long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
@@ -78,6 +79,7 @@ public class Reminder {
             // Create the alarm intent
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.putExtra(ALARM_REMINDER_TYPE, mReminderType);
+            alarmIntent.putExtra(ALARM_EVENT_ID, eventId);
             mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

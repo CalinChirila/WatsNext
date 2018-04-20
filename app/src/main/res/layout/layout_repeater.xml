@@ -2,8 +2,9 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
 
@@ -53,7 +54,6 @@
         android:id="@+id/repeater_sunday"
         style="@style/RepeaterItemStyle"
         android:text="@string/repeater_sunday"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/repeater_saturday"
         app:layout_constraintTop_toBottomOf="@+id/repeater_header" />
 
@@ -61,7 +61,24 @@
         android:id="@+id/repeater_header"
         style="@style/AddEventTextViewsStyle"
         android:text="@string/repeater_header"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/repeater_sunday"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switch_repeat_monthly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/repeater_sunday"
+        app:layout_constraintTop_toBottomOf="@+id/repeater_monthly_header" />
+
+    <TextView
+        android:id="@+id/repeater_monthly_header"
+        style="@style/AddEventTextViewsStyle"
+        android:text="@string/monthly"
+        app:layout_constraintEnd_toEndOf="@+id/switch_repeat_monthly"
+        app:layout_constraintStart_toStartOf="@+id/switch_repeat_monthly"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

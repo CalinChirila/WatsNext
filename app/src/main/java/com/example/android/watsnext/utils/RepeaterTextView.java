@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.android.watsnext.R;
 
@@ -122,9 +121,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
             v.setBackgroundColor(getResources().getColor(R.color.dark_transparent_background));
             this.isSelected = false;
 
-            //DEBUG TOAST
-            Toast.makeText(getContext(), mIndex + ": " + isSelected, Toast.LENGTH_LONG).show();
-
             if(mRepeatDays.contains(mIndex)) {
                 mRepeatDays.remove(mRepeatDays.indexOf(mIndex));
             }
@@ -133,9 +129,6 @@ public class RepeaterTextView extends android.support.v7.widget.AppCompatTextVie
             // Add repeated event
             v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             this.isSelected = true;
-
-            //DEBUG TOAST
-            Toast.makeText(getContext(), mIndex + ": " + isSelected, Toast.LENGTH_LONG).show();
 
             if(!mRepeatDays.contains(mIndex)){
                 mRepeatDays.add(mIndex);
