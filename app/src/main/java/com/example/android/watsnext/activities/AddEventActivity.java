@@ -234,7 +234,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                         EventUtils.convertEventTimeToString(mEventTime);
 
                         mEventDateAndTime = mEventDate + mEventTime;
-                        mRepeatDays = RepeaterTextView.getRepeatDays();
+                        if(mRepeatDays == null) {
+                            mRepeatDays = RepeaterTextView.getRepeatDays();
+                        }
 
                         // If the event information is valid, add it to the database
                         if(validateEvent()) {
@@ -349,9 +351,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                                 View repeaterTV = RepeaterTextView.getRepeaterViewAtIndex(AddEventActivity.this, i);
                                 repeaterTV.setClickable(false);
                                 repeaterTV.setBackgroundColor(getResources().getColor(R.color.dark_transparent_background));
-                                mRepeatDays = new ArrayList<>();
-                                mRepeatDays.add(EventRescheduler.ONE_MONTH);
                             }
+                            mRepeatDays = new ArrayList<>();
+                            mRepeatDays.add(EventRescheduler.ONE_MONTH);
                         } else {
                             isRepeatedMonthly = false;
 
@@ -359,7 +361,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                             for(int i = 0; i< 7; i++){
                                 View repeaterTV = RepeaterTextView.getRepeaterViewAtIndex(AddEventActivity.this, i);
                                 repeaterTV.setClickable(true);
-                                mRepeatDays = new ArrayList<>();
                                 mRepeatDays.clear();
                             }
                         }
@@ -430,7 +431,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
             mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
 
-            mReminder.createReminder(getApplicationContext(), mEventID);
+            // Query the db. For every entry (in case the event is repeater through out the week), get the specific event id and use it to create the reminder
+            Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, null);
+
+            while(cursor.moveToNext()) {
+                long eventId = cursor.getLong(cursor.getColumnIndex(EventsEntry._ID));
+                mReminder.createReminder(getApplicationContext(), eventId);
+            }
+            cursor.close();
 
     }
 
@@ -446,7 +454,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
      * If the user clicked on an event in the list, extract all the event information from that intent
      */
     private void extractEventInformation(){
-        mEventID = mIntent.getIntExtra(EventsListActivity.EXTRA_EVENT_ID, -1);
+        mEventID = mIntent.getExtras().getInt(EventsListActivity.EXTRA_EVENT_ID);
         String selection = EventsEntry._ID + "=?";
         String[] selectionArgs = {String.valueOf(mEventID)};
         Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, selection, selectionArgs, null);

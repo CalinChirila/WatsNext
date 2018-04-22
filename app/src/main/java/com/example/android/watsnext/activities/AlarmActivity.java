@@ -1,9 +1,7 @@
 package com.example.android.watsnext.activities;
 
-import android.content.ContentUris;
 import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.android.watsnext.R;
 import com.example.android.watsnext.data.EventContract;
+import com.example.android.watsnext.data.EventContract.EventsEntry;
 import com.example.android.watsnext.utils.EventRescheduler;
 import com.example.android.watsnext.utils.Reminder;
 
@@ -43,6 +42,13 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         ButterKnife.bind(this);
 
+        // Get the event id and use it to get the correct alarm message text
+        long eventId = getIntent().getLongExtra(Reminder.ALARM_EVENT_ID, -1);
+        String selection = EventsEntry._ID + "=?";
+        String[] selectionArgs = {String.valueOf(eventId)};
+        Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, selection, selectionArgs, null);
+        cursor.moveToFirst();
+
         // When the activity is created, start playing the alarm
         // Also, start phone vibration
 
@@ -63,12 +69,6 @@ public class AlarmActivity extends AppCompatActivity {
 
         // Wakeup phone screen
         wakeupPhoneScreen();
-
-        // Get the event id and use it to get the correct alarm message text
-        long eventId = getIntent().getLongExtra(Reminder.ALARM_EVENT_ID, -1);
-        Uri eventUri = ContentUris.withAppendedId(EventContract.EventsEntry.CONTENT_URI, eventId);
-        Cursor cursor = getContentResolver().query(eventUri, null, null, null, null);
-
 
         // Get the event message that the user set and display it in the alarm activity
         String alarmMessage = cursor.getString(cursor.getColumnIndex(EventContract.EventsEntry.COLUMN_EVENT_TEXT));

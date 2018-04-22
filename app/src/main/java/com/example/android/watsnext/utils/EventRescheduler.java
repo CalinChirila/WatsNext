@@ -17,6 +17,9 @@ public class EventRescheduler {
     public static final long PLUS_ONE_WEEK = 7 * DatePickerUtils.MILLIS_IN_A_DAY;
     public static final long PLUS_ONE_MONTH = 30 * DatePickerUtils.MILLIS_IN_A_DAY;
 
+    public static long eventDate;
+    public static long reminderTime;
+
     public static void rescheduleEvent(Context context, long eventId) {
         // Get the uri for the event in question
         Uri eventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
@@ -33,19 +36,22 @@ public class EventRescheduler {
         // Get event information
         int eventType = cursor.getInt(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE));
         String eventText = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TEXT));
-        long eventDate = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE));
+        eventDate = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_DATE));
         long eventTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TIME));
-        long eventDateAndTime = eventDate + eventTime;
         String eventLocation = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_LOCATION));
         int reminderType = cursor.getInt(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER));
-        long reminderTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER_TIME));
+        reminderTime = cursor.getLong(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REMINDER_TIME));
 
         // Check if we reschedule in 1 week or 1 month
         if (repeatDays.contains(String.valueOf(Calendar.DAY_OF_WEEK))) {
             eventDate = eventDate + PLUS_ONE_WEEK;
+            reminderTime = reminderTime + PLUS_ONE_WEEK;
         } else if (repeatDays.contains(String.valueOf(ONE_MONTH))) {
             eventDate = eventDate + PLUS_ONE_MONTH;
+            reminderTime = reminderTime + PLUS_ONE_MONTH;
         }
+
+        long eventDateAndTime = eventDate + eventTime;
 
         // Create content values
         ContentValues values = new ContentValues();

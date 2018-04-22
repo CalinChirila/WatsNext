@@ -31,7 +31,7 @@ public class Reminder {
     private static final int REQUEST_CODE_NOTIFICATION = 122;
 
     private static PendingIntent mReminderPendingIntent;
-    public static final String ALARM_REMINDER_TYPE = "alarmReminderType";
+
     public static final String ALARM_EVENT_ID = "eventId";
 
     /**
@@ -78,7 +78,6 @@ public class Reminder {
         if(mReminderType == REMINDER_ALARM) {
             // Create the alarm intent
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            alarmIntent.putExtra(ALARM_REMINDER_TYPE, mReminderType);
             alarmIntent.putExtra(ALARM_EVENT_ID, eventId);
             mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
