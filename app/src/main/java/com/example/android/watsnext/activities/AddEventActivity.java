@@ -141,7 +141,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     EventTypesAdapter mEventTypesAdapter;
     private boolean eventTypesAreVisible = false;
-    private boolean isAlarmPermissionGranted = false;
     private boolean isRepeatedMonthly = false;
 
     private int mEventID;
@@ -240,9 +239,9 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
                         // If the event information is valid, add it to the database
                         if(validateEvent()) {
+                            setupEventReminder();
                             addEventToDatabase();
                             setupRepeatedEvents();
-                            setupEventReminder();
                             updateAppWidget();
                             finish();
                         }
@@ -604,7 +603,7 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
         switch(requestCode){
             case REQUEST_PERMISSION_ALARM:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    isAlarmPermissionGranted = true;
+                    boolean isAlarmPermissionGranted = true;
                 }
         }
 
