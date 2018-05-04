@@ -171,18 +171,14 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
         // Display the menu
         toolbar.inflateMenu(R.menu.event_item_menu);
-        // Set the toolbar
-        setSupportActionBar(toolbar);
-        // Set back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Change the back button color to white
-        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+
 
         mIntent = getIntent();
 
         if (mIntent.hasExtra(EventsListActivity.EXTRA_EVENT_ID)) {
             // User clicked on an existing event
             toolbar.setTitle(R.string.edit_event);
+
             extractEventInformation();
 
             mShowEventsButton.setText(mEventTypeString);
@@ -207,6 +203,13 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
             // Initialize time picker with current time
             TimePickerUtils.setTimePickerDefaults(mHourTextView, mMinuteTextView, mAmPmTextView);
         }
+
+        // Set the toolbar
+        setSupportActionBar(toolbar);
+        // Set back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Change the back button color to white
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
 
 
         View.OnClickListener buttonClickListener = new View.OnClickListener() {

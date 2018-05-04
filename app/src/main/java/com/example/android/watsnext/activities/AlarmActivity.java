@@ -1,5 +1,6 @@
 package com.example.android.watsnext.activities;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -30,7 +31,7 @@ public class AlarmActivity extends AppCompatActivity {
     Button mStopAlarmButton;
 
     private MediaPlayer mRingTonePlayer;
-    private PowerManager.WakeLock mScreenLock;
+    private static PowerManager.WakeLock mScreenLock;
     private Vibrator mVibrator;
 
     @Override
@@ -68,7 +69,7 @@ public class AlarmActivity extends AppCompatActivity {
         }
 
         // Wakeup phone screen
-        wakeupPhoneScreen();
+        wakeupPhoneScreen(this);
 
         // Get the event message that the user set and display it in the alarm activity
         String alarmMessage = cursor.getString(cursor.getColumnIndex(EventContract.EventsEntry.COLUMN_EVENT_TEXT));
@@ -101,8 +102,8 @@ public class AlarmActivity extends AppCompatActivity {
     /**
      * Helper method to wakeup the phone screen
      */
-    private void wakeupPhoneScreen(){
-        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+    public static void wakeupPhoneScreen(Context context){
+        PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
         if(powerManager != null) {
             mScreenLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
             // Keep the screen awake for 1 minute

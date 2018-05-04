@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.activities.AlarmActivity;
 
 /**
  * Created by Calin-Cristian Chirila on 3/21/2018.
@@ -27,6 +28,10 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        // Wake up the phone screen
+        AlarmActivity.wakeupPhoneScreen(context);
+
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
