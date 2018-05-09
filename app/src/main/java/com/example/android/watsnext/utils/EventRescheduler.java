@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.example.android.watsnext.data.EventContract.EventsEntry;
 
@@ -23,6 +22,7 @@ public class EventRescheduler {
     public static void rescheduleEvent(Context context, long eventId) {
         // Get the uri for the event in question
         Uri eventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
+        
 
         // Read the database for that specific event
         Cursor cursor = context.getContentResolver().query(eventUri, null, null, null, null);
@@ -31,7 +31,7 @@ public class EventRescheduler {
         // Get the repeat days of the event
         String repeatDays = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
         // Exit early if event is unique
-        if(repeatDays == null || TextUtils.isEmpty(repeatDays)) return;
+        if(repeatDays.equals("[]")) return;
 
         // Get event information
         int eventType = cursor.getInt(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_TYPE));
@@ -49,6 +49,10 @@ public class EventRescheduler {
         } else if (repeatDays.contains(String.valueOf(ONE_MONTH))) {
             eventDate = eventDate + PLUS_ONE_MONTH;
             reminderTime = reminderTime + PLUS_ONE_MONTH;
+        } else {
+            // If neither of the options above happen, the event is not meant to repeat one week from now
+            cursor.close();
+            return;
         }
 
         long eventDateAndTime = eventDate + eventTime;
@@ -71,7 +75,7 @@ public class EventRescheduler {
 
         // Setup the reminder
         Reminder reminder = new Reminder(reminderType, eventDateAndTime);
-        reminder.createReminder(context, eventId);
+        reminder.createReminder(context, eventId, reminderTime);
         cursor.close();
     }
 }

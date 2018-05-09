@@ -242,8 +242,10 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
                         // If the event information is valid, add it to the database
                         if(validateEvent()) {
-                            setupEventReminder();
+                            setReminderInterface();
                             addEventToDatabase();
+                            setupEventReminder();
+
                             setupRepeatedEvents();
                             updateAppWidget();
                             finish();
@@ -399,46 +401,48 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
 
     }
 
+    private void setReminderInterface(){
+        mReminder = new Reminder(mEventReminderType, mEventDateAndTime);
+
+        int reminderDays;
+        int reminderHours;
+        int reminderMinutes;
+
+        // Default the reminder values to 0 if the corresponding TextViews are empty.
+        // Otherwise, get the int value from them.
+        if (TextUtils.isEmpty(mReminderDayTextView.getText())) {
+            reminderDays = 0;
+        } else {
+            reminderDays = Integer.parseInt(mReminderDayTextView.getText().toString());
+        }
+
+        if (TextUtils.isEmpty(mReminderHourTextView.getText())) {
+            reminderHours = 0;
+        } else {
+            reminderHours = Integer.parseInt(mReminderHourTextView.getText().toString());
+        }
+
+        if (TextUtils.isEmpty(mReminderMinuteTextView.getText())) {
+            reminderMinutes = 0;
+        } else {
+            reminderMinutes = Integer.parseInt(mReminderMinuteTextView.getText().toString());
+        }
+
+        mReminder.setReminderDays(reminderDays);
+        mReminder.setReminderHours(reminderHours);
+        mReminder.setReminderMinutes(reminderMinutes);
+
+        mEventReminderTime = Reminder.getReminderTimeInMillis(reminderDays, reminderHours, reminderMinutes);
+    }
+
     private void setupEventReminder(){
-
-            mReminder = new Reminder(mEventReminderType, mEventDateAndTime);
-
-            int reminderDays;
-            int reminderHours;
-            int reminderMinutes;
-
-            // Default the reminder values to 0 if the corresponding TextViews are empty.
-            // Otherwise, get the int value from them.
-            if (TextUtils.isEmpty(mReminderDayTextView.getText())) {
-                reminderDays = 0;
-            } else {
-                reminderDays = Integer.parseInt(mReminderDayTextView.getText().toString());
-            }
-
-            if (TextUtils.isEmpty(mReminderHourTextView.getText())) {
-                reminderHours = 0;
-            } else {
-                reminderHours = Integer.parseInt(mReminderHourTextView.getText().toString());
-            }
-
-            if (TextUtils.isEmpty(mReminderMinuteTextView.getText())) {
-                reminderMinutes = 0;
-            } else {
-                reminderMinutes = Integer.parseInt(mReminderMinuteTextView.getText().toString());
-            }
-
-            mReminder.setReminderDays(reminderDays);
-            mReminder.setReminderHours(reminderHours);
-            mReminder.setReminderMinutes(reminderMinutes);
-
-            mEventReminderTime = (reminderDays * DatePickerUtils.MILLIS_IN_A_DAY) + (reminderHours * 3600 * 1000) + (reminderMinutes * 60 * 1000);
 
             // Query the db. For every entry (in case the event is repeater through out the week), get the specific event id and use it to create the reminder
             Cursor cursor = getContentResolver().query(EventsEntry.CONTENT_URI, null, null, null, null);
 
             while(cursor.moveToNext()) {
                 long eventId = cursor.getLong(cursor.getColumnIndex(EventsEntry._ID));
-                mReminder.createReminder(getApplicationContext(), eventId);
+                mReminder.createReminder(getApplicationContext(), eventId, mEventReminderTime);
             }
             cursor.close();
 

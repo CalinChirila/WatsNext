@@ -6,14 +6,18 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
-import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.R;
+import com.example.android.watsnext.activities.AddEventActivity;
 import com.example.android.watsnext.activities.AlarmActivity;
+import com.example.android.watsnext.data.EventContract.EventsEntry;
+import com.example.android.watsnext.utils.EventRescheduler;
+import com.example.android.watsnext.utils.Reminder;
 
 /**
  * Created by Calin-Cristian Chirila on 3/21/2018.
@@ -32,6 +36,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         // Wake up the phone screen
         AlarmActivity.wakeupPhoneScreen(context);
 
+        long eventId = intent.getLongExtra(Reminder.ALARM_EVENT_ID, -1);
+        String selection = EventsEntry._ID + "=?";
+        String[] selectionArgs = {String.valueOf(eventId)};
+        Cursor cursor = context.getContentResolver().query(EventsEntry.CONTENT_URI, null, selection, selectionArgs, null);
+        cursor.moveToFirst();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -76,6 +85,13 @@ public class NotificationReceiver extends BroadcastReceiver {
             // Show the notification
 
             notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+
+            String repeat = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
+            // Setup the next event if the user set the event to repeat itself
+            if(!repeat.equals("[]")) {
+                EventRescheduler.rescheduleEvent(context, eventId);
+            }
+            cursor.close();
 
         }
     }

@@ -94,8 +94,11 @@ public class AlarmActivity extends AppCompatActivity {
         });
 
 
-        // Setup the next event
-        EventRescheduler.rescheduleEvent(this, eventId);
+        String repeat = cursor.getString(cursor.getColumnIndex(EventsEntry.COLUMN_EVENT_REPEAT));
+        // Setup the next event if the user set the event to repeat itself
+        if(!repeat.equals("[]")) {
+            EventRescheduler.rescheduleEvent(this, eventId);
+        }
         cursor.close();
     }
 

@@ -64,7 +64,7 @@ public class Reminder {
     /**
      * Helper method that creates the reminder based on its type
      */
-    public void createReminder(Context context, long eventId){
+    public void createReminder(Context context, long eventId, long reminderTime){
         // Create an alarm
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager == null) return;
@@ -73,7 +73,8 @@ public class Reminder {
         int gmtOffSet = calendar.getTimeZone().getRawOffset() + calendar.getTimeZone().getDSTSavings();
 
         // Set the reminder time taking the gmt into consideration
-        long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
+        //long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
+        long alarmTime = mEventDateAndTime - reminderTime;
 
         if(mReminderType == REMINDER_ALARM) {
             // Create the alarm intent
@@ -88,6 +89,7 @@ public class Reminder {
         else if (mReminderType == REMINDER_NOTIFICATION){
             // Create the notification intent
             Intent notificationIntent = new Intent(context, NotificationReceiver.class);
+            notificationIntent.putExtra(ALARM_EVENT_ID, eventId);
             mReminderPendingIntent = PendingIntent.getBroadcast(context, REQUEST_CODE_NOTIFICATION, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
