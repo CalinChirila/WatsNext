@@ -15,7 +15,7 @@ import com.example.android.watsnext.utils.EventUtils;
 
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
-    private Cursor mCursor;
+    public Cursor mCursor;
     private Context mContext;
 
     private String[] projection = new String[]{
@@ -40,6 +40,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     @Override
     public void onDataSetChanged() {
         // Query the database for updated information
+
         mCursor = mContext.getContentResolver().query(EventsEntry.CONTENT_URI, projection, null, null, sortOrder);
     }
 

@@ -22,7 +22,7 @@ public class EventRescheduler {
     public static void rescheduleEvent(Context context, long eventId) {
         // Get the uri for the event in question
         Uri eventUri = ContentUris.withAppendedId(EventsEntry.CONTENT_URI, eventId);
-        
+
 
         // Read the database for that specific event
         Cursor cursor = context.getContentResolver().query(eventUri, null, null, null, null);

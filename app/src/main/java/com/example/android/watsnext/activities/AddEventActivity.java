@@ -245,7 +245,6 @@ public class AddEventActivity extends AppCompatActivity implements EventTypesAda
                             setReminderInterface();
                             addEventToDatabase();
                             setupEventReminder();
-
                             setupRepeatedEvents();
                             updateAppWidget();
                             finish();

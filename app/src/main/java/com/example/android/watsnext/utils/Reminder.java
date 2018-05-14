@@ -74,7 +74,7 @@ public class Reminder {
 
         // Set the reminder time taking the gmt into consideration
         //long alarmTime = mEventDateAndTime - (getReminderTimeInMillis(mReminderDays, mReminderHours, mReminderMinutes) + gmtOffSet);
-        long alarmTime = mEventDateAndTime - reminderTime;
+        long alarmTime = mEventDateAndTime - reminderTime - gmtOffSet;
 
         if(mReminderType == REMINDER_ALARM) {
             // Create the alarm intent

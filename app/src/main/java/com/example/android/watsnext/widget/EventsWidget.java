@@ -16,7 +16,10 @@ import com.example.android.watsnext.data.EventContract.EventsEntry;
 /**
  * Implementation of App Widget functionality.
  */
-public class EventsWidget extends AppWidgetProvider {
+public class EventsWidget extends AppWidgetProvider{
+
+    //TODO: BUG: widget information not updating correctly
+    // Bug occurs after app is closed from the background
 
     public static int mWidgetId;
 
@@ -39,6 +42,8 @@ public class EventsWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, WidgetService.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         // Set the adapter for the widget collection
+        // The app needs "more time" to execute this next line of code
+
         views.setRemoteAdapter(R.id.widget_events_list, intent);
 
 
@@ -50,6 +55,8 @@ public class EventsWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        // Lastly, close the cursor to save resources
         if (cursor != null) {
             cursor.close();
         }
@@ -64,6 +71,7 @@ public class EventsWidget extends AppWidgetProvider {
             case AppWidgetManager.ACTION_APPWIDGET_UPDATE:
                 RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_events);
                 AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, EventsWidget.class), rv);
+                rv.setRemoteAdapter(R.id.widget_events_list, intent);
                 break;
         }
 
@@ -75,7 +83,7 @@ public class EventsWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_events_list);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_events_list);
         }
     }
 
@@ -88,5 +96,6 @@ public class EventsWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
 }
 

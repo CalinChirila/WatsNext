@@ -2,6 +2,7 @@ package com.example.android.watsnext.activities;
 
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,20 +56,14 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
     private static final int EVENTS_LOADER_ID = 1337;
 
     public static final String EXTRA_EVENT_ID = "eventID";
-    public static final String EXTRA_EVENT_TYPE = "eventType";
-    public static final String EXTRA_EVENT_TEXT = "eventText";
-    public static final String EXTRA_EVENT_DATE = "eventDate";
-    public static final String EXTRA_EVENT_TIME = "eventTime";
-    public static final String EXTRA_EVENT_LOCATION = "eventLocation";
-    public static final String EXTRA_EVENT_REPEAT = "eventRepeat";
-    public static final String EXTRA_EVENT_REMINDER = "eventReminder";
-    public static final String EXTRA_EVENT_REMINDER_TIME = "eventReminderTime";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
         ButterKnife.bind(this);
+
 
         // Load the add into the events list activity
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -232,6 +227,14 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         }
     }
 
+    private void updateAppWidget(){
+        Intent updateWidgetIntent = new Intent(EventsListActivity.this, EventsWidget.class);
+        updateWidgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), EventsWidget.class));
+        updateWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(updateWidgetIntent);
+    }
+
     /**
      * Helper method to delete all events from the database
      */
@@ -243,6 +246,7 @@ public class EventsListActivity extends AppCompatActivity implements LoaderManag
         RepeaterTextView.resetRepeatDays();
         mEventsLoaderManager.restartLoader(EVENTS_LOADER_ID, null, EventsListActivity.this);
         showEmptyState();
+        updateAppWidget();
     }
 
     /**
